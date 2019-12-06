@@ -35,7 +35,7 @@ Here is the list of included Yaml files:
 We may already have it in development or in secret storage.
 We can also help you to create the OpenAPI Spec Yaml file, since we have done it many many times and have a lot of tools to make it fast and clean.
 
-All you need to do is send an email to: eric@pandaflow.io.  Include you credit card number<sup>**</sup> which we will not charge.
+All you need to do is send an email to: support@pandaflow.io.  Include you credit card number<sup>**</sup> which we will not charge.
 
   
 \* - may not be for everyone  
