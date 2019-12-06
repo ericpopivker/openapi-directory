@@ -6,8 +6,8 @@ is [OpenAPI](https://swagger.io/docs/specification/about/). Surprisingly not man
 are many problems.
 
 PandaFlow App provides seemless intergration to all the APIs, so if you are short on time, go ahead and use that.
-But if you are DYI type of guy, you can just download one our our cleaned up API files and be on your way to enlightment*.
-* - may not be for everyone
+But if you are DYI type of guy, you can just download one our our cleaned up API files and be on your way to enlightment<sup>*</sup>.
+
 
 Here is the list of included Yaml files:
 
@@ -23,6 +23,9 @@ Here is the list of included Yaml files:
 We may already have it in development or in secret storage.
 We can also help you to create the OpenAPI Spec Yaml file, since we have done it many many times and have a lot of tools to make it fast and clean.
 
-All you need to do is send an email to: eric@pandaflow.io.  Include you credit card number** which we will not charge.
-** - tiz a joke.  Or is it.
+All you need to do is send an email to: eric@pandaflow.io.  Include you credit card number<sup>**</sup> which we will not charge.
+
+
+/* - may not be for everyone
+/*/* - tiz a joke.  Or is it.
 
