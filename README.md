@@ -9,9 +9,21 @@ PandaFlow App provides seemless intergration to all the APIs, so if you are shor
 But if you are DYI type of guy, you can just download one our our cleaned up API files and be on your way to enlightment<sup>*</sup>.
 
 
+# List of OpenAPI Specs
+
 Here is the list of included Yaml files:
 
 
+## Sendgird
+
+## Jira
+
+## Salesforce
+
+## Hubspot
+
+
+## Slack
 
 
 
