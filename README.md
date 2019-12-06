@@ -25,7 +25,7 @@ We can also help you to create the OpenAPI Spec Yaml file, since we have done it
 
 All you need to do is send an email to: eric@pandaflow.io.  Include you credit card number<sup>**</sup> which we will not charge.
 
-
-/* - may not be for everyone
-/*/* - tiz a joke.  Or is it.
+  
+\* - may not be for everyone  
+\*\* - tiz a joke.  Or is it.  
 
