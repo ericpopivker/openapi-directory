@@ -6,7 +6,7 @@ is [OpenAPI](https://swagger.io/docs/specification/about/). Surprisingly not man
 are many problems.
 
 PandaFlow App provides seemless intergration to all the APIs, so if you are short on time, go ahead and use that.
-But if you are DYI type of guy, you can just download one our our cleaned up OpenAPI spec files and be on your way to enlightment<sup>*</sup>.
+But if you are DIY type of guy, you can just download one our our cleaned up OpenAPI spec files and be on your way to enlightment<sup>*</sup>.
 
 
 # List of OpenAPI Specs
