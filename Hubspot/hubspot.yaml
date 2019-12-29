@@ -1,0 +1,3337 @@
+openapi: 3.0.1
+info:
+  title: Sales force api
+  version: '0.46'
+paths:
+  '/companies/v2/companies/{companyId}':
+    put:
+      tags:
+        - COMPANIES
+      summary: Update a Company
+      description: Updates the existing company with the id :companyId with the properties as specified by JSON in the request body
+      operationId: update_company
+      parameters:
+        - name: companyId
+          in: path
+          description: Company Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+    get:
+      tags:
+        - COMPANIES
+      summary: Get a Company
+      description: Returns an object representing the company with the id :companyId associated with the specified account. Particularly useful if you're performing lookups on specific attributes of a company.
+      operationId: get_company
+      parameters:
+        - name: companyId
+          in: path
+          description: Company Id
+          required: true
+          schema:
+            type: string
+        - name: includeMergeAudits
+          in: query
+          description: Include Merge Audits
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+    delete:
+      tags:
+        - COMPANIES
+      summary: Delete a Company
+      description: Deletes the exisiting company specified by :companyId. Returns JSON indicating whether or not the specified company was actually deleted.
+      operationId: delete_company
+      parameters:
+        - name: companyId
+          in: path
+          description: Company Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  companyId:
+                    type: integer
+                  deleted:
+                    type: boolean
+  /companies/v2/companies/:
+    post:
+      tags:
+        - COMPANIES
+      summary: Create a Company
+      description: 'For a given account, create a company. This is particularly useful if you''re integrating with a CRM or another application that has a similar notion of a company.'
+      operationId: create_company
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+  /companies/v2/companies/paged:
+    get:
+      tags:
+        - COMPANIES
+      summary: Get all companies
+      description: 'Used to get all of the companies in a account. Returns a paginated list of companies.'
+      operationId: get_all_companies
+      parameters:
+        - name: limit
+          in: query
+          description: 'The number of records to return. Defaults to 100, has a maximum value of 250.'
+          schema:
+            type: number
+        - name: offset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: 'Used to page through the results. If there are more records in your portal than the limit= parameter, you will need to use the offset returned in the first request to get the next set of results.'
+          schema:
+            type: number
+        - name: properties
+          in: query
+          schema:
+            x-attributes:
+              - 'duplicate_in_query'
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: A list of companies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyListResponse'
+  /companies/v2/companies/recent/modified:
+    get:
+      tags:
+        - COMPANIES
+      summary: Get recently modified and created companies
+      description: Returns a list of all companies sorted by the date the companies were most recently modified&nbsp;or created. This is particularly useful for ongoing syncs with HubSpot in which changes to companies must be captured in another system.
+      operationId: get_companies_modified
+      parameters:
+        - name: offset
+          in: query
+          description: offset
+          schema:
+            type: string
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: Since
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of companies
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanyResponse'
+                  has-more:
+                    type: boolean
+                  offset:
+                    type: integer
+                  total:
+                    type: integer
+  /companies/v2/companies/recent/created:
+    get:
+      tags:
+        - COMPANIES
+      summary: Get Recently Created Companies
+      description: Returns a list of all companies sorted by the date the companies were created. This is particularly useful for ongoing syncs with HubSpot in which changes to companies must be captured in another system.
+      operationId: get_companies_created
+      parameters:
+        - name: offset
+          in: query
+          description: offset
+          schema:
+            type: string
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompanyResponse'
+                  has-more:
+                    type: boolean
+                  offset:
+                    type: integer
+                  total:
+                    type: integer
+  '/companies/v2/companies/{companyId}/vids':
+    get:
+      tags:
+        - COMPANIES
+      summary: Get Contact IDs at a Company
+      description: Returns all of the contact IDs who have an associatedcompanyid property of :companyid. Useful if you're not looking for any more information on contacts at a company other than that they exist and where to find more information on them.
+      operationId: get_company_contacts_by_id
+      parameters:
+        - name: companyId
+          in: path
+          description: Company Id
+          required: true
+          schema:
+            type: string
+        - name: vidOffset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: VidOffset
+          schema:
+            type: string
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vids:
+                    type: array
+                    items:
+                      type: integer
+                  vidOffset:
+                    type: integer
+                    x-attributes:
+                      - 'paging_offset'
+                  hasMore:
+                    type: boolean
+
+  '/contacts/v1/contact/createOrUpdate/email/{contact_email}':
+    post:
+      tags:
+        - CONTACTS
+      summary: Create or update a contact
+      description: 'Create a contact if it doesn''t exist in an account already, or update it with the latest property values if it does.'
+      operationId: create_or_update
+      parameters:
+        - name: contact_email
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vid:
+                    type: integer
+                  isNew:
+                    type: boolean
+  /contacts/v1/contact:
+    post:
+      tags:
+        - CONTACTS
+      summary: Create a new contact
+      description: 'Create a new contact in HubSpot with a simple HTTP POST to the Contacts API. The contact will be created instantly inside of HubSpot, and will be assigned a unique ID (vid) that can be used to look up the contact inside of HubSpot later.'
+      operationId: create_contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+  '/contacts/v1/contact/vid/{vid}/profile':
+    post:
+      tags:
+        - CONTACTS
+      summary: Update an existing contact
+      description: Update an existing contact in HubSpot. This method lets you update the properties of a contact in HubSpot.
+      operationId: update_contact
+      parameters:
+        - name: vid
+          in: path
+          description: Contact VID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: response ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyResponse'
+    get:
+      tags:
+        - CONTACTS
+      summary: Get a contact record by its vid
+      description: 'For a given account, return information about a single contact by its ID. The contact''s unique ID is stored in a field called ''vid'' which stands for ''visitor ID''.'
+      operationId: get_contact
+      parameters:
+        - name: vid
+          in: path
+          description: Contact ID
+          required: true
+          schema:
+            type: string
+        - name: property=xproperty
+          in: query
+          description: Property
+          schema:
+            type: string
+        - name: propertyMode
+          in: query
+          description: Property Mode
+          schema:
+            type: string
+        - name: formSubmissionMode
+          in: query
+          description: Form Submission Mode
+          schema:
+            type: string
+        - name: showListMemberships
+          in: query
+          description: List Memberships
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+  /contacts/v1/lists/all/contacts/all:
+    get:
+      tags:
+        - CONTACTS
+      summary: Get all contacts
+      operationId: get_contacts
+      parameters:
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: vidOffset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: Contact Offset
+          schema:
+            type: string
+        - name: property
+          in: query
+          schema:
+            x-attributes:
+              - 'duplicate_in_query'
+            type: array
+            items:
+              type: string
+        - name: propertyMode
+          in: query
+          description: Property Mode
+          schema:
+            type: string
+        - name: formSubmissionMode
+          in: query
+          description: Form Submission Mode
+          schema:
+            type: string
+        - name: showListMemberships
+          in: query
+          description: List Memberships
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactListResponse'
+  /contacts/v1/lists/all/contacts/recent:
+    get:
+      tags:
+        - CONTACTS
+      summary: Get recently created contacts
+      operationId: get_recently_created_contacts
+      parameters:
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: timeOffset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: Time Offset
+          schema:
+            type: string
+        - name: vidOffset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: Contact Offset
+          schema:
+            type: string
+        - name: property
+          in: query
+          schema:
+            x-attributes:
+              - 'duplicate_in_query'
+            type: array
+            items:
+              type: string            
+        - name: propertyMode
+          in: query
+          description: Property Mode
+          schema:
+            type: string
+        - name: formSubmissionMode
+          in: query
+          description: Form Submission Mode
+          schema:
+            type: string
+        - name: showListMemberships
+          in: query
+          description: List Memberships
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactListResponse'
+  /contacts/v1/lists/recently_updated/contacts/recent:
+    get:
+      tags:
+        - CONTACTS
+      summary: Get recently updated and created contacts
+      operationId: get_recently_updated_and_created_contacts
+      parameters:
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: timeOffset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: Time Offset
+          schema:
+            type: string
+        - name: vidOffset
+          x-attributes:
+            - 'paging_offset'
+          in: query
+          description: Contact Offset
+          schema:
+            type: string
+        - name: property
+          in: query
+          schema:
+            x-attributes:
+              - 'duplicate_in_query'
+            type: array
+            items:
+              type: string            
+        - name: propertyMode
+          in: query
+          description: Property Mode
+          schema:
+            type: string
+        - name: formSubmissionMode
+          in: query
+          description: Form Submission Mode
+          schema:
+            type: string
+        - name: showListMemberships
+          in: query
+          description: List Memberships
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactListResponse'
+  '/contacts/v1/contact/email/{contact_email}/profile':
+    get:
+      tags:
+        - CONTACTS
+      summary: ' Search for a contact by email address'
+      operationId: get_contact_by_email
+      parameters:
+        - name: contact_email
+          in: path
+          description: Contact Email Address
+          required: true
+          schema:
+            type: string
+        - name: property=xproperty
+          in: query
+          description: Property
+          schema:
+            type: string
+        - name: propertyMode
+          in: query
+          description: Property Mode
+          schema:
+            type: string
+        - name: formSubmissionMode
+          in: query
+          description: Form Submission Mode
+          schema:
+            type: string
+        - name: showListMemberships
+          in: query
+          description: List Memberships
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+  '/contacts/v1/contact/vid/{contact_id}':
+    delete:
+      tags:
+        - CONTACTS
+      summary: Delete a contact
+      operationId: delete_contact
+      parameters:
+        - name: contact_id
+          in: path
+          description: Contact ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete contact result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vid:
+                    type: integer
+                  deleted:
+                    type: boolean
+                  reason:
+                    type: string
+  /contacts/v1/contact/emails/batch/:
+    get:
+      tags:
+        - CONTACTS
+      summary: Get a batch of contacts by email address
+      description: 'For a given account, return information about a group of contacts by their email addresses.'
+      operationId: get_batch_by_email
+      parameters:
+        - name: email
+          in: query
+          description: Contact Email Address(es)
+          required: true
+          schema:
+            type: string
+        - name: property
+          in: query
+          description: Property
+          schema:
+            type: string
+        - name: propertyMode
+          in: query
+          description: Property Mode
+          schema:
+            type: string
+        - name: formSubmissionMode
+          in: query
+          description: Form Submission Mode
+          schema:
+            type: string
+        - name: showListMemberships
+          in: query
+          description: List Memberships
+          schema:
+            type: string
+        - name: includeDeletes
+          in: query
+          description: Include Deleted Contacts
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /contacts/v1/search/query:
+    get:
+      tags:
+        - CONTACTS
+      summary: 'Search for contacts by email, name, or company name'
+      description: 'For a given account, return contacts and some data associated with those contacts by the contact''s email address, first and last name, phone number, and company name.'
+      operationId: search_contacts
+      parameters:
+        - name: q
+          in: query
+          description: Search Query
+          required: true
+          schema:
+            type: string
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: Offset
+          schema:
+            type: string
+        - name: property
+          in: query
+          description: Property
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Sort
+          schema:
+            type: string
+        - name: order
+          in: query
+          description: Order
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  offset:
+                    type: integer
+                  has-more:
+                    type: boolean
+                  total:
+                    type: integer
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ContactResponse'
+  '/deals/v1/deal/{dealId}':
+    get:
+      tags:
+        - DEALS
+      summary: Get a Deal
+      description: 'Returns an object representing the deal with the id :dealId associated with the specified account.'
+      operationId: get_deal
+      parameters:
+        - name: dealId
+          in: path
+          description: Deal Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealResponse'
+    put:
+      tags:
+        - DEALS
+      summary: Update a Deal
+      description: 'Updates the existing deal with the id :dealId with the properties as specified by JSON in the request body, using the same properties format as above. Returns JSON representing the updated deal.'
+      operationId: update_deal
+      parameters:
+        - name: dealId
+          in: path
+          description: Deal Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealResponse'
+    delete:
+      tags:
+        - DEALS
+      summary: Delete a Deal
+      description: Deletes the exisiting deal specified by :dealId.
+      operationId: delete_deal
+      parameters:
+        - name: dealId
+          in: path
+          description: Deal Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /deals/v1/deal/recent/modified:
+    get:
+      tags:
+        - DEALS
+      summary: Get Recently Modified Deals
+      description: 'Get recently modified deals in an account sorted by their last modified date, starting with the most recently modified deals. Use the offset parameter described below to page backwards through the deals.'
+      operationId: get_deals_modified
+      parameters:
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: Offset
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: Since
+          schema:
+            type: string
+        - name: includePropertyVersions
+          in: query
+          description: Include property versions
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DealResponse'
+                  has-more:
+                    type: boolean
+                  offset:
+                    type: integer
+                  total:
+                    type: integer
+  /deals/v1/deal/:
+    post:
+      tags:
+        - DEALS
+      summary: Create a Deal
+      description: 'For a given account, create a deal. This is particularly useful if you''re integrating with a CRM or another application that has a similar notion of a deal.'
+      operationId: create_deal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - properties
+              properties:
+                properties:
+                  type: array
+                  items:
+                    required:
+                      - property
+                      - value
+                    type: object
+                    properties:
+                      property:
+                        type: string
+                        description: Name of property
+                      value:
+                        type: string
+                        description: Value of property
+      responses:
+        '200':
+          description: Response OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DealResponse'
+  /deals/v1/deal/recent/created:
+    get:
+      tags:
+        - DEALS
+      summary: Get Recently Created Deals
+      description: 'Get all deals in a&nbsp;account sorted by their created date, with the most recently created deals first. Use the offset parameter returned in a response to get the next set of deals.'
+      operationId: get_deals_created
+      parameters:
+        - name: count
+          in: query
+          description: Count
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: Offset
+          schema:
+            type: string
+        - name: since
+          in: query
+          description: Since
+          schema:
+            type: string
+        - name: includePropertyVersions
+          in: query
+          description: Include property versions
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DealResponse'
+                  has-more:
+                    type: boolean
+                  offset:
+                    type: integer
+                  total:
+                    type: integer
+
+  /engagements/v1/engagements:
+    post:
+      tags:
+        - ENGAGEMENTS
+      summary: Create an Engagement
+      description: 'Create an engagement (a note, task, or activity) on an object in HubSpot. Engagements are any interaction with a contact that should be logged inside of the CRM. Activity reporting in the CRM also feeds off of this data.'
+      operationId: create_engagement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - engagement
+              type: object
+              properties:
+                engagement:
+                  type: object
+                  properties:
+                    active:
+                      description: active
+                      type: boolean
+                    ownerId:
+                      description: owner id
+                      type: integer
+                    type:
+                      type: string
+                      enum: [EMAIL, CALL, MEETING, TASK, NOTE]
+                metadata:
+                  oneOf:
+                    - $ref: '#/components/schemas/EMAIL_Engagement'
+                    - $ref: '#/components/schemas/MEETING_Engagement'
+                    - $ref: '#/components/schemas/TASK_Engagement'
+                    - $ref: '#/components/schemas/CALL_Engagement'
+      responses:
+        '200':
+          description: engagement response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementResponse'
+  '/engagements/v1/engagements/{engagementId}':
+    delete:
+      tags:
+        - ENGAGEMENTS
+      summary: DELETE an Engagement
+      description: Delete an engagement (a task or activity) on an object in HubSpot.
+      operationId: delete-engagement
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    get:
+      tags:
+        - ENGAGEMENTS
+      summary: GET an Engagement
+      description: Get an engagement (a task or activity) on an object in HubSpot. This data is often used for per rep productivity reporting or integration with other back-office tools.
+      operationId: get_engagement
+      parameters:
+        - name: engagementId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: engagement response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementResponse'
+
+components:
+  schemas:
+    Contact:
+      title: Contact Schema
+      required:
+        - vid
+      properties:
+        vid:
+          type: integer
+          description: Integer; The internal ID of the contact record.
+        canonical-vid:
+          type: integer
+          description: Contacts may have multiple vids, but the canonical-vid will be the primary ID for a record.
+        merged-vids:
+          type: array
+          description: A list of vids that have been merged into this contact record.
+          items:
+            type: integer
+        portal-id:
+          type: integer
+          description: The Portal ID (Hub ID) that the record belongs to.
+        is-contact:
+          type: boolean
+          description: Indicates if the record is a valid contact record.
+        profile-token:
+          type: string
+          description: A unique token that can be used to view the contact without logging into HubSpot.
+        profile-url:
+          type: string
+          description: A URL that can be used to view the contact data without logging in. Anyone with this link would be able to view (but not edit) the record
+        properties:
+          type: array
+          items:
+            required:
+              - name
+              - value
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of property
+              value:
+                type: string
+                description: Value of property
+        form-submissions:
+          type: object
+          properties:
+            conversion-id:
+              type: string
+              description: A Unique ID for the specific form conversion
+            timestamp:
+              type: integer
+              description: A Unix timestamp in milliseconds of the time the submission occurred
+            form-id:
+              type: string
+              description: The GUID of the form that the subission belongs to.
+            portal-id:
+              type: integer
+              description: the Portal ID (Hub ID) that the submission belongs to
+            page-url:
+              type: string
+              description: The URL that the form was submitted on.
+            title:
+              type: string
+              description: The title of the page that the form was submitted on
+    ContactResponse:
+      type: object
+      x-attributes:
+        - 'Contact'
+      properties:
+        vid:
+          type: integer
+        canonical-vid:
+          type: integer
+        merged-vids:
+          type: array
+          items:
+            type: object
+        portal-id:
+          type: integer
+        is-contact:
+          type: boolean
+        profile-token:
+          type: string
+        profile-url:
+          type: string
+        properties:
+          type: object
+          properties:
+            hs_analytics_last_url:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            lead_source:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            num_unique_conversion_events:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_revenue:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            createdate:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_first_referrer:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_email_optout:
+              type: object
+              properties:
+                value:
+                  type: boolean
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: boolean
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_predictivecontactscore:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: string
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            annualrevenue:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_num_page_views:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            state:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            zip:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            fortune_rank:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_predictivecontactscorebucket:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: string
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hubspotscore:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            linkedinconnections:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_lifecyclestage_subscriber_date:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_average_page_views:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            lastname:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            twitterhandle:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            phone:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            num_conversion_events:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            currentlyinworkflow:
+              type: object
+              properties:
+                value:
+                  type: boolean
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: boolean
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_num_event_completions:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            followercount:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_email_optout_2849:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            associatedcompanyid:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            firstname:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            city:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_email_optout_354586:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_social_num_broadcast_clicks:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_last_timestamp:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_num_visits:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            twitterbio:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_social_linkedin_clicks:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_last_visit_timestamp:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_social_last_engagement:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_twitterid:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            associatedcompanylastupdated:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_source:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            company:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            email:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            linkedinbio:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_first_url:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            website:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            address:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_first_visit_timestamp:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_first_timestamp:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            lastmodifieddate:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            photo:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_social_google_plus_clicks:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_last_referrer:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            kloutscoregeneral:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_email_optout_230318:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_social_facebook_clicks:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            twitterprofilephoto:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_source_data_2:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_social_twitter_clicks:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            hs_analytics_source_data_1:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: string
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+            lifecyclestage:
+              type: object
+              properties:
+                value:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      source-type:
+                        type: string
+                      source-id:
+                        type: object
+                        properties: {}
+                      source-label:
+                        type: object
+                        properties: {}
+                      timestamp:
+                        type: integer
+                      selected:
+                        type: boolean
+        form-submissions:
+          type: array
+          items:
+            type: object
+        list-memberships:
+          type: array
+          items:
+            type: object
+            properties:
+              static-list-id:
+                type: integer
+              internal-list-id:
+                type: integer
+              timestamp:
+                type: integer
+              vid:
+                type: integer
+              is-member:
+                type: boolean
+        identity-profiles:
+          type: array
+          items:
+            type: object
+            properties:
+              vid:
+                type: integer
+              saved-at-timestamp:
+                type: integer
+              deleted-changed-timestamp:
+                type: integer
+              identities:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    value:
+                      type: string
+                    timestamp:
+                      type: integer
+        merge-audits:
+          type: array
+          items:
+            type: object
+        associated-company:
+          type: object
+          properties:
+            company-id:
+              type: integer
+            portal-id:
+              type: integer
+            properties:
+              type: object
+              properties:
+                country:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                city:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                num_associated_contacts:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                timezone:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                facebook_company_page:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                createdate:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                description:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                industry:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                total_money_raised:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                days_to_close:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_analytics_num_visits:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                linkedin_company_page:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                recent_conversion_event_name:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_analytics_source:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                num_contacted_notes:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                annualrevenue:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                founded_year:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_analytics_num_page_views:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                state:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                linkedinbio:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                notes_next_activity_date:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                zip:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                notes_last_updated:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                website:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                closedate:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_analytics_first_timestamp:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                first_conversion_date:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                engagements_last_meeting_booked:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                first_contact_createdate:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                twitterhandle:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_lastmodifieddate:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                notes_last_contacted:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                phone:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                num_conversion_events:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                domain:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                is_public:
+                  type: object
+                  properties:
+                    value:
+                      type: boolean
+                name:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                recent_conversion_date:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_analytics_source_data_2:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                hs_analytics_source_data_1:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                first_conversion_event_name:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                num_notes:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+    ContactListResponse:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactResponse'
+        has-more:
+          type: boolean
+        vid-offset:
+          x-attributes:
+            - 'paging_offset'
+          type: integer
+
+    CompanyResponse:
+      type: object
+      x-attributes:
+        - 'Company'
+      properties:
+        portalId:
+          type: integer
+        companyId:
+          type: integer
+        isDeleted:
+          type: boolean
+        properties:
+          type: object
+          properties:
+            description:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            name:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            createdate:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+    CompanyListResponse:
+      type: object
+      properties:
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyResponse'
+        has-more:
+          type: boolean
+        offset:
+          x-attributes:
+            - 'paging_offset'
+          type: integer
+
+    DealResponse:
+      type: object
+      x-attributes:
+        - 'Deal'
+      properties:
+        portalId:
+          type: integer
+        dealId:
+          type: integer
+        isDeleted:
+          type: boolean
+        associations:
+          type: object
+          properties:
+            associatedVids:
+              type: array
+              items:
+                type: integer
+            associatedCompanyIds:
+              type: array
+              items:
+                type: object
+            associatedDealIds:
+              type: array
+              items:
+                type: object
+        properties:
+          type: object
+          properties:
+            dealstage:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      sourceId:
+                        type: string
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            notes_last_contacted:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            notes_last_updated:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            createdate:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: object
+                  properties: {}
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            num_associated_contacts:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            hubspot_owner_id:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      sourceId:
+                        type: string
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            dealname:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: object
+                  properties: {}
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+            hubspot_owner_assigneddate:
+              type: object
+              properties:
+                value:
+                  type: string
+                timestamp:
+                  type: integer
+                source:
+                  type: string
+                sourceId:
+                  type: string
+                versions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                      timestamp:
+                        type: integer
+                      sourceId:
+                        type: string
+                      source:
+                        type: string
+                      sourceVid:
+                        type: array
+                        items:
+                          type: object
+
+    EngagementResponse:
+      type: object
+      properties:
+        engagement:
+          type: object
+          properties:
+            id:
+              type: integer
+            portalId:
+              type: integer
+            active:
+              type: boolean
+            createdAt:
+              type: integer
+            lastUpdated:
+              type: integer
+            ownerId:
+              type: integer
+            type:
+              type: string
+            timestamp:
+              type: integer
+        associations:
+          type: object
+          properties:
+            contactIds:
+              type: array
+              items:
+                type: integer
+            companyIds:
+              type: array
+              items:
+                type: object
+            dealIds:
+              type: array
+              items:
+                type: object
+            ownerIds:
+              type: array
+              items:
+                type: object
+            workflowIds:
+              type: array
+              items:
+                type: object
+            ticketIds:
+              type: array
+              items:
+                type: object
+        attachments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+        metadata:
+          oneOf:
+            - $ref: '#/components/schemas/EMAIL_Engagement'
+            - $ref: '#/components/schemas/MEETING_Engagement'
+            - $ref: '#/components/schemas/TASK_Engagement'
+            - $ref: '#/components/schemas/CALL_Engagement'
+    EMAIL_Engagement:
+      type: object
+      properties:
+        from:
+          type: object
+          properties:
+            email:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+        to:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+        cc:
+          type: array
+          items:
+            type: object
+        bcc:
+          type: array
+          items:
+            type: object
+        subject:
+          type: string
+        html:
+          type: string
+        text:
+          type: string
+    MEETING_Engagement:
+      type: object
+      properties:
+        body:
+          type: string
+        startTime:
+          type: integer
+        endTime:
+          type: integer
+        title:
+          type: string
+    TASK_Engagement:
+      type: object
+      properties:
+        body:
+          type: string
+        subject:
+          type: string
+        status:
+          type: string
+        forObjectType:
+          type: string
+    CALL_Engagement:
+      type: object
+      properties:
+        toNumber:
+          type: string
+        fromNumber:
+          type: string
+        status:
+          type: string
+        durationMilliseconds:
+          type: integer
+        recordingUrl:
+          type: string
+        body:
+          type: string

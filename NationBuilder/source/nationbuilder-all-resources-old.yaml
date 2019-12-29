@@ -1,0 +1,2964 @@
+openapi: 3.0.1
+info:
+  title: Nation Builder API
+  version: 1.0.0
+servers:
+  - url: 'https://{slug}.nationbuilder.com/api/v1'
+paths:
+  '/sites/{site_slug}/pages/basic_pages':
+    get:
+      tags:
+        - Basic Pages
+      description: Shows a list of the basic pages in the system
+      operationId: list-basic-pages
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the basic page
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Basic Pages
+      description: Creates a basic page for a site
+      operationId: create-basic-pages
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the basic page
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the new basic page
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/basic_pages/{id}':
+    put:
+      tags:
+        - Basic Pages
+      description: Updates the attributes of a basic page
+      operationId: update-basic-pages
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the basic page
+          required: true
+        - name: id
+          in: path
+          description: the ID of the basic page
+          required: true
+        - name: body
+          in: query
+          description: JSON containing updates
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Basic Pages
+      description: Removes a basic page
+      operationId: destroy-basic-pages
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the basic page
+          required: true
+        - name: id
+          in: path
+          description: the ID of the basic page
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/blogs/{id}/posts':
+    get:
+      tags:
+        - Blog Posts
+      description: Shows a list of posts for a blog
+      operationId: list-blog-posts
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/blogs/{id}/match':
+    get:
+      tags:
+        - Blog Posts
+      description: Find a blog post by its external id
+      operationId: match-blog-posts
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: external_id
+          in: query
+          description: the external id of the blog post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+                external_id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/blogs/{blog_id}/posts/{blog_post_id}':
+    get:
+      tags:
+        - Blog Posts
+      description: Show the details of a blog post
+      operationId: show-blog-posts
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: blog_id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: blog_post_id
+          in: path
+          description: the ID of the blog post
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - blog_id
+                - blog_post_id
+              properties:
+                site_slug:
+                blog_id:
+                blog_post_id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Blog Posts
+      description: Updates the attributes of a blog post
+      operationId: update-blog-posts
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: blog_id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: blog_post_id
+          in: path
+          description: the ID of the blog post
+          required: true
+        - name: body
+          in: query
+          description: JSON containing updates
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - blog_id
+                - blog_post_id
+              properties:
+                site_slug:
+                blog_id:
+                blog_post_id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Blog Posts
+      description: Removes a blog post
+      operationId: destroy-blog-posts
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: blog_id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: blog_post_id
+          in: path
+          description: the ID of the blog post
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - blog_id
+                - blog_post_id
+              properties:
+                site_slug:
+                blog_id:
+                blog_post_id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/blogs/{blog_id}/posts':
+    post:
+      tags:
+        - Blog Posts
+      description: Creates a new blog post
+      operationId: create-blog-posts
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: blog_id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the new post
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - blog_id
+              properties:
+                site_slug:
+                blog_id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/blogs':
+    get:
+      tags:
+        - Blogs
+      description: Shows a list of all blogs
+      operationId: list-blogs
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Blogs
+      description: Creates a new blog
+      operationId: create-blogs
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the new blog
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/blogs/{id}':
+    get:
+      tags:
+        - Blogs
+      description: Show the details of a blog
+      operationId: show-blogs
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: id
+          in: path
+          description: the ID of the blog
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Blogs
+      description: Updates the attributes of a blog
+      operationId: update-blogs
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: id
+          in: path
+          description: the ID of the blog
+          required: true
+        - name: body
+          in: query
+          description: JSON containing updates
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Blogs
+      description: Removes a blog
+      operationId: destroy-blogs
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the blog
+          required: true
+        - name: id
+          in: path
+          description: the ID of the blog
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/calendars':
+    get:
+      tags:
+        - Calendars
+      description: Shows a list of calendars
+      operationId: list-calendars
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the calendars
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Calendars
+      description: Creates a new calendar
+      operationId: create-calendars
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the calendar
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the new calendar
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/calendars/{id}':
+    get:
+      tags:
+        - Calendars
+      description: Show the details of a calendar
+      operationId: show-calendars
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the calendar
+          required: true
+        - name: id
+          in: path
+          description: the ID of the calendar
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Calendars
+      description: Updates the attributes of a calendar
+      operationId: update-calendars
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the calendar
+          required: true
+        - name: id
+          in: path
+          description: the ID of the calendar
+          required: true
+        - name: body
+          in: query
+          description: JSON containing updates
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Calendars
+      description: Removes a calendar
+      operationId: destroy-calendars
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the calendar
+          required: true
+        - name: id
+          in: path
+          description: the ID of the calendar
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  /campaign_data:
+    get:
+      tags:
+        - Campaign Data
+      description: Shows campaign metadata about the nation
+      operationId: show-campaign-data
+      requestBody:
+        content:
+          application/json:
+      responses:
+        '200':
+          description: OK
+  '/people/{person_id}/contacts':
+    get:
+      tags:
+        - Contacts
+      description: View a paginated list of a person's contacts
+      operationId: list-contacts
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+              properties:
+                person_id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Contacts
+      description: Record a contact for a person
+      operationId: create-contacts
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the new contact
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+              properties:
+                person_id:
+      responses:
+        '200':
+          description: OK
+  /settings/contact_types:
+    get:
+      tags:
+        - Contact Types
+      description: Returns paginated list of nation-defined contact types
+      operationId: list-contact-types
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Contact Types
+      description: Creates a new contact type
+      operationId: create-contact-types
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of the new contact type
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/settings/contact_types/{id}':
+    put:
+      tags:
+        - Contact Types
+      description: Updates an existing contact type
+      operationId: update-contact-types
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the existing contact type
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the updates to make
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Contact Types
+      description: Destroys a contact type
+      operationId: destroy-contact-types
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the existing contact type
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  /settings/contact_methods:
+    get:
+      tags:
+        - Contact Types
+      description: Lists all contact methods
+      operationId: list-methods-contact-types
+      requestBody:
+        content:
+          application/json:
+      responses:
+        '200':
+          description: OK
+  /settings/contact_statuses:
+    get:
+      tags:
+        - Contact Types
+      description: Lists all contact status types
+      operationId: list-statuses-contact-types
+      requestBody:
+        content:
+          application/json:
+      responses:
+        '200':
+          description: OK
+  /donations:
+    get:
+      tags:
+        - Donations
+      description: Returns a list of donations
+      operationId: list-donations
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Donations
+      description: Creates a donation with the provided data
+      operationId: create-donations
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of a donation
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  /donations/search:
+    get:
+      tags:
+        - Donations
+      description: Search for donations with provided attributes
+      operationId: search-donations
+      parameters:
+        - name: created_since
+          in: query
+          description: No description
+        - name: succeeded_since
+          in: query
+          description: No description
+        - name: failed_since
+          in: query
+          description: No description
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                created_since:
+                succeeded_since:
+                failed_since:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  '/donations/{id}':
+    put:
+      tags:
+        - Donations
+      description: Updates a donation with the provided data
+      operationId: update-donations
+      parameters:
+        - name: id
+          in: path
+          description: the donation's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating the donation
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Donations
+      description: Removes the donation with the matching ID
+      operationId: destroy-donations
+      parameters:
+        - name: id
+          in: path
+          description: the donation's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/events':
+    get:
+      tags:
+        - Events
+      description: Returns a list of events
+      operationId: list-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+        - name: tags
+          in: query
+          description: tags that must be present on the event
+        - name: starting
+          in: query
+          description: earliest starting time
+        - name: until
+          in: query
+          description: latest ending time
+        - name: calendar_id
+          in: query
+          description: the ID of the calendar from which events should be scoped
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+                __token:
+                __nonce:
+                limit:
+                tags:
+                starting:
+                until:
+                calendar_id:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Events
+      description: Creates a event with the provided data
+      operationId: create-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: body
+          in: query
+          description: JSON representation of a event
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/events/{id}':
+    get:
+      tags:
+        - Events
+      description: Returns an event
+      operationId: show-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: id
+          in: path
+          description: the event's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Events
+      description: Updates a event with the provided data
+      operationId: update-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: id
+          in: path
+          description: the event's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating the event
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Events
+      description: Removes the event with the matching ID
+      operationId: destroy-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: id
+          in: path
+          description: the event's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/events/{id}/rsvps':
+    get:
+      tags:
+        - Events
+      description: Lists all RSVPs for an event
+      operationId: rsvps-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: id
+          in: path
+          description: the event's ID
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Events
+      description: Creates an RSVP for an event
+      operationId: rsvp-create-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: id
+          in: path
+          description: the event's ID
+          required: true
+        - name: body
+          in: query
+          description: A JSON representation of the new post
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/events/{event_id}/rsvps/{rsvp_id}':
+    put:
+      tags:
+        - Events
+      description: Updates an existing RSVP
+      operationId: rsvp-update-events
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the event
+          required: true
+        - name: event_id
+          in: path
+          description: the event's ID
+          required: true
+        - name: rsvp_id
+          in: path
+          description: the RSVP's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating the RSVP
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - event_id
+                - rsvp_id
+              properties:
+                site_slug:
+                event_id:
+                rsvp_id:
+      responses:
+        '200':
+          description: OK
+  '/imports/{id}':
+    get:
+      tags:
+        - Imports
+      description: Shows the status of an import
+      operationId: show-imports
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the import
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  /imports:
+    post:
+      tags:
+        - Imports
+      description: Creates a import with the provided data
+      operationId: create-imports
+      parameters:
+        - name: body
+          in: query
+          description: JSON representation of the import
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/imports/{id}/result':
+    get:
+      tags:
+        - Imports
+      description: Gets the import results and error csv file.
+      operationId: result-imports
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the import
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/lists/{list_id}/exports':
+    post:
+      tags:
+        - Exports
+      description: Starts an export of a list
+      operationId: export-list-exports
+      parameters:
+        - name: list_id
+          in: path
+          description: ID of the list to export
+          required: true
+        - name: body
+          in: query
+          description: JSON representation of the export
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+              properties:
+                list_id:
+      responses:
+        '200':
+          description: OK
+  '/exports/{id}':
+    get:
+      tags:
+        - Exports
+      description: Shows the status of a list export.
+      operationId: show-exports
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the export
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Exports
+      description: Delete the export
+      operationId: delete-exports
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the export
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  /lists:
+    get:
+      tags:
+        - Lists
+      description: Returns a list of created custom lists
+      operationId: list-lists
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Lists
+      description: Creates a list with the provided data
+      operationId: create-lists
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of the list to create
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/lists/{id}/people':
+    get:
+      tags:
+        - Lists
+      description: Returns people stored in a list
+      operationId: people-lists
+      parameters:
+        - name: id
+          in: path
+          description: the list's ID
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  '/lists/{id}':
+    put:
+      tags:
+        - Lists
+      description: Updates a list with the provided data
+      operationId: update-lists
+      parameters:
+        - name: id
+          in: path
+          description: the list's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating the list
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Lists
+      description: Removes the list with the matching ID
+      operationId: destroy-lists
+      parameters:
+        - name: id
+          in: path
+          description: the list's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/lists/{list_id}/people':
+    post:
+      tags:
+        - Lists
+      description: Adds people to a list
+      operationId: add-people-lists
+      parameters:
+        - name: list_id
+          in: path
+          description: the list's ID
+          required: true
+        - name: body
+          in: query
+          description: A JSON hash containing the people to add to the list
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+              properties:
+                list_id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Lists
+      description: Removes people from a list
+      operationId: destroy-people-lists
+      parameters:
+        - name: list_id
+          in: path
+          description: the list's ID
+          required: true
+        - name: body
+          in: query
+          description: A JSON hash containing the people to remove from the list
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+              properties:
+                list_id:
+      responses:
+        '200':
+          description: OK
+  '/lists/{list_id}/listings':
+    post:
+      tags:
+        - Lists
+      description: Adds a person to a list
+      operationId: listing-create-(deprecated)-lists
+      parameters:
+        - name: list_id
+          in: path
+          description: the list's ID
+          required: true
+        - name: person_id
+          in: query
+          description: the ID of the person to add to the list
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+                - person_id
+              properties:
+                list_id:
+                person_id:
+      responses:
+        '200':
+          description: OK
+  '/lists/{list_id}/listings/{person_id}':
+    delete:
+      tags:
+        - Lists
+      description: Drops a person from a list
+      operationId: listing-deletion-(deprecated)-lists
+      parameters:
+        - name: list_id
+          in: path
+          description: the list's ID
+          required: true
+        - name: person_id
+          in: path
+          description: the ID of the person to drop from the list
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+                - person_id
+              properties:
+                list_id:
+                person_id:
+      responses:
+        '200':
+          description: OK
+  '/lists/{list_id}/tag/{tag}':
+    post:
+      tags:
+        - Lists
+      description: Adds a tag to all of the list members
+      operationId: add-tag-lists
+      parameters:
+        - name: list_id
+          in: path
+          description: the list's ID
+          required: true
+        - name: tag
+          in: path
+          description: the name of the tag to use
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+                - tag
+              properties:
+                list_id:
+                tag:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Lists
+      description: Deletes the tag from all of the list members
+      operationId: delete-tag-lists
+      parameters:
+        - name: list_id
+          in: path
+          description: the list's ID
+          required: true
+        - name: tag
+          in: path
+          description: the name of the tag to use
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - list_id
+                - tag
+              properties:
+                list_id:
+                tag:
+      responses:
+        '200':
+          description: OK
+  '/people/{person_id}/memberships':
+    get:
+      tags:
+        - Memberships
+      description: Lists all memberships for a person
+      operationId: list-memberships
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+              properties:
+                person_id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Memberships
+      description: Creates a membership
+      operationId: create-memberships
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for the new membership
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+              properties:
+                person_id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Memberships
+      description: Updates a membership
+      operationId: update-memberships
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating a membership
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+              properties:
+                person_id:
+      responses:
+        '200':
+          description: OK
+  '/people/{person_id}/memberships/{name}':
+    delete:
+      tags:
+        - Memberships
+      description: Removes a membership from the person
+      operationId: destroy-memberships
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: name
+          in: path
+          description: the name of the membership
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+                - name
+              properties:
+                person_id:
+                name:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/{page_slug}/attachments':
+    get:
+      tags:
+        - Page Attachments
+      description: Returns a list of a page's file attachments
+      operationId: list-page-attachments
+      parameters:
+        - name: site_slug
+          in: path
+          description: the slug of the site the page lives on
+          required: true
+        - name: page_slug
+          in: path
+          description: the page's slug
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - page_slug
+              properties:
+                site_slug:
+                page_slug:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Page Attachments
+      description: Creates a new file attachment for a page
+      operationId: create-page-attachments
+      parameters:
+        - name: site_slug
+          in: path
+          description: the slug of the site the page lives on
+          required: true
+        - name: page_slug
+          in: path
+          description: the page's slug
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the attachment
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - page_slug
+              properties:
+                site_slug:
+                page_slug:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/{page_slug}/attachments/{id}':
+    get:
+      tags:
+        - Page Attachments
+      description: Returns the details of the file attachment for a page
+      operationId: show-page-attachments
+      parameters:
+        - name: site_slug
+          in: path
+          description: the slug of the site the page lives on
+          required: true
+        - name: page_slug
+          in: path
+          description: the page's slug
+          required: true
+        - name: id
+          in: path
+          description: the ID of the page attachment
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - page_slug
+                - id
+              properties:
+                site_slug:
+                page_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Page Attachments
+      description: Destroys a file attachment for a page
+      operationId: destroy-page-attachments
+      parameters:
+        - name: site_slug
+          in: path
+          description: the slug of the site the page lives on
+          required: true
+        - name: page_slug
+          in: path
+          description: the page's slug
+          required: true
+        - name: id
+          in: path
+          description: the ID of the page attachment
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - page_slug
+                - id
+              properties:
+                site_slug:
+                page_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  /paths:
+    get:
+      tags:
+        - Paths
+      description: Returns a list of paths and path steps
+      operationId: list-paths
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  /people:
+    get:
+      tags:
+        - People
+      description: Returns a list of people
+      operationId: list-people
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - People
+      description: Creates a person with the provided data
+      operationId: create-people
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of the person to create
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  /people/count:
+    get:
+      tags:
+        - People
+      description: Returns a count of people in the nation
+      operationId: count-people
+      requestBody:
+        content:
+          application/json:
+      responses:
+        '200':
+          description: OK
+  '/people/{id}':
+    get:
+      tags:
+        - People
+      description: Returns a full representation of the person
+      operationId: show-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's id
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - People
+      description: Updates a person with the provided data
+      operationId: update-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating the person
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - People
+      description: Removes the person with the matching ID
+      operationId: destroy-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  /people/match:
+    get:
+      tags:
+        - People
+      description: Finds people that match certain attributes exactly
+      operationId: match-people
+      parameters:
+        - name: email
+          in: query
+          description: No description
+        - name: first_name
+          in: query
+          description: deprecated
+        - name: last_name
+          in: query
+          description: deprecated
+        - name: phone
+          in: query
+          description: deprecated
+        - name: mobile
+          in: query
+          description: deprecated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                first_name:
+                last_name:
+                phone:
+                mobile:
+      responses:
+        '200':
+          description: OK
+  /people/search:
+    get:
+      tags:
+        - People
+      description: Search for people using non-unique traits
+      operationId: search-people
+      parameters:
+        - name: first_name
+          in: query
+          description: No description
+        - name: last_name
+          in: query
+          description: No description
+        - name: city
+          in: query
+          description: No description
+        - name: state
+          in: query
+          description: No description
+        - name: sex
+          in: query
+          description: No description
+        - name: birthdate
+          in: query
+          description: No description
+        - name: updated_since
+          in: query
+          description: No description
+        - name: with_mobile
+          in: query
+          description: No description
+        - name: custom_values
+          in: query
+          description: No description
+        - name: civicrm_id
+          in: query
+          description: No description
+        - name: county_file_id
+          in: query
+          description: No description
+        - name: datatrust_id
+          in: query
+          description: No description
+        - name: dw_id
+          in: query
+          description: No description
+        - name: external_id
+          in: query
+          description: No description
+        - name: media_market_id
+          in: query
+          description: No description
+        - name: membership_level_id
+          in: query
+          description: No description
+        - name: ngp_id
+          in: query
+          description: No description
+        - name: pf_strat_id
+          in: query
+          description: No description
+        - name: rnc_id
+          in: query
+          description: No description
+        - name: rnc_regid
+          in: query
+          description: No description
+        - name: salesforce_id
+          in: query
+          description: No description
+        - name: state_file_id
+          in: query
+          description: No description
+        - name: van_id
+          in: query
+          description: No description
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                last_name:
+                city:
+                state:
+                sex:
+                birthdate:
+                updated_since:
+                with_mobile:
+                custom_values:
+                civicrm_id:
+                county_file_id:
+                datatrust_id:
+                dw_id:
+                external_id:
+                media_market_id:
+                membership_level_id:
+                ngp_id:
+                pf_strat_id:
+                rnc_id:
+                rnc_regid:
+                salesforce_id:
+                state_file_id:
+                van_id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  /people/nearby:
+    get:
+      tags:
+        - People
+      description: Searches for people near a location defined by latitude and longitude
+      operationId: nearby-people
+      parameters:
+        - name: location
+          in: query
+          description: 'origin of search in the format ''latitude,longitude'''
+          required: true
+        - name: distance
+          in: query
+          description: radius in miles for which to include results
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - location
+              properties:
+                location:
+                distance:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  /people/me:
+    get:
+      tags:
+        - People
+      description: Returns the access token's resource owner's representation
+      operationId: me-people
+      requestBody:
+        content:
+          application/json:
+      responses:
+        '200':
+          description: OK
+  '/people/{id}/register':
+    get:
+      tags:
+        - People
+      description: Starts user registration person for the given person
+      operationId: register-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's id
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/people/{id}/taggings':
+    get:
+      tags:
+        - People
+      description: Returns all taggings for a given person
+      operationId: taggings-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's id
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - People
+      description: Tags a person
+      operationId: tag-person-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's id
+          required: true
+        - name: body
+          in: query
+          description: JSON with tagging information
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - People
+      description: Removes tags from a person
+      operationId: bulk-tag-removal-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: the tagging resource
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/people/{id}/taggings/{tag}':
+    delete:
+      tags:
+        - People
+      description: Removes a tag from a person
+      operationId: tag-removal-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+        - name: tag
+          in: path
+          description: the name of the tag
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+                - tag
+              properties:
+                id:
+                tag:
+      responses:
+        '200':
+          description: OK
+  '/people/{id}/capitals':
+    get:
+      tags:
+        - People
+      description: Returns a paginated list of a person's capitals
+      operationId: political-capital-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - People
+      description: Creates capital for the given person
+      operationId: political-capital-create-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON representation of the capital to create
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  '/people/{person_id}/capitals/{capital_id}':
+    delete:
+      tags:
+        - People
+      description: Destroys capital for a person
+      operationId: political-capital-destroy-people
+      parameters:
+        - name: person_id
+          in: path
+          description: the person's ID
+          required: true
+        - name: capital_id
+          in: path
+          description: the ID of the capital to destroy
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person_id
+                - capital_id
+              properties:
+                person_id:
+                capital_id:
+      responses:
+        '200':
+          description: OK
+  /people/push:
+    put:
+      tags:
+        - People
+      description: Updates a matched person or creates a new one if the person doesn't exist
+      operationId: push-people
+      parameters:
+        - name: body
+          in: query
+          description: JSON attributes for updating/matching the person
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  /people/add:
+    put:
+      tags:
+        - People
+      description: Updates a matched person (without overriding data) or creates a new one if the person doesn't exist
+      operationId: add-people
+      parameters:
+        - name: body
+          in: query
+          description: JSON attributes for updating/matching the person
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/people/{id}/notes':
+    post:
+      tags:
+        - People
+      description: Creates a private note for the given person
+      operationId: private-note-create-people
+      parameters:
+        - name: id
+          in: path
+          description: the person's ID
+          required: true
+        - name: body
+          in: query
+          description: a JSON representation of the note to create
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  /tags:
+    get:
+      tags:
+        - People Tags
+      description: Returns a list of previously used tags
+      operationId: list-people-tags
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  '/tags/{tag}/people':
+    get:
+      tags:
+        - People Tags
+      description: Searches for people with the given tag
+      operationId: people-people-tags
+      parameters:
+        - name: tag
+          in: path
+          description: the name of the tag
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - tag
+              properties:
+                tag:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  /precincts:
+    get:
+      tags:
+        - Precincts
+      description: Returns a list of current precincts
+      operationId: list-precincts
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Precincts
+      description: Creates a precinct with the provided data
+      operationId: create-precincts
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of the precinct to create
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/precincts/{id}':
+    get:
+      tags:
+        - Precincts
+      description: Returns a representation of the precinct
+      operationId: show-precincts
+      parameters:
+        - name: id
+          in: path
+          description: the precinct's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Precincts
+      description: Updates a precinct with the provided data
+      operationId: update-precincts
+      parameters:
+        - name: id
+          in: path
+          description: the precinct's ID
+          required: true
+        - name: body
+          in: query
+          description: JSON attributes for updating the precinct
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Precincts
+      description: Removes the precinct with the matching ID
+      operationId: destroy-precincts
+      parameters:
+        - name: id
+          in: path
+          description: the precinct's ID
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+  /sites:
+    get:
+      tags:
+        - Sites
+      description: Returns a list of all sites
+      operationId: list-sites
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+  /survey_responses:
+    get:
+      tags:
+        - Survey Responses
+      description: Lists all survey responses
+      operationId: list-survey-responses
+      parameters:
+        - name: start_time
+          in: query
+          description: the starting time for results
+        - name: end_time
+          in: query
+          description: the ending time for results
+        - name: survey_id
+          in: query
+          description: the ID for a parent survey
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                start_time:
+                end_time:
+                survey_id:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Survey Responses
+      description: Creates responses for a survey
+      operationId: create-survey-responses
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of the survey responses
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/surveys':
+    get:
+      tags:
+        - Surveys
+      description: Shows a list of all surveys for the a site
+      operationId: list-surveys
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the survey
+          required: true
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Surveys
+      description: Creates a survey for a site
+      operationId: create-surveys
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the survey
+          required: true
+        - name: body
+          in: query
+          description: A JSON representation of the new survey
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+              properties:
+                site_slug:
+      responses:
+        '200':
+          description: OK
+  '/sites/{site_slug}/pages/surveys/{id}':
+    put:
+      tags:
+        - Surveys
+      description: Updates the attributes of a survey
+      operationId: update-surveys
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the survey
+          required: true
+        - name: id
+          in: path
+          description: the ID of the survey
+          required: true
+        - name: body
+          in: query
+          description: JSON containing updates
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Surveys
+      description: Removes a survey
+      operationId: destroy-surveys
+      parameters:
+        - name: site_slug
+          in: path
+          description: the site holding the survey
+          required: true
+        - name: id
+          in: path
+          description: the ID of the survey
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - site_slug
+                - id
+              properties:
+                site_slug:
+                id:
+      responses:
+        '200':
+          description: OK
+  /webhooks:
+    get:
+      tags:
+        - Webhooks
+      description: Lists all webhooks
+      operationId: list-webhooks
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+        - name: __nonce
+          in: query
+          description: pagination nonce
+        - name: limit
+          in: query
+          description: maximum number of results to return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                __token:
+                __nonce:
+                limit:
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Webhooks
+      description: Creates a new webhook
+      operationId: create-webhooks
+      parameters:
+        - name: body
+          in: query
+          description: a JSON representation of the new webhook
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema: { }
+      responses:
+        '200':
+          description: OK
+  '/webhooks/{id}':
+    get:
+      tags:
+        - Webhooks
+      description: Shows the details of an individual webhook
+      operationId: show-webhooks
+      parameters:
+        - name: id
+          in: path
+          description: the ID of the webhook to display
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Webhooks
+      description: Destroys a webhook
+      operationId: destroy-webhooks
+      parameters:
+        - name: id
+          in: path
+          description: the ID a webhook
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                id:
+      responses:
+        '200':
+          description: OK

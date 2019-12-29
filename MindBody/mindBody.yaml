@@ -1,0 +1,251 @@
+openapi: 3.0.1
+info:
+  title: MBO API
+  description: 'MBO API'
+  version: '1.0'
+servers:
+- url: https://api.mindbodyonline.com/public/v6
+paths:
+  /sale/sales:
+    get:
+      tags:
+        - Sales
+      summary: GetSales
+      description: 'Search Sales'
+      operationId: GetSales
+      parameters:
+        - name: EndSaleDateTime
+          in: query
+          description: Filters results to sales that happened before this date and time.
+          schema:
+            type: string
+            format: date-time
+        - name: Limit
+          in: query
+          description: Number of results to include, defaults to 100
+          schema:
+            type: integer
+            format: int32
+        - name: Offset
+          in: query
+          description: Page offset, defaults to 0.
+          schema:
+            type: integer
+            format: int32
+        - name: PaymentMethodId
+          in: query
+          description: Filters results to sales paid for by the given payment method
+            ID.
+          schema:
+            type: integer
+            format: int32
+        - name: SaleId
+          in: query
+          description: Filters results to the requested sale ID.
+          schema:
+            type: integer
+            format: int64
+        - name: StartSaleDateTime
+          in: query
+          description: Filters results to sales that happened after this date and time.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content: {}
+      deprecated: false
+      servers:
+        - url: https://api.mindbodyonline.com/public/v6
+          variables: {}
+      security:
+        - Authorization: []
+  /sale/services:
+    get: 
+      tags:
+        - Sales
+      summary: GetServices
+      description: 'Get Services'
+      operationId: GetServices
+      parameters:
+      - name: ClassId
+        in: query
+        description: Filters to the pricing options for the specified class ID.
+        schema:
+          type: integer
+          format: int32
+      - name: ClassScheduleId
+        in: query
+        description: Filters to the pricing options for the specified class schedule
+          ID.
+        schema:
+          type: integer
+          format: int32
+      - name: HideRelatedPrograms
+        in: query
+        description: "When `true`, indicates that pricing options of related programs\
+          \ are omitted from the response.<br />\r\nDefault: **false**"
+        schema:
+          type: boolean
+      - name: Limit
+        in: query
+        description: Number of results to include, defaults to 100
+        schema:
+          type: integer
+          format: int32
+      - name: LocationId
+        in: query
+        description: When specified, for each returned pricing option, `TaxRate` and
+          `TaxIncluded` are calculated according to the specified location. Note that
+          this does not filter results to only services provided at the given location,
+          and for locations where Value-Added Tax (VAT) rules apply, the `TaxRate`
+          is set to zero.
+        schema:
+          type: integer
+          format: int32
+      - name: Offset
+        in: query
+        description: Page offset, defaults to 0.
+        schema:
+          type: integer
+          format: int32
+      - name: ProgramIds
+        in: query
+        description: Filters to pricing options with the specified program IDs.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: SellOnline
+        in: query
+        description: "When `true`, filters to the pricing options that can be sold\
+          \ online.<br />\r\nDefault: **false**"
+        schema:
+          type: boolean
+      - name: ServiceIds
+        in: query
+        description: Filters to the pricing options with the specified IDs. In this
+          context, service and pricing option are used interchangeably.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: SessionTypeIds
+        in: query
+        description: Filters to the pricing options with the specified session types
+          IDs.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: StaffId
+        in: query
+        description: Sets `Price` and `OnlinePrice` to the particular pricing of a
+          specific staff member, if allowed by the business.
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content: {}
+      deprecated: false
+      servers:
+        - url: https://api.mindbodyonline.com/public/v6
+          variables: {}
+      security:
+        - Authorization: []
+  /client/clients:
+    get: 
+      tags:
+        - Clients
+      summary: GetClient
+      description: 'Get Client'
+      operationId: GetClient
+      parameters:
+      - name: clientIDs
+        in: query
+        description: "The requested client IDs.\r\nDefault: **all IDs** that the authenticated\
+          \ user’s access level allows."
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: isProspect
+        in: query
+        description: "When `true`, filters the results to include only those clients\
+          \ marked as prospects for the business.<br />\r\nWhen `false`, indicates\
+          \ that only those clients who are not marked prospects should be returned."
+        schema:
+          type: boolean
+      - name: lastModifiedDate
+        in: query
+        description: Filters the results to include only the clients that have been
+          modified on or after this date.
+        schema:
+          type: string
+          format: date-time
+      - name: limit
+        in: query
+        description: Number of results to include, defaults to 100
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: query
+        description: Page offset, defaults to 0.
+        schema:
+          type: integer
+          format: int32
+      - name: searchText
+        in: query
+        description: Text to use in the search. Can include FirstName, LastName, and
+          Email. Note that user credentials must be provided.
+        schema:
+          type: string
+      responses:
+        200:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content: {}
+      deprecated: false
+      servers:
+        - url: https://api.mindbodyonline.com/public/v6
+          variables: {}
+      security:
+        - Authorization: []
+components:
+  parameters:
+    trait_authorizationHeader_Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        default: Bearer <<apiKey>>
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Authorization: []

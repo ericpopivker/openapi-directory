@@ -1,0 +1,540 @@
+openapi: 3.0.1
+info:
+  title: SendGrid v3 API Documentation
+  description: "# The SendGrid Web API V3 Documentation\n\nThis is the entirety of\
+    \ the documented v3 endpoints. We have updated all the descriptions, parameters,\
+    \ requests, and responses.\n\n## Authentication \n\nEvery endpoint requires Authentication\
+    \ in the form of an Authorization Header:\n\nAuthorization: Bearer API_KEY"
+  version: "3.0"
+servers:
+  - url: http://api.sendgrid.com/v3
+  - url: https://api.sendgrid.com/v3
+paths:
+  /mail/send:
+    post:
+      tags:
+        - Emails
+      summary: Send
+      description: "This endpoint allows you to send email over SendGrid’s v3 Web\
+        \ API, the most recent version of our API. If you are looking for documentation\
+        \ about the v2 Mail Send endpoint, please see our [v2 API Reference](https://sendgrid.com/docs/API_Reference/Web_API/mail.html).\n\
+        \n* Top level parameters are referred to as \"global\".\n* Individual fields\
+        \ within the personalizations array will override any other global, or “message\
+        \ level”, parameters that are defined outside of personalizations.\n \n**SendGrid\
+        \ provides libraries to help you quickly and easily integrate with the v3\
+        \ Web API in 7 different languages: [C#](https://github.com/sendgrid/sendgrid-csharp),\
+        \ [Go](https://github.com/sendgrid/sendgrid-go), [Java](https://github.com/sendgrid/sendgrid-java),\
+        \ [Node JS](https://github.com/sendgrid/sendgrid-nodejs), [PHP](https://github.com/sendgrid/sendgrid-php),\
+        \ [Python](https://github.com/sendgrid/sendgrid-python), and [Ruby](https://github.com/sendgrid/sendgrid-ruby).**\n\
+        \n\nFor more detailed information about how to use the v3 Mail Send endpoint,\
+        \ please visit our [Classroom](https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/index.html)."
+      operationId: POST_mail-send
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - content
+                - from
+                - personalizations
+                - subject
+              type: object
+              properties:
+                personalizations:
+                  maxItems: 1000
+                  type: array
+                  description: An array of messages and their metadata. Each object
+                    within personalizations can be thought of as an envelope - it
+                    defines who should receive an individual message and how that
+                    message should be handled.
+                  items:
+                    required:
+                      - to
+                    type: object
+                    properties:
+                      cc:
+                        maxItems: 1000
+                        x-attributes:
+                          - 'advanced'
+                        type: array
+                        description: An array of recipients who will receive a copy
+                          of your email. Each object within this array may contain
+                          the name, but must always contain the email, of a recipient.
+                        items:
+                          $ref: '#/components/schemas/email_object'
+                      headers:
+                        type: object
+                        properties: {}
+                        description: 'A collection of JSON key/value pairs allowing
+                          you to specify specific handling instructions for your email.
+                          You may not overwrite the following headers: x-sg-id, x-sg-eid,
+                          received, dkim-signature, Content-Type, Content-Transfer-Encoding,
+                          To, From, Subject, Reply-To, CC, BCC'
+                      bcc:
+                        x-attributes:
+                          - 'advanced'
+                        maxItems: 1000
+                        type: array
+                        description: An array of recipients who will receive a blind
+                          carbon copy of your email. Each object within this array
+                          may contain the name, but must always contain the email,
+                          of a recipient.
+                        items:
+                          $ref: '#/components/schemas/email_object'
+                      substitutions:
+                        type: object
+                        x-attributes:
+                          - 'advanced'
+                        properties: {}
+                        description: A collection of key/value pairs following the
+                          pattern "substitution_tag":"value to substitute". All are
+                          assumed to be strings. These substitutions will apply to
+                          the text and html content of the body of your email, in
+                          addition to the `subject` and `reply-to` parameters.
+                      subject:
+                        minLength: 1
+                        type: string
+                        description: The subject of your email. Char length requirements,
+                          according to the RFC - http://stackoverflow.com/questions/1592291/what-is-the-email-subject-length-limit#answer-1592310
+                      send_at:
+                        type: integer
+                        description: A unix timestamp allowing you to specify when
+                          you want your email to be delivered. Scheduling more than
+                          72 hours in advance is forbidden.
+                      to:
+                        maxItems: 1000
+                        minItems: 1
+                        type: array
+                        description: An array of recipients. Each object within this
+                          array may contain the name, but must always contain the
+                          email, of a recipient.
+                        items:
+                          $ref: '#/components/schemas/email_object'
+                      custom_args:                        
+                        type: object
+                        x-attributes:
+                          - 'advanced'
+                        properties: {}
+                        description: Values that are specific to this personalization
+                          that will be carried along with the email and its activity
+                          data. Substitutions will not be made on custom arguments,
+                          so any string that is entered into this parameter will be
+                          assumed to be the custom argument that you would like to
+                          be used. May not exceed 10,000 bytes.
+                from:
+                  $ref: '#/components/schemas/email_object'
+                reply_to:
+                  x-attributes:
+                    - 'advanced'
+                  $ref: '#/components/schemas/email_object'
+                subject:
+                  minLength: 1
+                  type: string
+                  description: The global, or “message level”, subject of your email.
+                    This may be overridden by personalizations[x].subject.
+                content:
+                  type: array
+                  description: An array in which you may specify the content of your
+                    email. You can include multiple mime types of content, but you
+                    must specify at least one mime type. To include more than one
+                    mime type, simply add another object to the array containing the
+                    `type` and `value` parameters.
+                  items:
+                    required:
+                      - type
+                      - value
+                    type: object
+                    properties:
+                      type:
+                        minLength: 1
+                        type: string
+                        description: The mime type of the content you are including
+                          in your email. For example, “text/plain” or “text/html”.
+                      value:
+                        minLength: 1
+                        x-attributes:
+                          - 'textarea'
+                        type: string
+                        description: The actual content of the specified mime type
+                          that you are including in your email.
+                attachments:
+                  x-attributes:
+                    - 'advanced'
+                  type: array
+                  description: An array of objects in which you can specify any attachments
+                    you want to include.
+                  items:
+                    required:
+                      - content
+                      - filename
+                    type: object
+                    properties:
+                      disposition:
+                        type: string
+                        description: The content-disposition of the attachment specifying
+                          how you would like the attachment to be displayed. For example,
+                          “inline” results in the attached file being displayed automatically
+                          within the message while “attachment” results in the attached
+                          file requiring some action to be taken before it is displayed
+                          (e.g. opening or downloading the file).
+                        default: attachment
+                        enum:
+                          - inline
+                          - attachment
+                      filename:
+                        type: string
+                        description: The filename of the attachment.
+                      content_id:
+                        type: string
+                        description: The content id for the attachment. This is used
+                          when the disposition is set to “inline” and the attachment
+                          is an image, allowing the file to be displayed within the
+                          body of your email.
+                      type:
+                        minLength: 1
+                        type: string
+                        description: The mime type of the content you are attaching.
+                          For example, “text/plain” or “text/html”.
+                      content:
+                        minLength: 1
+                        type: string
+                        description: The Base64 encoded content of the attachment.
+                template_id:
+                  x-attributes:
+                    - 'advanced'
+                  type: string
+                  description: 'The id of a template that you would like to use. If
+                    you use a template that contains a subject and content (either
+                    text or html), you do not need to specify those at the personalizations
+                    nor message level. '
+                sections:
+                  x-attributes:
+                    - 'advanced'
+                  type: object
+                  properties: {}
+                  description: An object of key/value pairs that define block sections
+                    of code to be used as substitutions.
+                headers:
+                  x-attributes:
+                    - 'advanced'
+                  type: object
+                  properties: {}
+                  description: An object containing key/value pairs of header names
+                    and the value to substitute for them. You must ensure these are
+                    properly encoded if they contain unicode characters. Must not
+                    be one of the reserved headers.
+                categories:
+                  x-attributes:
+                    - 'advanced'
+                  maxItems: 10
+                  uniqueItems: true
+                  type: array
+                  description: 'An array of category names for this message. Each
+                    category name may not exceed 255 characters. '
+                  items:
+                    maxLength: 255
+                    type: string
+                custom_args:
+                  x-attributes:
+                    - 'advanced'
+
+                  type: object
+                  properties: {}
+                  description: Values that are specific to the entire send that will
+                    be carried along with the email and its activity data. Substitutions
+                    will not be made on custom arguments, so any string that is entered
+                    into this parameter will be assumed to be the custom argument
+                    that you would like to be used. This parameter is overridden by
+                    personalizations[x].custom_args if that parameter has been defined.
+                    Total custom args size may not exceed 10,000 bytes.
+                send_at:
+                  type: integer
+                  description: A unix timestamp allowing you to specify when you want
+                    your email to be delivered. This may be overridden by the personalizations[x].send_at
+                    parameter. Scheduling more ta 72 hours in advance is forbidden.
+                batch_id:
+                  x-attributes:
+                    - 'advanced'
+
+                  type: string
+                  description: 'This ID represents a batch of emails to be sent at
+                    the same time. Including a batch_id in your request allows you
+                    include this email in that batch, and also enables you to cancel
+                    or pause the delivery of that batch. For more information, see
+                    https://sendgrid.com/docs/API_Reference/Web_API_v3/cancel_schedule_send.html '
+                asm:
+                  x-attributes:
+                    - 'advanced'
+                  required:
+                    - group_id
+                  type: object
+                  properties:
+                    group_id:
+                      type: integer
+                      description: The unsubscribe group to associate with this email.
+                    groups_to_display:
+                      maxItems: 25
+                      type: array
+                      description: An array containing the unsubscribe groups that
+                        you would like to be displayed on the unsubscribe preferences
+                        page.
+                      items:
+                        type: integer
+                  description: An object allowing you to specify how to handle unsubscribes.
+                ip_pool_name:
+                  x-attributes:
+                    - 'advanced'
+                  maxLength: 64
+                  minLength: 2
+                  type: string
+                  description: The IP Pool that you would like to send this email
+                    from.
+                mail_settings:
+                  type: object
+                  x-attributes:
+                    - 'advanced'
+                  properties:
+                    sandbox_mode:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                      description: This allows you to send a test email to ensure
+                        that your request body is valid and formatted correctly.
+                    bcc:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        email:
+                          type: string
+                          description: The email address that you would like to receive
+                            the BCC.
+                          format: email
+                      description: This allows you to have a blind carbon copy automatically
+                        sent to the specified email address for every email that is
+                        sent.
+                    footer:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        html:
+                          type: string
+                          description: The HTML content of your footer.
+                        text:
+                          type: string
+                          description: The plain text content of your footer.
+                      description: The default footer that you would like included
+                        on every email.
+                    spam_check:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        threshold:
+                          maximum: 10000000000
+                          minimum: 1
+                          type: integer
+                          description: The threshold used to determine if your content
+                            qualifies as spam on a scale from 1 to 10, with 10 being
+                            most strict, or most likely to be considered as spam.
+                        post_to_url:
+                          type: string
+                          description: An Inbound Parse URL that you would like a
+                            copy of your email along with the spam report to be sent
+                            to.
+                      description: This allows you to test the content of your email
+                        for spam.
+                    bypass_list_management:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                      description: Allows you to bypass all unsubscribe groups and
+                        suppressions to ensure that the email is delivered to every
+                        single recipient. This should only be used in emergencies
+                        when it is absolutely necessary that every recipient receives
+                        your email.
+                  description: A collection of different mail settings that you can
+                    use to specify how you would like this email to be handled.
+                tracking_settings:
+                  x-attributes:
+                    - 'advanced'
+
+                  type: object
+                  properties:
+                    click_tracking:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        enable_text:
+                          type: boolean
+                          description: Indicates if this setting should be included
+                            in the text/plain portion of your email.
+                      description: Allows you to track whether a recipient clicked
+                        a link in your email.
+                    subscription_tracking:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        html:
+                          type: string
+                          description: HTML to be appended to the email, with the
+                            subscription tracking link. You may control where the
+                            link is by using the tag <% %>
+                        text:
+                          type: string
+                          description: Text to be appended to the email, with the
+                            subscription tracking link. You may control where the
+                            link is by using the tag <% %>
+                        substitution_tag:
+                          type: string
+                          description: 'A tag that will be replaced with the unsubscribe
+                            URL. for example: [unsubscribe_url]. If this parameter
+                            is used, it will override both the `text` and `html` parameters.
+                            The URL of the link will be placed at the substitution
+                            tag’s location, with no additional formatting.'
+                      description: Allows you to insert a subscription management
+                        link at the bottom of the text and html bodies of your email.
+                        If you would like to specify the location of the link within
+                        your email, you may use the substitution_tag.
+                    open_tracking:
+                      type: object
+                      properties:
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        substitution_tag:
+                          type: string
+                          description: Allows you to specify a substitution tag that
+                            you can insert in the body of your email at a location
+                            that you desire. This tag will be replaced by the open
+                            tracking pixel.
+                      description: Allows you to track whether the email was opened
+                        or not, but including a single pixel image in the body of
+                        the content. When the pixel is loaded, we can log that the
+                        email was opened.
+                    ganalytics:
+                      x-attributes:
+                        - 'advanced'
+                      type: object
+                      properties:
+                        utm_term:
+                          type: string
+                          description: "Used to identify any paid keywords.\t"
+                        utm_campaign:
+                          type: string
+                          description: "The name of the campaign.\t"
+                        enable:
+                          type: boolean
+                          description: Indicates if this setting is enabled.
+                        utm_medium:
+                          type: string
+                          description: Name of the marketing medium. (e.g. Email)
+                        utm_source:
+                          type: string
+                          description: Name of the referrer source. (e.g. Google,
+                            SomeDomain.com, or Marketing Email)
+                        utm_content:
+                          type: string
+                          description: "Used to differentiate your campaign from advertisements.\t"
+                      description: Allows you to enable tracking provided by Google
+                        Analytics.
+                  description: Settings to determine how you would like to track the
+                    metrics of how your recipients interact with your email.
+              example:
+                personalizations:
+                  - to:
+                      - email: john.doe@example.com
+                        name: John Doe
+                    subject: Hello, World!
+                from:
+                  email: sam.smith@example.com
+                  name: Sam Smith
+                reply_to:
+                  email: sam.smith@example.com
+                  name: Sam Smith
+                subject: Hello, World!
+                content:
+                  - type: text/html
+                    value: <html><p>Hello, world!</p></html>
+        required: false
+      responses:
+        202:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors'
+        401:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors'
+        413:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors'
+      security:
+        - Authorization: []
+components:
+  schemas:
+    errors:
+      title: Error Schema
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The message the API caller will receive.
+    email_object:
+      title: Email Object
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+          description: The name of the person to whom you are sending an email.
+  parameters:
+    trait_onBehalfOfSubuser_on-behalf-of:
+      name: on-behalf-of
+      in: header
+      schema:
+        type: string
+        default: subuser_<user_name>
+    trait_authorizationHeader_Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        default: Bearer <<apiKey>>
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header

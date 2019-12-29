@@ -1,0 +1,6348 @@
+openapi: 3.0.1
+info:
+  title: GitHub
+  description: |
+    Powerful collaboration, code review, and code management for open source and private projects.
+  termsOfService: https://help.github.com/articles/github-terms-of-service/#b-api-terms
+  version: v3
+  x-apisguru-categories:
+  - collaboration
+  - developer_tools 
+  x-logo:
+    url: https://twitter.com/github/profile_image?size=original
+  x-origin:
+  - format: swagger
+    url: https://raw.githubusercontent.com/APIs-guru/unofficial_openapi_specs/master/github.com/v3/swagger.yaml
+    version: "2.0"
+  x-providerName: github.com
+  x-unofficialSpec: true
+externalDocs:
+  url: https://developer.github.com/v3/
+servers:
+- url: https://api.github.com/
+paths:
+  /repos/{owner}/{repo}:
+    get:
+      tags:
+      - Repository
+      description: Get repository
+      operationId: Get Repository
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repo'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    patch:
+      tags:
+      - Repository
+      description: Edit repository.
+      operationId: Update Repository
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/repoEdit'
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repo'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /user/repos:
+    get:
+      tags:
+      - Repository
+      description: |
+        List repositories for the authenticated user. Note that this does not include
+        repositories owned by organizations which the user can access. You can lis
+        user organizations and list organization repositories separately.
+      operationId: Get My Repositories
+      parameters:
+      - name: type
+        in: query
+        schema:
+          type: string
+          default: all
+          enum:
+          - all
+          - public
+          - private
+          - forks
+          - sources
+          - member
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repos'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    post:
+      tags:
+      - Repository
+      description: |
+        Create a new repository for the authenticated user. OAuth users must supply
+        repo scope.
+      operationId: Create My Repository
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postRepo'
+        required: true
+      responses:
+        201:
+          description: Created
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repos'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /users/{username}/repos:
+    get:
+      tags:
+      - Repository
+      description: List public repositories for the specified user.
+      operationId: Get Repositoris for a Specified User
+      parameters:
+      - name: username
+        in: path
+        description: Name of user.
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        schema:
+          type: string
+          default: all
+          enum:
+          - all
+          - public
+          - private
+          - forks
+          - sources
+          - member
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repos'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/assignees:
+    get:
+      tags:
+      - Assignees
+      description: |
+        List assignees.
+        This call lists all the available assignees (owner + collaborators) to which
+        issues may be assigned.
+      operationId: Get All
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assignees'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/collaborators:
+    get:
+      tags:
+      - Repository Collaborators
+      description: |
+        List.
+        When authenticating as an organization owner of an organization-owned
+        repository, all organization owners are included in the list of
+        collaborators. Otherwise, only users with access to the repository are
+        returned in the collaborators list.
+      operationId: Get All Collaborators
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/collaborators/{username}:
+    put:
+      tags:
+      - Repository Collaborators
+      operationId: Invite User
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        description: Username to invite
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/commits:
+    get:
+      tags:
+      - Commits
+      description: List commits on a repository.
+      operationId: Get all Commits
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: since
+        in: query
+        description: |
+          The time should be passed in as UTC in the ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+          Example: "2012-10-09T23:39:01Z".
+        schema:
+          type: string
+      - name: sha
+        in: query
+        description: Sha or branch to start listing commits from.
+        schema:
+          type: string
+      - name: path
+        in: query
+        description: Only commits containing this file path will be returned.
+        schema:
+          type: string
+      - name: author
+        in: query
+        description: GitHub login, name, or email by which to filter by commit author.
+        schema:
+          type: string
+      - name: until
+        in: query
+        description: ISO 8601 Date - Only commits before this date will be returned.
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commits'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/commits/{ref}/status:
+    get:
+      tags:
+      - Commits
+      description: |
+        Get the combined Status for a specific Ref
+        The Combined status endpoint is currently available for developers to preview. During the preview period, the API may change without advance notice. Please see the blog post for full details.
+        To access this endpoint during the preview period, you must provide a custom media type in the Accept header:
+        application/vnd.github.she-hulk-preview+json
+      operationId: Get Commit Status
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: ref
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/refStatus'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/commits/{shaCode}:
+    get:
+      tags:
+      - Commits
+      description: Get a single commit.
+      operationId: Get a Commit
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: shaCode
+        in: path
+        description: SHA-1 code of the commit.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commit'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/comments:
+    get:
+      tags:
+      - Commit Comments
+      description: |
+        List commit comments for a repository.
+        Comments are ordered by ascending ID.
+      operationId: Get Repo Commit Comments
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repoComments'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/comments/{commentId}:
+    get:
+      tags:
+      - Commit Comments
+      description: Get a single commit comment.
+      operationId: Get a Commit Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: Id of comment.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commitComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    delete:
+      tags:
+      - Commit Comments
+      description: Delete a commit comment
+      operationId: Delete a Commit Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: Id of comment.
+        required: true
+        schema:
+          type: integer
+      responses:
+        204:
+          description: |
+            No content.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    patch:
+      tags:
+      - Commit Comments
+      description: Update a commit comment.
+      operationId: Update a Commit Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: Id of comment.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commentBody'
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commitComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/commits/{shaCode}/comments:
+    get:
+      tags:
+      - Commit Comments
+      description: List comments for a single commitList comments for a single commit.
+      operationId: Get Single Commit Comments
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: shaCode
+        in: path
+        description: SHA-1 code of the commit.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/repoComments'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    post:
+      tags:
+      - Commit Comments
+      description: Create a commit comment.
+      operationId: Create Commit Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: shaCode
+        in: path
+        description: SHA-1 code of the commit.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commitCommentBody'
+        required: true
+      responses:
+        201:
+          description: Created
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commitComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/issues:
+    get:
+      tags:
+      - Issues
+      description: List issues for a repository.
+      operationId: Get Issues
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: filter
+        in: query
+        description: |
+          Issues assigned to you / created by you / mentioning you / you're
+          subscribed to updates for / All issues the authenticated user can see
+        required: true
+        schema:
+          type: string
+          default: all
+          enum:
+          - assigned
+          - created
+          - mentioned
+          - subscribed
+          - all
+      - name: state
+        in: query
+        required: true
+        schema:
+          type: string
+          default: open
+          enum:
+          - open
+          - closed
+      - name: labels
+        in: query
+        description: String list of comma separated Label names. Example - bug,ui,@high.
+        required: true
+        schema:
+          type: string
+      - name: sort
+        in: query
+        required: true
+        schema:
+          type: string
+          default: created
+          enum:
+          - created
+          - updated
+          - comments
+      - name: direction
+        in: query
+        required: true
+        schema:
+          type: string
+          default: desc
+          enum:
+          - asc
+          - desc
+      - name: since
+        in: query
+        description: |
+          Optional string of a timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+          Only issues updated at or after this time are returned.
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issues'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    post:
+      tags:
+      - Issues
+      description: |
+        Create an issue.
+        Any user with pull access to a repository can create an issue.
+      operationId: Create Issue
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/issueCreate'
+        required: true
+      responses:
+        201:
+          description: Created
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issue'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/issues/{number}:
+    get:
+      tags:
+      - Issues
+      description: Get a single issue
+      operationId: Get Issue
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: number
+        in: path
+        description: Number of issue.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issue'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    patch:
+      tags:
+      - Issues
+      description: |
+        Edit an issue.
+        Issue owners and users with push access can edit an issue.
+      operationId: Update Issue
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: number
+        in: path
+        description: Number of issue.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/issue'
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issue'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+
+  /repos/{owner}/{repo}/issues/comments:
+    get:
+      tags:
+      - Issue Comments
+      description: List comments in a repository.
+      operationId: Get All Issue Comments in Repo
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: Ignored without 'sort' parameter.
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - created
+          - updated
+      - name: since
+        in: query
+        description: |
+          The time should be passed in as UTC in the ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+          Example: "2012-10-09T23:39:01Z".
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issuesComments'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/issues/comments/{commentId}:
+    get:
+      tags:
+      - Issue Comments
+      description: Get a single comment.
+      operationId: Get Issue Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: ID of comment.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issuesComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    delete:
+      tags:
+      - Issue Comments
+      description: Delete a comment.
+      operationId: Delete Issue Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: ID of comment.
+        required: true
+        schema:
+          type: integer
+      responses:
+        204:
+          description: |
+            No content.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    patch:
+      tags:
+      - Issue Comments
+      description: Edit a comment.
+      operationId: Update Issue Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: ID of comment.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commentBody'
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issuesComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/issues/{number}/comments:
+    get:
+      tags:
+      - Issue Comments
+      description: List comments on an issue.
+      operationId: Get Issue Comments
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: number
+        in: path
+        description: Number of issue.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issuesComments'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    post:
+      tags:
+      - Issue Comments
+      description: Create a comment.
+      operationId: Create Issue Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: number
+        in: path
+        description: Number of issue.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commentBody'
+        required: true
+      responses:
+        201:
+          description: Created
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issuesComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/pulls:
+    get:
+      tags:
+      - Pull Requests
+      description: List pull requests.
+      operationId: Get All Pull Requests
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: state
+        in: query
+        description: String to filter by state.
+        schema:
+          type: string
+          default: open
+          enum:
+          - open
+          - closed
+      - name: head
+        in: query
+        description: |
+          Filter pulls by head user and branch name in the format of 'user:ref-name'.
+          Example: github:new-script-format.
+        schema:
+          type: string
+      - name: base
+        in: query
+        description: Filter pulls by base branch name. Example - gh-pages.
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pulls'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    post:
+      tags:
+      - Pull Requests
+      description: Create a pull request.
+      operationId: Create a Pull Request
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pullsPost'
+        required: true
+      responses:
+        201:
+          description: Created
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pulls'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /repos/{owner}/{repo}/pulls/{number}/commits:
+    get:
+      tags:
+      - Pull Request Commits
+      description: List commits on a pull request.
+      operationId: Get All Commits of a Pull Request
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: number
+        in: path
+        description: Id of pull.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commits'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/pulls/comments:
+    get:
+      tags:
+      - Pull Request Comments
+      description: |
+        List comments in a repository.
+        By default, Review Comments are ordered by ascending ID.
+      operationId: Get All in Repo
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: Ignored without 'sort' parameter.
+        schema:
+          type: string
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - created
+          - updated
+      - name: since
+        in: query
+        description: |
+          The time should be passed in as UTC in the ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.
+          Example: "2012-10-09T23:39:01Z".
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/issuesComments'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+  /repos/{owner}/{repo}/pulls/comments/{commentId}:
+    get:
+      tags:
+      - Pull Request Comments
+      description: Get a single comment.
+      operationId: Get Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: Id of comment.
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pullsComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    delete:
+      tags:
+      - Pull Request Comments
+      description: Delete a comment.
+      operationId: Delete
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: Id of comment.
+        required: true
+        schema:
+          type: integer
+      responses:
+        204:
+          description: |
+            No content.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+    patch:
+      tags:
+      - Pull Request Comments
+      description: Edit a comment.
+      operationId: Update Pull Request Comment
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      - name: commentId
+        in: path
+        description: Id of comment.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commentBody'
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pullsComment'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+      x-codegen-request-body-name: body
+  /user:
+    get:
+      tags:
+      - User
+      description: Get the authenticated user.
+      operationId: Get Current User
+      responses:
+        200:
+          description: OK
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        403:
+          description: |
+            API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+            for details.
+          headers:
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+            X-GitHub-Media-Type:
+              description: |
+                You can check the current version of media type in responses.
+              schema:
+                type: string
+            X-RateLimit-Reset:
+              schema:
+                type: integer
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+            X-GitHub-Request-Id:
+              schema:
+                type: integer
+          content: {}
+
+
+  /repos/{owner}/{repo}/hooks/{id}:
+    delete:    
+      operationId: 'webhook_delete'
+      parameters:
+        - name: owner
+          in: path
+          description: Name of repository owner.
+          required: true
+          schema:
+            type: string          
+        - name: repo
+          in: path
+          description: Name of repository.
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          x-attributes:
+              - webhook_id
+          description: Name of repository.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Returned if the request is successful           
+      
+
+
+  /repos/{owner}/{repo}/hooks:
+    post:
+      tags:
+      - Webhooks
+      summary: Register dynamic webhooks
+      description: 'Register webhooks'
+      operationId: github_webhook
+      parameters:
+      - name: owner
+        in: path
+        description: Name of repository owner.
+        required: true
+        schema:
+          type: string          
+      - name: repo
+        in: path
+        description: Name of repository.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookPostBody'       
+        
+      responses:
+        200:
+          description: Returned if the request is successful.
+          content:
+            application/json:
+              schema:                
+                type: object
+                properties:        
+                  id:
+                    type: string                        
+      callbacks:      
+        pull_request:                    
+          x-tags: pull requests
+          x-description:  | 
+            'Can be one of assigned, unassigned, review_requested, review_request_removed, labeled, unlabeled, opened, edited, closed, ready_for_review, locked, unlocked, or reopened.
+            If the action is closed and the merged key is false, the pull request was closed with unmerged commits. If the action is closed and the merged key is true, the pull request was merged. While webhooks are also triggered when a pull request is synchronized, Events API timelines don't include pull request events with the synchronize action.
+            number	integer	The pull request numb'
+
+          '{$request.body#/callbackUrl}':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/pullRequestEvent'                     
+              responses:                
+                '200': 
+                  description: Returned if the request is successful           
+
+        pull_request_review:        
+          x-tags: pull requests
+          x-description:  | 
+            'Triggered when a pull request review is submitted into a non-pending state, the body is edited, or the review is dismissed.'
+
+          '{$request.body#/callbackUrl}':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/pullRequestReviewEvent'                      
+              responses:
+                '200': 
+                  description: Returned if the request is successful
+
+        issues:
+          x-tags: 'Issues'
+          '{$request.body#/callbackUrl}':
+            post:
+              x-tags: issues
+              x-description: |
+                 'Triggered when an issue is opened, edited, deleted, pinned, unpinned, closed, reopened, assigned, unassigned, labeled, unlabeled, locked, unlocked, transferred, milestoned, or demilestoned'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/issuesCallbackEvent'
+              responses:
+                    '200': 
+                      description: Returned if the request is successful
+
+        issue_comment:
+          x-tags: 'Issue Comments'
+          '{$request.body#/callbackUrl}':
+            post:
+              x-tags: issues
+              x-description: |
+                 'Triggered when an issue comment is created, edited, or deleted.'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/issueCommentEvent'
+              responses:
+                    '200': 
+                      description: Returned if the request is successful
+
+        commit_comment:
+          x-tags: 'Commit Comments'
+          '{$request.body#/callbackUrl}':
+            post:
+              x-tags: commit_comments
+              x-description: |
+                 'Triggered when a commit comment is created.'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/commitCommentEvent'
+              responses:
+                    '200': 
+                      description: Returned if the request is successful
+
+        pull_request_review_comment:
+          x-tags: 'Pull Request Commit Comments'
+          '{$request.body#/callbackUrl}':
+            post:
+              x-tags: 'Pull Request Commit Comments'
+              x-description: |
+                 'Triggered when a comment on a pull request's unified diff is created, edited, or deleted (in the Files Changed tab).'
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/pullRequestReviewCommentEvent'
+              responses:
+                    '200': 
+                      description: Returned if the request is successful
+
+
+
+
+
+        
+
+# ------------------- components ------------------------------
+
+components:
+  schemas:
+
+    issuesCallbackEvent:
+      type: object
+      properties: 
+        action:
+          type: string
+        changes:
+          $ref: '#/components/schemas/eventChanges'
+        assignee:
+          $ref: '#/components/schemas/user'
+        label:
+          $ref: '#/components/schemas/label'
+        issue:
+          $ref: '#/components/schemas/issue'
+        repository:
+          $ref: '#/components/schemas/repo'
+        sender:
+          $ref: '#/components/schemas/user'
+
+    issueCommentEvent:
+      type: object
+      properties: 
+        action:
+          type: string
+        changes:
+          $ref: '#/components/schemas/eventChanges'
+        issue:
+          $ref: '#/components/schemas/issue'
+        repository:
+          $ref: '#/components/schemas/repo'
+        sender:
+          $ref: '#/components/schemas/user'
+
+    
+    commitCommentEvent:
+      type: object
+      properties: 
+        action:
+          type: string        
+        repository:
+          $ref: '#/components/schemas/repo'
+        sender:
+          $ref: '#/components/schemas/user'
+        comment:
+          $ref: '#/components/schemas/comment'
+
+    pullRequestReviewCommentEvent:
+      type: object
+      properties: 
+        action:
+          type: string        
+        repository:
+          $ref: '#/components/schemas/repo'
+        sender:
+          $ref: '#/components/schemas/user'        
+        changes:
+          $ref: '#/components/schemas/eventChanges'    
+        pull_request:
+          $ref: '#/components/schemas/pullRequest'
+        comment:
+          $ref: '#/components/schemas/comment'       
+
+
+
+    eventChanges: 
+      type: object
+      properties:
+        title:
+          type: object
+          properties:
+            from:
+              type: string
+        body:
+          type: object
+          properties:
+            from:
+              type: string
+    
+    pullRequestEvent:
+      type: object
+      properties: 
+        action:
+          type: string
+        number:
+          type:  integer
+        changes:
+          $ref: '#/components/schemas/eventChanges'
+        pull_request:
+          $ref: '#/components/schemas/pullRequest'
+        repository:
+          $ref: '#/components/schemas/repo'
+        sender:
+          $ref: '#/components/schemas/user'
+
+
+    pullRequestReviewEvent:
+      type: object
+      properties: 
+        action:
+          type: string
+        review: 
+          type: object
+          properties:
+            id: 
+              type: string
+            node_id:
+              type: string
+            user:
+              $ref: '#/components/schemas/user'              
+        changes:          
+          $ref: '#/components/schemas/eventChanges'
+        pull_request:
+          $ref: '#/components/schemas/pullRequest'                        
+        repository:
+          $ref: '#/components/schemas/repo'
+        sender:
+          $ref: '#/components/schemas/user'
+
+    actor:
+      type: object
+      properties:
+        avatar_url:
+          type: string
+        bio:
+          type: string
+        blog:
+          type: string
+          description: The website URL from the profile page
+        collaborators:
+          type: integer
+        company:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        disk_usage:
+          type: integer
+        email:
+          type: string
+          description: 'Note: The returned email is the user�s publicly visible email
+            address (or null if the user has not specified a public email address
+            in their profile).'
+        followers:
+          type: integer
+        followers_url:
+          type: string
+        following:
+          type: integer
+        following_url:
+          type: string
+        gists_url:
+          type: string
+        gravatar_id:
+          type: string
+        hireable:
+          type: boolean
+        html_url:
+          type: string
+        id:
+          type: integer
+        location:
+          type: string
+        login:
+          type: string
+          description: The account username
+        name:
+          type: string
+          description: The full account name
+        organizations_url:
+          type: string
+        owned_private_repos:
+          type: integer
+        plan:
+          type: object
+          properties:
+            collaborators:
+              type: integer
+            name:
+              type: string
+            private_repos:
+              type: integer
+            space:
+              type: integer
+        private_gists:
+          type: integer
+        public_gists:
+          type: integer
+        public_repos:
+          type: integer
+        starred_url:
+          type: string
+        subscriptions_url:
+          type: string
+        total_private_repos:
+          type: integer
+        type:
+          type: string
+          enum:
+          - User
+          - Organization
+        updated_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        url:
+          type: string
+      description: A user or organization
+    asset:
+      type: object
+      properties:
+        content_type:
+          type: string
+        created_at:
+          type: string
+        download_count:
+          type: number
+        id:
+          type: number
+        label:
+          type: string
+        name:
+          type: string
+        size:
+          type: number
+        state:
+          type: string
+        updated_at:
+          type: string
+        uploader:
+          $ref: '#/components/schemas/user'
+        url:
+          type: string
+    assetPatch:
+      required:
+      - name
+      type: object
+      properties:
+        label:
+          type: string
+        name:
+          type: string
+    assets:
+      type: array
+      items:
+        $ref: '#/components/schemas/asset'
+    assignees:
+      type: array
+      items:
+        $ref: '#/components/schemas/user'
+    blob:
+      type: object
+      properties:
+        content:
+          type: string
+        encoding:
+          type: string
+          enum:
+          - utf-8
+          - base64
+        sha:
+          type: string
+        size:
+          type: integer
+    blobs:
+      type: object
+      properties:
+        sha:
+          type: string
+    branch:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            html:
+              type: string
+            self:
+              type: string
+        commit:
+          type: object
+          properties:
+            author:
+              $ref: '#/components/schemas/user'
+            commit:
+              type: object
+              properties:
+                author:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                    email:
+                      type: string
+                    name:
+                      type: string
+                committer:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                      description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                    email:
+                      type: string
+                    name:
+                      type: string
+                message:
+                  type: string
+                tree:
+                  type: object
+                  properties:
+                    sha:
+                      type: string
+                    url:
+                      type: string
+                url:
+                  type: string
+            committer:
+              $ref: '#/components/schemas/user'
+            parents:
+              type: array
+              items:
+                type: object
+                properties:
+                  sha:
+                    type: string
+                  url:
+                    type: string
+            sha:
+              type: string
+            url:
+              type: string
+        name:
+          type: string
+    branches:
+      type: array
+      items:
+        type: object
+        properties:
+          commit:
+            type: object
+            properties:
+              sha:
+                type: string
+              url:
+                type: string
+          name:
+            type: string
+    codeFrequencyStats:
+      type: array
+      items:
+        type: integer
+    comment:
+      type: object
+      properties:
+        body:
+          type: string
+    commentBody:
+      required:
+      - body
+      type: object
+      properties:
+        body:
+          type: string
+    comments:
+      type: array
+      items:
+        type: object
+        properties:
+          body:
+            type: string
+          created_at:
+            type: string
+            description: ISO 8601.
+          id:
+            type: integer
+          url:
+            type: string
+          user:
+            $ref: '#/components/schemas/user'
+    commit:
+      type: object
+      properties:
+        author:
+          $ref: '#/components/schemas/user'
+        commit:
+          type: object
+          properties:
+            author:
+              type: object
+              properties:
+                date:
+                  type: string
+                  description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                email:
+                  type: string
+                name:
+                  type: string
+            committer:
+              type: object
+              properties:
+                date:
+                  type: string
+                  description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                email:
+                  type: string
+                name:
+                  type: string
+            message:
+              type: string
+            tree:
+              type: object
+              properties:
+                sha:
+                  type: string
+                url:
+                  type: string
+            url:
+              type: string
+        committer:
+          $ref: '#/components/schemas/user'
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              additions:
+                type: integer
+              blob_url:
+                type: string
+              changes:
+                type: integer
+              deletions:
+                type: integer
+              filename:
+                type: string
+              patch:
+                type: string
+              raw_url:
+                type: string
+              status:
+                type: string
+        parents:
+          type: array
+          items:
+            type: object
+            properties:
+              sha:
+                type: string
+              url:
+                type: string
+        sha:
+          type: string
+        stats:
+          type: object
+          properties:
+            additions:
+              type: integer
+            deletions:
+              type: integer
+            total:
+              type: integer
+        url:
+          type: string
+    commitActivityStats:
+      type: array
+      items:
+        type: object
+        properties:
+          days:
+            type: array
+            items:
+              type: integer
+          total:
+            type: integer
+          week:
+            type: integer
+    commitComment:
+      type: object
+      properties:
+        body:
+          type: string
+        commit_id:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        html_url:
+          type: string
+        id:
+          type: integer
+        line:
+          type: integer
+        path:
+          type: string
+        position:
+          type: integer
+        updated_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        url:
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    commitCommentBody:
+      required:
+      - body
+      - sha
+      type: object
+      properties:
+        body:
+          type: string
+        line:
+          type: string
+          description: Deprecated - Use position parameter instead.
+        number:
+          type: string
+          description: Line number in the file to comment on. Defaults to null.
+        path:
+          type: string
+          description: Relative path of the file to comment on.
+        position:
+          type: integer
+          description: Line index in the diff to comment on.
+        sha:
+          type: string
+          description: SHA of the commit to comment on.
+    commits:
+      type: array
+      items:
+        type: object
+        properties:
+          author:
+            $ref: '#/components/schemas/user'
+          commit:
+            type: object
+            properties:
+              author:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                  email:
+                    type: string
+                  name:
+                    type: string
+              committer:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                  email:
+                    type: string
+                  name:
+                    type: string
+              message:
+                type: string
+              tree:
+                type: object
+                properties:
+                  sha:
+                    type: string
+                  url:
+                    type: string
+              url:
+                type: string
+          committer:
+            $ref: '#/components/schemas/user'
+          parents:
+            type: array
+            items:
+              type: object
+              properties:
+                sha:
+                  type: string
+                url:
+                  type: string
+          sha:
+            type: string
+          url:
+            type: string
+    compare-commits:
+      type: object
+      properties:
+        ahead_by:
+          type: integer
+        base_commit:
+          type: object
+          properties:
+            author:
+              $ref: '#/components/schemas/user'
+            commit:
+              type: object
+              properties:
+                author:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                    email:
+                      type: string
+                    name:
+                      type: string
+                committer:
+                  type: object
+                  properties:
+                    date:
+                      type: string
+                    email:
+                      type: string
+                    name:
+                      type: string
+                message:
+                  type: string
+                tree:
+                  type: object
+                  properties:
+                    sha:
+                      type: string
+                    url:
+                      type: string
+                url:
+                  type: string
+            committer:
+              $ref: '#/components/schemas/user'
+            parents:
+              type: array
+              items:
+                type: object
+                properties:
+                  sha:
+                    type: string
+                  url:
+                    type: string
+            sha:
+              type: string
+            url:
+              type: string
+        behind_by:
+          type: integer
+        commits:
+          type: array
+          items:
+            type: object
+            properties:
+              author:
+                $ref: '#/components/schemas/user'
+              commit:
+                type: object
+                properties:
+                  author:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                      email:
+                        type: string
+                      name:
+                        type: string
+                  committer:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                      email:
+                        type: string
+                      name:
+                        type: string
+                  message:
+                    type: string
+                  tree:
+                    type: object
+                    properties:
+                      sha:
+                        type: string
+                      url:
+                        type: string
+                  url:
+                    type: string
+              committer:
+                $ref: '#/components/schemas/user'
+              parents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sha:
+                      type: string
+                    url:
+                      type: string
+              sha:
+                type: string
+              url:
+                type: string
+        diff_url:
+          type: string
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              additions:
+                type: integer
+              blob_url:
+                type: string
+              changes:
+                type: integer
+              contents_url:
+                type: string
+              deletions:
+                type: integer
+              filename:
+                type: string
+              patch:
+                type: string
+              raw_url:
+                type: string
+              sha:
+                type: string
+              status:
+                type: string
+        html_url:
+          type: string
+        patch_url:
+          type: string
+        permalink_url:
+          type: string
+        status:
+          type: string
+        total_commits:
+          type: integer
+        url:
+          type: string
+    contents-path:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            git:
+              type: string
+            html:
+              type: string
+            self:
+              type: string
+        content:
+          type: string
+        encoding:
+          type: string
+        git_url:
+          type: string
+        html_url:
+          type: string
+        name:
+          type: string
+        path:
+          type: string
+        sha:
+          type: string
+        size:
+          type: integer
+        type:
+          type: string
+        url:
+          type: string
+    contributorsStats:
+      type: array
+      items:
+        type: object
+        properties:
+          author:
+            type: object
+            properties:
+              avatar_url:
+                type: string
+              gravatar_id:
+                type: string
+              id:
+                type: integer
+              login:
+                type: string
+              url:
+                type: string
+          total:
+            type: integer
+            description: The Total number of commits authored by the contributor.
+          weeks:
+            type: array
+            items:
+              type: object
+              properties:
+                a:
+                  type: integer
+                  description: Number of additions.
+                c:
+                  type: integer
+                  description: Number of commits.
+                d:
+                  type: integer
+                  description: Number of deletions.
+                w:
+                  type: string
+                  description: Start of the week.
+    createFile:
+      type: object
+      properties:
+        commit:
+          type: object
+          properties:
+            author:
+              type: object
+              properties:
+                date:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+            committer:
+              type: object
+              properties:
+                date:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+            html_url:
+              type: string
+            message:
+              type: string
+            parents:
+              type: array
+              items:
+                type: object
+                properties:
+                  html_url:
+                    type: string
+                  sha:
+                    type: string
+                  url:
+                    type: string
+            sha:
+              type: string
+            tree:
+              type: object
+              properties:
+                sha:
+                  type: string
+                url:
+                  type: string
+            url:
+              type: string
+        content:
+          type: object
+          properties:
+            _links:
+              type: object
+              properties:
+                git:
+                  type: string
+                html:
+                  type: string
+                self:
+                  type: string
+            git_url:
+              type: string
+            html_url:
+              type: string
+            name:
+              type: string
+            path:
+              type: string
+            sha:
+              type: string
+            size:
+              type: integer
+            type:
+              type: string
+            url:
+              type: string
+    createFileBody:
+      type: object
+      properties:
+        committer:
+          type: object
+          properties:
+            email:
+              type: string
+            name:
+              type: string
+        content:
+          type: string
+        message:
+          type: string
+    deleteFile:
+      type: object
+      properties:
+        commit:
+          type: object
+          properties:
+            author:
+              type: object
+              properties:
+                date:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+            committer:
+              type: object
+              properties:
+                date:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+            html_url:
+              type: string
+            message:
+              type: string
+            parents:
+              type: object
+              properties:
+                html_url:
+                  type: string
+                sha:
+                  type: string
+                url:
+                  type: string
+            sha:
+              type: string
+            tree:
+              type: object
+              properties:
+                sha:
+                  type: string
+                url:
+                  type: string
+            url:
+              type: string
+        content:
+          type: string
+    deleteFileBody:
+      type: object
+      properties:
+        committer:
+          type: object
+          properties:
+            email:
+              type: string
+            name:
+              type: string
+        message:
+          type: string
+        sha:
+          type: string
+    deployment:
+      type: object
+      properties:
+        description:
+          type: string
+        payload:
+          type: object
+          properties:
+            deploy_user:
+              type: string
+            environment:
+              type: string
+            room_id:
+              type: number
+        ref:
+          type: string
+    deployment-resp:
+      type: object
+      properties:
+        created_at:
+          type: string
+        creator:
+          $ref: '#/components/schemas/user'
+        description:
+          type: string
+        id:
+          type: integer
+        payload:
+          type: string
+        sha:
+          type: string
+        statuses_url:
+          type: string
+        updated_at:
+          type: string
+        url:
+          type: string
+    deployment-statuses:
+      type: array
+      items:
+        type: object
+        properties:
+          created_at:
+            type: string
+          creator:
+            $ref: '#/components/schemas/user'
+          description:
+            type: string
+          id:
+            type: integer
+          payload:
+            type: string
+          state:
+            type: string
+          target_url:
+            type: string
+          updated_at:
+            type: string
+          url:
+            type: string
+    deployment-statuses-create:
+      type: object
+      properties:
+        description:
+          type: string
+        state:
+          type: string
+        target_url:
+          type: string
+    download:
+      type: object
+      properties:
+        content_type:
+          type: string
+        description:
+          type: string
+        download_count:
+          type: integer
+        html_url:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+    downloads:
+      type: array
+      items:
+        $ref: '#/components/schemas/download'
+    editTeam:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        permission:
+          type: string
+          enum:
+          - pull
+          - push
+          - admin
+    emailsPost:
+      type: array
+      items:
+        type: string
+    emojis:
+      type: object
+      additionalProperties:
+        type: string
+        description: A URL for an image representing this emoji
+    event:
+      type: object
+      properties:
+        actor:
+          $ref: '#/components/schemas/actor'
+        created_at:
+          type: object
+          properties: {}
+        id:
+          type: integer
+        org:
+          $ref: '#/components/schemas/organization'
+        payload:
+          type: object
+          properties: {}
+        public:
+          type: boolean
+        repo:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            url:
+              type: string
+        type:
+          type: string
+    events:
+      type: array
+      items:
+        $ref: '#/components/schemas/event'
+    feeds:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            current_user:
+              type: object
+              properties:
+                href:
+                  type: string
+                type:
+                  type: string
+            current_user_actor:
+              type: object
+              properties:
+                href:
+                  type: string
+                type:
+                  type: string
+            current_user_organization:
+              type: object
+              properties:
+                href:
+                  type: string
+                type:
+                  type: string
+            current_user_public:
+              type: object
+              properties:
+                href:
+                  type: string
+                type:
+                  type: string
+            timeline:
+              type: object
+              properties:
+                href:
+                  type: string
+                type:
+                  type: string
+            user:
+              type: object
+              properties:
+                href:
+                  type: string
+                type:
+                  type: string
+        current_user_actor_url:
+          type: string
+        current_user_organization_url:
+          type: string
+        current_user_public:
+          type: string
+        current_user_url:
+          type: string
+        timeline_url:
+          type: string
+        user_url:
+          type: string
+    forkBody:
+      type: object
+      properties:
+        organization:
+          type: string
+    forks:
+      $ref: '#/components/schemas/repos'
+    gist:
+      type: object
+      properties:
+        comments:
+          type: integer
+        comments_url:
+          type: string
+        created_at:
+          type: string
+          description: 'Timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.'
+        description:
+          type: string
+        files:
+          type: object
+          properties:
+            ring.erl:
+              type: object
+              properties:
+                filename:
+                  type: string
+                raw_url:
+                  type: string
+                size:
+                  type: integer
+        forks:
+          type: array
+          items:
+            type: object
+            properties:
+              created_at:
+                type: string
+                description: 'Timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.'
+              url:
+                type: string
+              user:
+                $ref: '#/components/schemas/user'
+        git_pull_url:
+          type: string
+        git_push_url:
+          type: string
+        history:
+          type: array
+          items:
+            type: object
+            properties:
+              change_status:
+                type: object
+                properties:
+                  additions:
+                    type: integer
+                  deletions:
+                    type: integer
+                  total:
+                    type: integer
+              committed_at:
+                type: string
+                description: 'Timestamp in ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ.'
+              url:
+                type: string
+              user:
+                $ref: '#/components/schemas/user'
+              version:
+                type: string
+        html_url:
+          type: string
+        id:
+          type: string
+        public:
+          type: boolean
+        url:
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    gists:
+      type: array
+      items:
+        type: object
+        properties:
+          comments:
+            type: integer
+          comments_url:
+            type: string
+          created_at:
+            type: string
+          description:
+            type: string
+          files:
+            type: object
+            properties:
+              ring.erl:
+                type: object
+                properties:
+                  filename:
+                    type: string
+                  raw_url:
+                    type: string
+                  size:
+                    type: integer
+          git_pull_url:
+            type: string
+          git_push_url:
+            type: string
+          html_url:
+            type: string
+          id:
+            type: string
+          public:
+            type: boolean
+          url:
+            type: string
+          user:
+            $ref: '#/components/schemas/user'
+    gitCommit:
+      type: object
+      properties:
+        author:
+          type: object
+          properties:
+            date:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+        message:
+          type: string
+        parents:
+          type: string
+        tree:
+          type: string
+    gitRefPatch:
+      type: object
+      properties:
+        force:
+          type: boolean
+        sha:
+          type: string
+    gitignore:
+      type: array
+      items:
+        type: object
+    gitignore-lang:
+      type: object
+      properties:
+        name:
+          type: string
+        source:
+          type: string
+    headBranch:
+      type: object
+      properties:
+        object:
+          type: object
+          properties:
+            sha:
+              type: string
+            type:
+              type: string
+            url:
+              type: string
+        ref:
+          type: string
+        url:
+          type: string
+    hook:
+      type: array
+      items:
+        type: object
+        properties:
+          active:
+            type: boolean
+          config:
+            type: object
+            properties:
+              content_type:
+                type: string
+              url:
+                type: string
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          events:
+            type: array
+            items:
+              type: object
+          id:
+            type: integer
+          name:
+            type: string
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+    hookBody:
+      type: object
+      properties:
+        active:
+          type: boolean
+        add_events:
+          type: array
+          items:
+            type: string
+    issueCreate:
+      required:
+      - body
+      - title
+      type: object
+      properties:
+        assignee:
+          type: string
+        body:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        milestone:
+          type: number
+        title:
+          type: string
+    issue:
+      required:
+      - body
+      - title
+      type: object
+      properties:
+        assignee:
+          type: string
+        body:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        milestone:
+          type: number
+        title:
+          type: string
+        number:
+          type: number
+    issueEvent:
+      type: object
+      properties:
+        actor:
+          $ref: '#/components/schemas/actor'
+        commit_id:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        event:
+          type: string
+        issue:
+          type: object
+          properties:
+            assignee:
+              $ref: '#/components/schemas/user'
+            body:
+              type: string
+            closed_at:
+              type: string
+              description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+            comments:
+              type: integer
+            created_at:
+              type: string
+              description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+            html_url:
+              type: string
+            labels:
+              type: array
+              items:
+                type: object
+                properties:
+                  color:
+                    type: string
+                  name:
+                    type: string
+                  url:
+                    type: string
+            milestone:
+              type: object
+              properties:
+                closed_issues:
+                  type: integer
+                created_at:
+                  type: string
+                  description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                creator:
+                  $ref: '#/components/schemas/user'
+                description:
+                  type: string
+                due_on:
+                  type: string
+                  description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+                number:
+                  type: integer
+                open_issues:
+                  type: integer
+                state:
+                  type: object
+                title:
+                  type: string
+                url:
+                  type: string
+            number:
+              type: integer
+            pull_request:
+              type: object
+              properties:
+                diff_url:
+                  type: string
+                html_url:
+                  type: string
+                patch_url:
+                  type: string
+            state:
+              type: object
+            title:
+              type: string
+            updated_at:
+              type: string
+              description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+            url:
+              type: string
+            user:
+              $ref: '#/components/schemas/user'
+        url:
+          type: string
+    issueEvents:
+      type: array
+      items:
+        $ref: '#/components/schemas/issueEvent'
+    issues:
+      type: array
+      items:
+        type: object
+        properties:
+          assignee:
+            $ref: '#/components/schemas/user'
+          body:
+            type: string
+          closed_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          comments:
+            type: integer
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          html_url:
+            type: string
+          labels:
+            type: array
+            items:
+              type: object
+              properties:
+                color:
+                  type: string
+                name:
+                  type: string
+                url:
+                  type: string
+          milestone:
+            type: object
+            properties:
+              closed_issues:
+                type: integer
+              created_at:
+                type: string
+                description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+              creator:
+                $ref: '#/components/schemas/user'
+              description:
+                type: string
+              due_on:
+                type: string
+                description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+              number:
+                type: integer
+              open_issues:
+                type: integer
+              state:
+                type: object
+              title:
+                type: string
+              url:
+                type: string
+          number:
+            type: integer
+          pull_request:
+            type: object
+            properties:
+              diff_url:
+                type: string
+              html_url:
+                type: string
+              patch_url:
+                type: string
+          state:
+            type: object
+          title:
+            type: string
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+          user:
+            $ref: '#/components/schemas/user'
+            
+    issuesComment:
+      type: object
+      properties:
+        body:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        html_url:
+          type: string
+        id:
+          type: integer
+        updated_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        url:
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    issuesComments:
+      type: array
+      items:
+        type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              html:
+                type: object
+                properties:
+                  href:
+                    type: string
+              pull_request:
+                type: object
+                properties:
+                  href:
+                    type: string
+              self:
+                type: object
+                properties:
+                  href:
+                    type: string
+          body:
+            type: string
+          commit_id:
+            type: string
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          id:
+            type: integer
+          path:
+            type: string
+          position:
+            type: integer
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+          user:
+            $ref: '#/components/schemas/user'
+    keys:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          key:
+            type: string
+          title:
+            type: string
+          url:
+            type: string
+    label:
+      type: object
+      properties:
+        color:
+          maxLength: 6
+          minLength: 6
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+    labels:
+      type: array
+      items:
+        type: object
+        properties:
+          color:
+            maxLength: 6
+            minLength: 6
+            type: string
+          name:
+            type: string
+          url:
+            type: string
+    languages:
+      type: object
+      additionalProperties:
+        type: integer
+    markdown:
+      type: object
+      properties:
+        context:
+          type: string
+        mode:
+          type: string
+        text:
+          type: string
+    merge:
+      type: object
+      properties:
+        merged:
+          type: boolean
+        message:
+          type: string
+        sha:
+          type: string
+    mergePullBody:
+      type: object
+      properties:
+        commit_message:
+          type: string
+    mergesBody:
+      type: object
+      properties:
+        base:
+          type: string
+        commit_message:
+          type: string
+        head:
+          type: string
+    mergesConflict:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+    mergesSuccessful:
+      type: object
+      properties:
+        author:
+          $ref: '#/components/schemas/user'
+        comments_url:
+          type: string
+        commit:
+          type: object
+          properties:
+            author:
+              type: object
+              properties:
+                date:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+            comment_count:
+              type: integer
+            committer:
+              type: object
+              properties:
+                date:
+                  type: string
+                email:
+                  type: string
+                name:
+                  type: string
+            message:
+              type: string
+            tree:
+              type: object
+              properties:
+                sha:
+                  type: string
+                url:
+                  type: string
+            url:
+              type: string
+        committer:
+          $ref: '#/components/schemas/user'
+        merged:
+          type: boolean
+        message:
+          type: string
+        parents:
+          type: array
+          items:
+            type: object
+            properties:
+              sha:
+                type: string
+              url:
+                type: string
+        sha:
+          type: string
+        url:
+          type: string
+    meta:
+      type: object
+      properties:
+        git:
+          type: array
+          items:
+            type: string
+            description: An Array of IP addresses in CIDR format specifying the Git
+              servers at GitHub.
+        hooks:
+          type: array
+          items:
+            type: string
+            description: An Array of IP addresses in CIDR format specifying the addresses
+              that incoming service hooks will originate from.
+    milestone:
+      type: object
+      properties:
+        closed_issues:
+          type: integer
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        creator:
+          $ref: '#/components/schemas/user'
+        description:
+          type: string
+        due_on:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        number:
+          type: integer
+        open_issues:
+          type: integer
+        state:
+          type: string
+          enum:
+          - open
+          - closed
+        title:
+          type: string
+        url:
+          type: string
+    milestoneUpdate:
+      type: object
+      properties:
+        description:
+          type: string
+        due_on:
+          type: string
+        state:
+          type: string
+        title:
+          type: string
+    notificationMarkRead:
+      type: object
+      properties:
+        last_read_at:
+          type: string
+    notifications:
+      type: object
+      properties:
+        id:
+          type: integer
+        last_read_at:
+          type: string
+        reason:
+          type: string
+        repository:
+          type: object
+          properties:
+            description:
+              type: string
+            fork:
+              type: boolean
+            full_name:
+              type: string
+            html_url:
+              type: string
+            id:
+              type: integer
+            name:
+              type: string
+            owner:
+              $ref: '#/components/schemas/actor'
+            private:
+              type: boolean
+            url:
+              type: string
+        subject:
+          type: object
+          properties:
+            latest_comment_url:
+              type: string
+            title:
+              type: string
+            type:
+              type: string
+            url:
+              type: string
+        unread:
+          type: boolean
+        updated_at:
+          type: string
+        url:
+          type: string
+    orgTeamsPost:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        permission:
+          type: string
+          enum:
+          - pull
+          - push
+          - admin
+        repo_names:
+          type: array
+          items:
+            type: string
+    organization:
+      allOf:
+      - $ref: '#/components/schemas/actor'
+      - type: object
+        description: A GitHub organization
+    organizationAsTeamMember:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              field:
+                type: string
+              resource:
+                type: string
+        message:
+          type: string
+    participationStats:
+      type: object
+      properties:
+        all:
+          type: array
+          items:
+            type: integer
+        owner:
+          type: array
+          items:
+            type: integer
+    patchGist:
+      type: object
+      properties:
+        description:
+          type: string
+        files:
+          type: object
+          properties:
+            delete_this_file.txt:
+              type: string
+            file1.txt:
+              type: object
+              properties:
+                content:
+                  type: string
+            new_file.txt:
+              type: object
+              properties:
+                content:
+                  type: string
+            old_name.txt:
+              type: object
+              properties:
+                content:
+                  type: string
+                filename:
+                  type: string
+    patchOrg:
+      type: object
+      properties:
+        billing_email:
+          type: string
+          description: Billing email address. This address is not publicized.
+        company:
+          type: string
+        email:
+          type: string
+          description: Publicly visible email address.
+        location:
+          type: string
+        name:
+          type: string
+    postGist:
+      type: object
+      properties:
+        description:
+          type: string
+        files:
+          type: object
+          properties:
+            file1.txt:
+              type: object
+              properties:
+                content:
+                  type: string
+        public:
+          type: boolean
+    postRepo:
+      required:
+      - name
+      type: object
+      properties:
+        auto_init:
+          type: boolean
+          description: True to create an initial commit with empty README. Default
+            is false.
+        description:
+          type: string
+        gitignore_template:
+          type: string
+          description: 'Desired language or platform .gitignore template to apply.
+            Use the name of the template without the extension. For example, "Haskell"
+            Ignored if auto_init parameter is not provided. '
+        has_downloads:
+          type: boolean
+          description: True to enable downloads for this repository, false to disable
+            them. Default is true.
+        has_issues:
+          type: boolean
+          description: True to enable issues for this repository, false to disable
+            them. Default is true.
+        has_wiki:
+          type: boolean
+          description: True to enable the wiki for this repository, false to disable
+            it. Default is true.
+        homepage:
+          type: string
+        name:
+          type: string
+        private:
+          type: boolean
+          description: True to create a private repository, false to create a public
+            one. Creating private repositories requires a paid GitHub account.
+        team_id:
+          type: integer
+          description: The id of the team that will be granted access to this repository.
+            This is only valid when creating a repo in an organization.
+    pullRequest:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            comments:
+              type: object
+              properties:
+                href:
+                  type: string
+            html:
+              type: object
+              properties:
+                href:
+                  type: string
+            requested_reviewers:
+              type: array
+              items:
+                $ref: '#/components/schemas/user'
+
+            review_comments:
+              type: object
+              properties:
+                href:
+                  type: string
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+        additions:
+          type: integer
+        base:
+          type: object
+          properties:
+            label:
+              type: string
+            ref:
+              type: string
+            repo:
+              $ref: '#/components/schemas/repo'
+            sha:
+              type: string
+            user:
+              type: object
+              properties:
+                avatar_url:
+                  type: string
+                gravatar_id:
+                  type: string
+                id:
+                  type: integer
+                login:
+                  type: string
+                url:
+                  type: string
+        body:
+          type: string
+        changed_files:
+          type: integer
+        closed_at:
+          type: string
+        comments:
+          type: integer
+        commits:
+          type: integer
+        created_at:
+          type: string
+        deletions:
+          type: integer
+        diff_url:
+          type: string
+        head:
+          type: object
+          properties:
+            label:
+              type: string
+            ref:
+              type: string
+            repo:
+              $ref: '#/components/schemas/repo'
+            sha:
+              type: string
+            user:
+              type: object
+              properties:
+                avatar_url:
+                  type: string
+                gravatar_id:
+                  type: string
+                id:
+                  type: integer
+                login:
+                  type: string
+                url:
+                  type: string
+        html_url:
+          type: string
+        issue_url:
+          type: string
+        merge_commit_sha:
+          type: string
+        mergeable:
+          type: boolean
+        merged:
+          type: boolean
+        merged_at:
+          type: string
+        merged_by:
+          type: object
+          properties:
+            avatar_url:
+              type: string
+            gravatar_id:
+              type: string
+            id:
+              type: integer
+            login:
+              type: string
+            url:
+              type: string
+        number:
+          type: integer
+        patch_url:
+          type: string
+        state:
+          type: string
+        title:
+          type: string
+        updated_at:
+          type: string
+        url:
+          type: string
+        user:
+          type: object
+          properties:
+            avatar_url:
+              type: string
+            gravatar_id:
+              type: string
+            id:
+              type: integer
+            login:
+              type: string
+            url:
+              type: string
+    pullUpdate:
+      type: object
+      properties:
+        body:
+          type: string
+        state:
+          type: string
+        title:
+          type: string
+    pulls:
+      type: array
+      items:
+        type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              comments:
+                type: object
+                properties:
+                  href:
+                    type: string
+              html:
+                type: object
+                properties:
+                  href:
+                    type: string
+              review_comments:
+                type: object
+                properties:
+                  href:
+                    type: string
+              self:
+                type: object
+                properties:
+                  href:
+                    type: string
+          base:
+            type: object
+            properties:
+              label:
+                type: string
+              ref:
+                type: string
+              repo:
+                $ref: '#/components/schemas/repo'
+              sha:
+                type: string
+              user:
+                type: object
+                properties:
+                  avatar_url:
+                    type: string
+                  gravatar_id:
+                    type: string
+                  id:
+                    type: integer
+                  login:
+                    type: string
+                  url:
+                    type: string
+          body:
+            type: string
+          closed_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          diff_url:
+            type: string
+          head:
+            type: object
+            properties:
+              label:
+                type: string
+              ref:
+                type: string
+              repo:
+                $ref: '#/components/schemas/repo'
+              sha:
+                type: string
+              user:
+                type: object
+                properties:
+                  avatar_url:
+                    type: string
+                  gravatar_id:
+                    type: string
+                  id:
+                    type: integer
+                  login:
+                    type: string
+                  url:
+                    type: string
+          html_url:
+            type: string
+          issue_url:
+            type: string
+          merged_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          number:
+            type: integer
+          patch_url:
+            type: string
+          state:
+            type: object
+          title:
+            type: string
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+          user:
+            type: object
+            properties:
+              avatar_url:
+                type: string
+              gravatar_id:
+                type: string
+              id:
+                type: integer
+              login:
+                type: string
+              url:
+                type: string
+    pullsComment:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            html:
+              type: object
+              properties:
+                href:
+                  type: string
+            pull_request:
+              type: object
+              properties:
+                href:
+                  type: string
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+        body:
+          type: string
+        commit_id:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        id:
+          type: integer
+        path:
+          type: string
+        position:
+          type: integer
+        updated_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        url:
+          type: string
+        user:
+          type: object
+          properties:
+            avatar_url:
+              type: string
+            gravatar_id:
+              type: string
+            id:
+              type: integer
+            login:
+              type: string
+            url:
+              type: string
+    pullsCommentPost:
+      type: object
+      properties:
+        body:
+          type: string
+        commit_id:
+          type: string
+        path:
+          type: string
+        position:
+          type: number
+    pullsComments:
+      type: array
+      items:
+        type: object
+        properties:
+          _links:
+            type: object
+            properties:
+              html:
+                type: object
+                properties:
+                  href:
+                    type: string
+              pull_request:
+                type: object
+                properties:
+                  href:
+                    type: string
+              self:
+                type: object
+                properties:
+                  href:
+                    type: string
+          body:
+            type: string
+          commit_id:
+            type: string
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          id:
+            type: integer
+          path:
+            type: string
+          position:
+            type: integer
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+          user:
+            type: object
+            properties:
+              avatar_url:
+                type: string
+              gravatar_id:
+                type: string
+              id:
+                type: integer
+              login:
+                type: string
+              url:
+                type: string
+    pullsPost:
+      type: object
+      properties:
+        base:
+          type: string
+        body:
+          type: string
+        head:
+          type: string
+        title:
+          type: string
+    putSubscription:
+      type: object
+      properties:
+        created_at:
+          type: string
+        ignored:
+          type: boolean
+        reason:
+          type: object
+          properties: {}
+        subscribed:
+          type: boolean
+        thread_url:
+          type: string
+        url:
+          type: string
+    rate_limit:
+      type: object
+      properties:
+        rate:
+          type: object
+          properties:
+            limit:
+              type: integer
+            remaining:
+              type: integer
+            reset:
+              type: integer
+    ref:
+      type: array
+      items:
+        type: object
+        properties:
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          creator:
+            type: object
+            properties:
+              avatar_url:
+                type: string
+              gravatar_id:
+                type: string
+              id:
+                type: integer
+              login:
+                type: string
+              url:
+                type: string
+          description:
+            type: string
+          id:
+            type: integer
+          state:
+            type: string
+          target_url:
+            type: string
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+    refStatus:
+      type: array
+      items:
+        type: object
+        properties:
+          commit_url:
+            type: string
+          name:
+            type: string
+          repository_url:
+            type: string
+          sha:
+            type: string
+          state:
+            type: string
+          statuses:
+            type: array
+            items:
+              type: object
+              properties:
+                context:
+                  type: string
+                created_at:
+                  type: string
+                description:
+                  type: string
+                id:
+                  type: number
+                state:
+                  type: string
+                target_url:
+                  type: string
+                updated_at:
+                  type: string
+                url:
+                  type: string
+    refs:
+      type: array
+      items:
+        type: object
+        properties:
+          object:
+            type: object
+            properties:
+              sha:
+                type: string
+              type:
+                type: string
+              url:
+                type: string
+          ref:
+            type: string
+          url:
+            type: string
+    refsBody:
+      type: object
+      properties:
+        ref:
+          type: string
+        sha:
+          type: string
+    release:
+      type: object
+      properties:
+        assets:
+          type: array
+          items:
+            type: object
+            properties:
+              content_type:
+                type: string
+              created_at:
+                type: string
+              download_count:
+                type: integer
+              id:
+                type: integer
+              label:
+                type: string
+              name:
+                type: string
+              size:
+                type: integer
+              state:
+                type: string
+              updated_at:
+                type: string
+              uploader:
+                $ref: '#/components/schemas/user'
+              url:
+                type: string
+        assets_url:
+          type: string
+        author:
+          $ref: '#/components/schemas/user'
+        body:
+          type: string
+        created_at:
+          type: string
+        draft:
+          type: boolean
+        html_url:
+          type: string
+        id:
+          type: integer
+        name:
+          type: string
+        prerelease:
+          type: boolean
+        published_at:
+          type: string
+        tag_name:
+          type: string
+        tarball_url:
+          type: string
+        target_commitish:
+          type: string
+        upload_url:
+          type: string
+        url:
+          type: string
+        zipball_url:
+          type: string
+    release-create:
+      type: object
+      properties:
+        body:
+          type: string
+        draft:
+          type: boolean
+        name:
+          type: string
+        prerelease:
+          type: boolean
+        tag_name:
+          type: string
+        target_commitish:
+          type: string
+    releases:
+      type: array
+      items:
+        type: object
+        properties:
+          assets:
+            type: array
+            items:
+              type: object
+              properties:
+                content_type:
+                  type: string
+                created_at:
+                  type: string
+                download_count:
+                  type: integer
+                id:
+                  type: integer
+                label:
+                  type: string
+                name:
+                  type: string
+                size:
+                  type: integer
+                state:
+                  type: string
+                updated_at:
+                  type: string
+                uploader:
+                  $ref: '#/components/schemas/user'
+                url:
+                  type: string
+          assets_url:
+            type: string
+          author:
+            $ref: '#/components/schemas/user'
+          body:
+            type: string
+          created_at:
+            type: string
+          draft:
+            type: boolean
+          html_url:
+            type: string
+          id:
+            type: integer
+          name:
+            type: string
+          prerelease:
+            type: boolean
+          published_at:
+            type: string
+          tag_name:
+            type: string
+          tarball_url:
+            type: string
+          target_commitish:
+            type: string
+          upload_url:
+            type: string
+          url:
+            type: string
+          zipball_url:
+            type: string
+    repo:
+      type: object
+      properties:
+        clone_url:
+          type: string
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        description:
+          type: string
+        fork:
+          type: boolean
+        forks:
+          type: integer
+        forks_count:
+          type: integer
+        full_name:
+          type: string
+        git_url:
+          type: string
+        has_downloads:
+          type: boolean
+        has_issues:
+          type: boolean
+        has_wiki:
+          type: boolean
+        homepage:
+          type: string
+        html_url:
+          type: string
+        id:
+          type: integer
+        language:
+          type: string
+        master_branch:
+          type: string
+        mirror_url:
+          type: string
+        name:
+          type: string
+        open_issues:
+          type: integer
+        open_issues_count:
+          type: integer
+        organization:
+          $ref: '#/components/schemas/organization'
+        owner:
+          $ref: '#/components/schemas/actor'
+        parent:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/repo'
+          - type: object
+            description: Is present when the repo is a fork. Parent is the repo this
+              repo was forked from.
+        private:
+          type: boolean
+        pushed_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        size:
+          type: integer
+        source:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/repo'
+          - type: object
+            description: Is present when the repo is a fork. Source is the ultimate
+              source for the network.
+        ssh_url:
+          type: string
+        svn_url:
+          type: string
+        updated_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        url:
+          type: string
+        watchers:
+          type: integer
+        watchers_count:
+          type: integer
+    repo-deployments:
+      type: array
+      items:
+        type: object
+        properties:
+          created_at:
+            type: string
+          creator:
+            $ref: '#/components/schemas/user'
+          description:
+            type: string
+          id:
+            type: integer
+          payload:
+            type: string
+          sha:
+            type: string
+          statuses_url:
+            type: string
+          updated_at:
+            type: string
+          url:
+            type: string
+    repoComments:
+      type: array
+      items:
+        type: object
+        properties:
+          body:
+            type: string
+          commit_id:
+            type: string
+          created_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          html_url:
+            type: string
+          id:
+            type: integer
+          line:
+            type: integer
+          path:
+            type: string
+          position:
+            type: integer
+          updated_at:
+            type: string
+            description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+          url:
+            type: string
+          user:
+            $ref: '#/components/schemas/user'
+    repoCommit:
+      type: object
+      properties:
+        author:
+          type: object
+          properties:
+            date:
+              type: string
+              description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+            email:
+              type: string
+            name:
+              type: string
+        committer:
+          type: object
+          properties:
+            date:
+              type: string
+              description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+            email:
+              type: string
+            name:
+              type: string
+        message:
+          type: string
+        parents:
+          type: array
+          items:
+            type: object
+            properties:
+              sha:
+                type: string
+              url:
+                type: string
+        sha:
+          type: string
+        tree:
+          type: object
+          properties:
+            sha:
+              type: string
+            url:
+              type: string
+        url:
+          type: string
+    repoCommitBody:
+      required:
+      - message
+      - parents
+      - tree
+      type: object
+      properties:
+        author:
+          type: object
+          properties:
+            date:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+        message:
+          type: string
+        parents:
+          type: array
+          items:
+            type: string
+        tree:
+          type: string
+    repoEdit:
+      type: object
+      properties:
+        description:
+          type: string
+        has_downloads:
+          type: boolean
+        has_issues:
+          type: boolean
+        has_wiki:
+          type: boolean
+        homepage:
+          type: string
+        name:
+          type: string
+        private:
+          type: boolean
+    repos:
+      type: array
+      items:
+        $ref: '#/components/schemas/repo'
+    search-code:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              git_url:
+                type: string
+              html_url:
+                type: string
+              name:
+                type: string
+              path:
+                type: string
+              repository:
+                type: object
+                properties:
+                  archive_url:
+                    type: string
+                  assignees_url:
+                    type: string
+                  blobs_url:
+                    type: string
+                  branches_url:
+                    type: string
+                  collaborators_url:
+                    type: string
+                  comments_url:
+                    type: string
+                  commits_url:
+                    type: string
+                  compare_url:
+                    type: string
+                  contents_url:
+                    type: string
+                  contributors_url:
+                    type: string
+                  description:
+                    type: string
+                  downloads_url:
+                    type: string
+                  events_url:
+                    type: string
+                  fork:
+                    type: boolean
+                  forks_url:
+                    type: string
+                  full_name:
+                    type: string
+                  git_commits_url:
+                    type: string
+                  git_refs_url:
+                    type: string
+                  git_tags_url:
+                    type: string
+                  hooks_url:
+                    type: string
+                  html_url:
+                    type: string
+                  id:
+                    type: integer
+                  issue_comment_url:
+                    type: string
+                  issue_events_url:
+                    type: string
+                  issues_url:
+                    type: string
+                  keys_url:
+                    type: string
+                  labels_url:
+                    type: string
+                  languages_url:
+                    type: string
+                  merges_url:
+                    type: string
+                  milestones_url:
+                    type: string
+                  name:
+                    type: string
+                  notifications_url:
+                    type: string
+                  owner:
+                    $ref: '#/components/schemas/actor'
+                  private:
+                    type: boolean
+                  pulls_url:
+                    type: string
+                  stargazers_url:
+                    type: string
+                  statuses_url:
+                    type: string
+                  subscribers_url:
+                    type: string
+                  subscription_url:
+                    type: string
+                  tags_url:
+                    type: string
+                  teams_url:
+                    type: string
+                  trees_url:
+                    type: string
+                  url:
+                    type: string
+              score:
+                type: number
+              sha:
+                type: string
+              url:
+                type: string
+        total_count:
+          type: integer
+    search-issues:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              body:
+                type: string
+              comments:
+                type: integer
+              comments_url:
+                type: string
+              created_at:
+                type: string
+              events_url:
+                type: string
+              html_url:
+                type: string
+              id:
+                type: integer
+              labels:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    color:
+                      type: string
+                    name:
+                      type: string
+                    url:
+                      type: string
+              labels_url:
+                type: string
+              number:
+                type: integer
+              pull_request:
+                type: object
+                properties: {}
+              score:
+                type: number
+              state:
+                type: string
+              title:
+                type: string
+              updated_at:
+                type: string
+              url:
+                type: string
+              user:
+                $ref: '#/components/schemas/user'
+        total_count:
+          type: integer
+    search-issues-by-keyword:
+      type: object
+      properties:
+        issues:
+          type: array
+          items:
+            type: object
+            properties:
+              body:
+                type: string
+              comments:
+                type: integer
+              created_at:
+                type: string
+              gravatar_id:
+                type: string
+              html_url:
+                type: string
+              labels:
+                type: array
+                items:
+                  type: string
+              number:
+                type: integer
+              position:
+                type: integer
+              state:
+                type: string
+              title:
+                type: string
+              updated_at:
+                type: string
+              user:
+                type: string
+              votes:
+                type: integer
+    search-repositories:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/repo'
+        total_count:
+          type: integer
+    search-repositories-by-keyword:
+      type: object
+      properties:
+        repositories:
+          type: array
+          items:
+            $ref: '#/components/schemas/repo'
+    search-user-by-email:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    search-users:
+      type: object
+      properties:
+        items:
+          $ref: '#/components/schemas/users'
+        total_count:
+          type: integer
+    search-users-by-keyword:
+      type: object
+      properties:
+        users:
+          $ref: '#/components/schemas/users'
+    subscription:
+      type: object
+      properties:
+        created_at:
+          type: string
+          description: 'ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ'
+        ignored:
+          type: boolean
+        reason:
+          type: string
+        repository_url:
+          type: string
+        subscribed:
+          type: boolean
+        thread_url:
+          type: string
+        url:
+          type: string
+    subscriptionBody:
+      type: object
+      properties:
+        ignored:
+          type: boolean
+        subscribed:
+          type: boolean
+    tag:
+      type: object
+      properties:
+        message:
+          type: string
+          description: String of the tag message.
+        object:
+          type: object
+          properties:
+            sha:
+              type: string
+            type:
+              type: object
+              description: String of the type of the tagged object. Normally this
+                is a commit but it can also be a tree or a blob.
+            url:
+              type: string
+        sha:
+          type: string
+        tag:
+          type: string
+          description: The tag's name. This is typically a version (e.g., "v0.0.1").
+        tagger:
+          type: object
+          properties:
+            date:
+              type: string
+              description: 'Timestamp of when this object was tagged, in ISO 8601
+                format: YYYY-MM-DDTHH:MM:SSZ'
+            email:
+              type: string
+              description: String of the email of the author of the tag.
+            name:
+              type: string
+              description: String of the name of the author of the tag.
+        url:
+          type: string
+    tagBody:
+      required:
+      - message
+      - object
+      - tag
+      - tagger
+      - type
+      type: object
+      properties:
+        message:
+          type: string
+          description: String of the tag message.
+        object:
+          type: string
+          description: String of the SHA of the git object this is tagging.
+        tag:
+          type: string
+          description: The tag's name. This is typically a version (e.g., "v0.0.1").
+        tagger:
+          type: object
+          properties:
+            date:
+              type: string
+              description: 'Timestamp of when this object was tagged, in ISO 8601
+                format: YYYY-MM-DDTHH:MM:SSZ'
+            email:
+              type: string
+              description: String of the email of the author of the tag.
+            name:
+              type: string
+              description: String of the name of the author of the tag.
+        type:
+          type: string
+          description: String of the type of the object we�re tagging. Normally this
+            is a commit but it can also be a tree or a blob.
+          enum:
+          - commit
+          - tree
+          - blob
+    tags:
+      type: array
+      items:
+        $ref: '#/components/schemas/tag'
+    team:
+      type: object
+      properties:
+        id:
+          type: integer
+        members_count:
+          type: integer
+        name:
+          type: string
+        permission:
+          type: string
+        repos_count:
+          type: integer
+        url:
+          type: string
+    teamMembership:
+      type: object
+      properties:
+        state:
+          type: string
+        url:
+          type: string
+    teamRepos:
+      $ref: '#/components/schemas/repos'
+    teams:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          url:
+            type: string
+    teams-list:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          members_count:
+            type: integer
+          name:
+            type: string
+          organization:
+            type: object
+            properties:
+              avatar_url:
+                type: string
+              id:
+                type: integer
+              login:
+                type: string
+              url:
+                type: string
+          permission:
+            type: string
+          repos_count:
+            type: integer
+          url:
+            type: string
+    tree:
+      type: object
+      properties:
+        sha:
+          type: string
+        tree:
+          type: array
+          items:
+            type: object
+            properties:
+              mode:
+                type: string
+                description: One of 100644 for file (blob), 100755 for executable
+                  (blob), 040000 for subdirectory (tree), 160000 for submodule (commit)
+                  or 120000 for a blob that specifies the path of a symlink.
+                enum:
+                - "100644"
+                - "100755"
+                - "040000"
+                - "160000"
+                - "120000"
+              path:
+                type: string
+              sha:
+                type: string
+                description: SHA1 checksum ID of the object in the tree.
+              size:
+                type: integer
+              type:
+                type: string
+                enum:
+                - blob
+                - tree
+                - commit
+              url:
+                type: string
+        url:
+          type: string
+    trees:
+      type: object
+      properties:
+        base_tree:
+          type: string
+        sha:
+          type: string
+          description: SHA1 checksum ID of the object in the tree.
+        tree:
+          type: array
+          items:
+            $ref: '#/components/schemas/tree'
+        url:
+          type: string
+    user:
+      allOf:
+      - $ref: '#/components/schemas/actor'
+      - type: object
+        description: A GitHub user
+    user-emails:
+      type: array
+      items:
+        type: string
+    user-keys-keyId:
+      type: object
+      properties:
+        id:
+          type: integer
+        key:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+    user-keys-post:
+      type: object
+      properties:
+        key:
+          type: string
+        title:
+          type: string
+    user-update:
+      type: object
+      properties:
+        bio:
+          type: string
+        blog:
+          type: string
+        company:
+          type: string
+        email:
+          type: string
+        hireable:
+          type: boolean
+        location:
+          type: string
+        name:
+          type: string
+    users:
+      type: array
+      items:
+        $ref: '#/components/schemas/user'
+    
+
+
+    
+    WebhookPostBody:
+      description: Details of webhooks to register.
+      required:      
+      - config
+      - events
+      type: object
+      properties:
+        config:                              
+          $ref: '#/components/schemas/WebhookConfig'
+          
+        events:
+          description: Determines what events the hook is triggered for. Default ["push"]
+          type: array
+          x-attributes:
+            - callback_event
+          items:
+            type: string
+        
+
+    WebhookConfig:
+      type: object
+      description: Callback settings
+      x-attributes:
+            - hide
+      required:
+        - url
+        - content_type
+      properties:
+        url:
+          type: string
+          x-attributes:
+            - callback_url
+          description: The URL that specifies where to send the webhooks.      
+        content_type:
+          type: string
+          description: json or form, the default is form
+          default: json
+          x-attributes:
+            - hide
+        insecure_ssl:
+          type: string
+          x-attributes:
+            - hide
+          description: |
+            Determines whether the SSL certificate of the host for url will be verified when delivering payloads.
+            Supported values include 0 (verification is performed) and 1 (verification is not performed). 
+            The default is 0.
+            We strongly recommend not setting this to 1 as you are subject to man-in-the-middle and other attacks.
+          default: '0'
+        secret:
+          type: string
+          description: >
+            If provided, the secret will be used as the key to generate the HMAC hex digest value in the X-Hub-Signature header.
+          x-attributes: 
+            - hide
