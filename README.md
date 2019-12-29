@@ -14,20 +14,15 @@ But if you are DIY type of guy, you can just download one our our cleaned up Ope
 Here is the list of included Yaml files:
 
 
-## Sendgird
+### [Sendgird](./Hubspot)
 
-## Jira
+### [Jira](./Jira)
 
-## Salesforce
+### Salesforce
 
-## Hubspot
+### Hubspot
 
-
-## Slack
-
-
-
-
+### Slack
 
 
 # If you don't see API in list
