@@ -1,0 +1,53 @@
+openapi: 3.0.1
+info:
+  title: Clearbit API
+  description: 'Crlearbit API'
+  version: '1.0'
+servers:
+- url: https://reveal.clearbit.com/v1
+paths:
+  /companies/find:
+    get:
+      tags:
+        - Reveal
+      summary: FindCompanies
+      description: 'Find Company info by Ip address'
+      operationId: FindCompanies
+      parameters:
+        - name: ip
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: "10.10.10.10"
+      responses:
+        200:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content: {}
+      deprecated: false
+      servers:
+        - url: https://reveal.clearbit.com/v1
+          variables: {}
+      security:
+        - Authorization: []
+components:
+  parameters:
+    trait_authorizationHeader_Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        default: Bearer <<apiKey>>
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Authorization: []

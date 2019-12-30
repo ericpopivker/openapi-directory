@@ -1,0 +1,3914 @@
+openapi: 3.0.1
+info:
+  title: Slack Web API
+  description: 'One way to interact with the Slack platform is its HTTP RPC-based Web API, a collection of methods requiring OAuth 2.0-based user, bot, or workspace tokens blessed with related OAuth scopes.'
+  version: '1.2.0'
+servers:
+  - url: https://slack.com/api
+paths:
+  /chat.delete:
+    post:
+      tags:
+        - chat
+      description: Deletes a message.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.delete
+      operationId: chat_delete
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `chat:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                as_user:
+                  type: boolean
+                  description: 'Pass true to delete the message as the authed user with `chat:write:user` scope. [Bot users](/bot-users) in this context are considered authed users. If unused or false, the message will be deleted with `chat:write:bot` scope.'
+                ts:
+                  type: number
+                  description: Timestamp of the message to be deleted.
+                channel:
+                  type: string
+                  description: Channel containing the message to be deleted.
+          application/json:
+            schema:
+              properties:
+                as_user:
+                  type: boolean
+                  description: 'Pass true to delete the message as the authed user with `chat:write:user` scope. [Bot users](/bot-users) in this context are considered authed users. If unused or false, the message will be deleted with `chat:write:bot` scope.'
+                ts:
+                  type: number
+                  description: Timestamp of the message to be deleted.
+                channel:
+                  type: string
+                  description: Channel containing the message to be deleted.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.delete success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response of chat.delete method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: chat.delete error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.delete method
+      security:
+        - slackAuth:
+            - chat:write:user
+            - chat:write:bot
+  /chat.deleteScheduledMessage:
+    post:
+      tags:
+        - chat
+      description: Deletes a pending scheduled message from the queue.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.deleteScheduledMessage
+      operationId: chat_deleteScheduledMessage
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.deleteScheduledMessage schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from chat.deleteScheduledMessage method
+        default:
+          description: Typical error response if no message is found
+          content:
+            application/json:
+              schema:
+                title: chat.deleteScheduledMessage error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.deleteScheduledMessage method
+      security:
+        - slackAuth:
+            - chat:write:user
+            - chat:write:bot
+  /chat.getPermalink:
+    get:
+      tags:
+        - chat
+      description: Retrieve a permalink URL for a specific extant message
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.getPermalink
+      operationId: chat_getPermalink
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `none`'
+          schema:
+            type: string
+        - name: message_ts
+          in: query
+          description: 'A message''s `ts` value, uniquely identifying it within a channel'
+          schema:
+            type: number
+        - name: channel
+          in: query
+          description: The ID of the conversation or channel containing the message
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Standard success response
+          content:
+            application/json:
+              schema:
+                title: chat.getPermalink success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response chat.getPermalink
+        default:
+          description: Error response when channel cannot be found
+          content:
+            application/json:
+              schema:
+                title: chat.getPermalink error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.getPermalink method
+      security:
+        - slackAuth:
+            - none
+  /chat.meMessage:
+    post:
+      tags:
+        - chat
+      description: Share a me message into a channel.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.meMessage
+      operationId: chat_meMessage
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `chat:write:user`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                text:
+                  x-attributes:
+                    - 'textarea'
+                  type: string
+                  description: Text of the message to send.
+                channel:
+                  type: string
+                  description: 'Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.'
+          application/json:
+            schema:
+              properties:
+                text:
+                  type: string
+                  description: Text of the message to send.
+                channel:
+                  type: string
+                  description: 'Channel to send message to. Can be a public channel, private group or IM channel. Can be an encoded ID, or a name.'
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.meMessage schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from chat.meMessage method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: chat.meMessage error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.meMessage method
+      security:
+        - slackAuth:
+            - chat:write:user
+  /chat.postEphemeral:
+    post:
+      tags:
+        - chat
+      description: Sends an ephemeral message to a user in a channel.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.postEphemeral
+      operationId: chat_postEphemeral
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `chat:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                thread_ts:
+                  type: number
+                  description: Provide another message's `ts` value to post this message in a thread. Avoid using a reply's `ts` value; use its parent's value instead. Ephemeral messages in threads are only shown if there is already an active thread.
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string.'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to post the message as the authed user. Defaults to true if the chat:write:bot scope is not included. Otherwise, defaults to false.'
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `none`. See [below](#formatting).'
+                text:
+                  type: string
+                  description: 'Text of the message to send. See below for an explanation of [formatting](#formatting). This field is usually required, unless you''re providing only `attachments` instead.'
+                  x-attributes:
+                    - 'textarea'
+                user:
+                  type: string
+                  description: '`id` of the user who will receive the ephemeral message. The user should be in the channel specified by the `channel` argument.'
+                link_names:
+                  type: boolean
+                  description: Find and link channel names and usernames.
+                channel:
+                  type: string
+                  description: 'Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name.'
+          application/json:
+            schema:
+              properties:
+                thread_ts:
+                  type: number
+                  description: Provide another message's `ts` value to post this message in a thread. Avoid using a reply's `ts` value; use its parent's value instead. Ephemeral messages in threads are only shown if there is already an active thread.
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string.'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to post the message as the authed user. Defaults to true if the chat:write:bot scope is not included. Otherwise, defaults to false.'
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `none`. See [below](#formatting).'
+                text:
+                  x-attributes:
+                    - 'textarea'
+                  type: string
+                  description: 'Text of the message to send. See below for an explanation of [formatting](#formatting). This field is usually required, unless you''re providing only `attachments` instead.'
+                user:
+                  type: string
+                  description: '`id` of the user who will receive the ephemeral message. The user should be in the channel specified by the `channel` argument.'
+                link_names:
+                  type: boolean
+                  description: Find and link channel names and usernames.
+                channel:
+                  type: string
+                  description: 'Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name.'
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.postEphemeral success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from chat.postEphemeral method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: chat.postEphemeral error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.postEphemeral method
+      security:
+        - slackAuth:
+            - chat:write:user
+            - chat:write:bot
+  /chat.postMessage:
+    post:
+      tags:
+        - chat
+      description: Sends a message to a channel.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.postMessage
+      operationId: chat_postMessage
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `chat:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string.'
+                unfurl_links:
+                  type: boolean
+                  description: Pass true to enable unfurling of primarily text-based content.
+                text:
+                  x-attributes:
+                    - 'textarea'
+                  type: string
+                  description: 'Text of the message to send. See below for an explanation of [formatting](#formatting). This field is usually required, unless you''re providing only `attachments` instead. Provide no more than 40,000 characters or [risk truncation](/changelog/2018-04-truncating-really-long-messages).'
+                unfurl_media:
+                  type: boolean
+                  description: Pass false to disable unfurling of media content.
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `none`. See [below](#formatting).'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below.'
+                mrkdwn:
+                  type: boolean
+                  description: Disable Slack markup parsing by setting to `false`. Enabled by default.
+                channel:
+                  type: string
+                  description: 'Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details.'
+                username:
+                  type: string
+                  description: 'Set your bot''s user name. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below.'
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                icon_emoji:
+                  type: string
+                  description: 'Emoji to use as the icon for this message. Overrides `icon_url`. Must be used in conjunction with `as_user` set to `false`, otherwise ignored. See [authorship](#authorship) below.'
+                link_names:
+                  type: boolean
+                  description: Find and link channel names and usernames.
+                reply_broadcast:
+                  type: boolean
+                  description: Used in conjunction with `thread_ts` and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to `false`.
+                thread_ts:
+                  type: number
+                  description: Provide another message's `ts` value to make this message a reply. Avoid using a reply's `ts` value; use its parent instead.
+                icon_url:
+                  type: string
+                  description: 'URL to an image to use as the icon for this message. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below.'
+          application/json:
+            schema:
+              properties:
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string.'
+                unfurl_links:
+                  type: boolean
+                  description: Pass true to enable unfurling of primarily text-based content.
+                text:
+                  x-attributes:
+                    - 'textarea'
+                  type: string
+                  description: 'Text of the message to send. See below for an explanation of [formatting](#formatting). This field is usually required, unless you''re providing only `attachments` instead. Provide no more than 40,000 characters or [risk truncation](/changelog/2018-04-truncating-really-long-messages).'
+                unfurl_media:
+                  type: boolean
+                  description: Pass false to disable unfurling of media content.
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `none`. See [below](#formatting).'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below.'
+                mrkdwn:
+                  type: boolean
+                  description: Disable Slack markup parsing by setting to `false`. Enabled by default.
+                channel:
+                  type: string
+                  description: 'Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details.'
+                username:
+                  type: string
+                  description: 'Set your bot''s user name. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below.'
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                icon_emoji:
+                  type: string
+                  description: 'Emoji to use as the icon for this message. Overrides `icon_url`. Must be used in conjunction with `as_user` set to `false`, otherwise ignored. See [authorship](#authorship) below.'
+                link_names:
+                  type: boolean
+                  description: Find and link channel names and usernames.
+                reply_broadcast:
+                  type: boolean
+                  description: Used in conjunction with `thread_ts` and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to `false`.
+                thread_ts:
+                  type: number
+                  description: Provide another message's `ts` value to make this message a reply. Avoid using a reply's `ts` value; use its parent instead.
+                icon_url:
+                  type: string
+                  description: 'URL to an image to use as the icon for this message. Must be used in conjunction with `as_user` set to false, otherwise ignored. See [authorship](#authorship) below.'
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.postMessage success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response of chat.postMessage method
+        default:
+          description: Typical error response if too many attachments are included
+          content:
+            application/json:
+              schema:
+                title: chat.postMessage error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response chat.postMessage method
+      security:
+        - slackAuth:
+            - chat:write:user
+            - chat:write:bot
+  /chat.scheduleMessage:
+    post:
+      tags:
+        - chat
+      description: Schedules a message to be sent to a channel.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.scheduleMessage
+      operationId: chat_scheduleMessage
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `chat:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                thread_ts:
+                  type: number
+                  description: Provide another message's `ts` value to make this message a reply. Avoid using a reply's `ts` value; use its parent instead.
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string.'
+                unfurl_links:
+                  type: boolean
+                  description: Pass true to enable unfurling of primarily text-based content.
+                text:
+                  x-attributes:
+                    - 'textarea'
+                  type: string
+                  description: 'Text of the message to send. See below for an explanation of [formatting](#formatting). This field is usually required, unless you''re providing only `attachments` instead. Provide no more than 40,000 characters or [risk truncation](/changelog/2018-04-truncating-really-long-messages).'
+                link_names:
+                  type: boolean
+                  description: Find and link channel names and usernames.
+                unfurl_media:
+                  type: boolean
+                  description: Pass false to disable unfurling of media content.
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `none`. See [below](#formatting).'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below.'
+                post_at:
+                  type: string
+                  description: Unix EPOCH timestamp of time in future to send the message.
+                channel:
+                  type: string
+                  description: 'Channel, private group, or DM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details.'
+                reply_broadcast:
+                  type: boolean
+                  description: Used in conjunction with `thread_ts` and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to `false`.
+          application/json:
+            schema:
+              properties:
+                thread_ts:
+                  type: number
+                  description: Provide another message's `ts` value to make this message a reply. Avoid using a reply's `ts` value; use its parent instead.
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string.'
+                unfurl_links:
+                  type: boolean
+                  description: Pass true to enable unfurling of primarily text-based content.
+                text:
+                  x-attributes:
+                    - 'textarea'
+                  type: string
+                  description: 'Text of the message to send. See below for an explanation of [formatting](#formatting). This field is usually required, unless you''re providing only `attachments` instead. Provide no more than 40,000 characters or [risk truncation](/changelog/2018-04-truncating-really-long-messages).'
+                link_names:
+                  type: boolean
+                  description: Find and link channel names and usernames.
+                unfurl_media:
+                  type: boolean
+                  description: Pass false to disable unfurling of media content.
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `none`. See [below](#formatting).'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to post the message as the authed user, instead of as a bot. Defaults to false. See [authorship](#authorship) below.'
+                post_at:
+                  type: string
+                  description: Unix EPOCH timestamp of time in future to send the message.
+                channel:
+                  type: string
+                  description: 'Channel, private group, or DM channel to send message to. Can be an encoded ID, or a name. See [below](#channels) for more details.'
+                reply_broadcast:
+                  type: boolean
+                  description: Used in conjunction with `thread_ts` and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to `false`.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.scheduleMessage success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response of chat.scheduleMessage method
+        default:
+          description: Typical error response if the `post_at` is invalid (ex. in the past or too far into the future)
+          content:
+            application/json:
+              schema:
+                title: chat.scheduleMessage error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response chat.scheduleMessage method
+      security:
+        - slackAuth:
+            - chat:write:user
+            - chat:write:bot
+  /chat.scheduledMessages.list:
+    get:
+      tags:
+        - chat.scheduledMessages
+        - chat
+      description: Returns a list of scheduled messages.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.scheduledMessages.list
+      operationId: chat_scheduledMessages_list
+      parameters:
+        - name: cursor
+          in: query
+          description: 'For pagination purposes, this is the `cursor` value returned from a previous call to `chat.scheduledmessages.list` indicating where you want to start this call from.'
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `none`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Maximum number of original entries to return.
+          schema:
+            type: integer
+        - name: oldest
+          in: query
+          description: A UNIX timestamp of the oldest value in the time range
+          schema:
+            type: number
+        - name: channel
+          in: query
+          description: The channel of the scheduled messages
+          schema:
+            type: string
+        - name: latest
+          in: query
+          description: A UNIX timestamp of the latest value in the time range
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.scheduledMessages.list schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from chat.scheduledMessages.list method
+        default:
+          description: Typical error response if the channel passed is invalid
+          content:
+            application/json:
+              schema:
+                title: chat.scheduledMessages.list error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.scheduledMessages.list method
+      security:
+        - slackAuth:
+            - none
+  /chat.unfurl:
+    post:
+      tags:
+        - chat
+      description: Provide custom unfurl behavior for user-posted URLs
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.unfurl
+      operationId: chat_unfurl
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `links:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                user_auth_message:
+                  type: string
+                  description: Provide a simply-formatted string to send as an ephemeral message to the user as invitation to authenticate further and enable full unfurling behavior
+                user_auth_required:
+                  type: boolean
+                  description: Set to `true` or `1` to indicate the user must install your Slack app to trigger unfurls for this domain
+                unfurls:
+                  type: string
+                  description: 'URL-encoded JSON map with keys set to URLs featured in the the message, pointing to their unfurl blocks or message attachments.'
+                ts:
+                  type: string
+                  description: Timestamp of the message to add unfurl behavior to.
+                user_auth_url:
+                  type: string
+                  description: Send users to this custom URL where they will complete authentication in your app to fully trigger unfurling. Value should be properly URL-encoded.
+                channel:
+                  type: string
+                  description: Channel ID of the message
+          application/json:
+            schema:
+              properties:
+                user_auth_message:
+                  type: string
+                  description: Provide a simply-formatted string to send as an ephemeral message to the user as invitation to authenticate further and enable full unfurling behavior
+                user_auth_required:
+                  type: boolean
+                  description: Set to `true` or `1` to indicate the user must install your Slack app to trigger unfurls for this domain
+                unfurls:
+                  type: string
+                  description: 'URL-encoded JSON map with keys set to URLs featured in the the message, pointing to their unfurl blocks or message attachments.'
+                ts:
+                  type: string
+                  description: Timestamp of the message to add unfurl behavior to.
+                user_auth_url:
+                  type: string
+                  description: Send users to this custom URL where they will complete authentication in your app to fully trigger unfurling. Value should be properly URL-encoded.
+                channel:
+                  type: string
+                  description: Channel ID of the message
+      responses:
+        '200':
+          description: 'Typical, minimal success response'
+          content:
+            application/json:
+              schema:
+                title: chat.unfurl success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from chat.unfurl method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: chat.unfurl error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from chat.unfurl method
+      security:
+        - slackAuth:
+            - links:write
+  /chat.update:
+    post:
+      tags:
+        - chat
+      description: Updates a message.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/chat.update
+      operationId: chat_update
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `chat:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string. This field is required when not presenting `text`.'
+                text:
+                  type: string
+                  description: 'New text for the message, using the [default formatting rules](/docs/formatting). It''s not required when presenting `attachments`.'
+                ts:
+                  type: number
+                  description: Timestamp of the message to be updated.
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `client`, unlike `chat.postMessage`. See [below](#formatting).'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to update the message as the authed user. [Bot users](/bot-users) in this context are considered authed users.'
+                link_names:
+                  type: boolean
+                  description: 'Find and link channel names and usernames. Defaults to `none`. See [below](#formatting).'
+                channel:
+                  type: string
+                  description: Channel containing the message to be updated.
+          application/json:
+            schema:
+              properties:
+                blocks:
+                  type: string
+                  description: 'A JSON-based array of structured blocks, presented as a URL-encoded string.'
+                attachments:
+                  type: string
+                  description: 'A JSON-based array of structured attachments, presented as a URL-encoded string. This field is required when not presenting `text`.'
+                text:
+                  type: string
+                  description: 'New text for the message, using the [default formatting rules](/docs/formatting). It''s not required when presenting `attachments`.'
+                ts:
+                  type: number
+                  description: Timestamp of the message to be updated.
+                parse:
+                  type: string
+                  description: 'Change how messages are treated. Defaults to `client`, unlike `chat.postMessage`. See [below](#formatting).'
+                as_user:
+                  type: boolean
+                  description: 'Pass true to update the message as the authed user. [Bot users](/bot-users) in this context are considered authed users.'
+                link_names:
+                  type: boolean
+                  description: 'Find and link channel names and usernames. Defaults to `none`. See [below](#formatting).'
+                channel:
+                  type: string
+                  description: Channel containing the message to be updated.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: chat.update success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response of chat.update method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: chat.update error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response chat.update method
+      security:
+        - slackAuth:
+            - chat:write:user
+            - chat:write:bot
+  /conversations.archive:
+    post:
+      tags:
+        - conversations
+      description: Archives a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.archive
+      operationId: conversations_archive
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: ID of conversation to archive
+          application/json:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: ID of conversation to archive
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.archive success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response conversations.archive method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.archive error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.archive method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.close:
+    post:
+      tags:
+        - conversations
+      description: Closes a direct message or multi-person direct message.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.close
+      operationId: conversations_close
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: Conversation to close.
+          application/json:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: Conversation to close.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.close success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response conversations.close method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.close error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.close method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.create:
+    post:
+      tags:
+        - conversations
+      description: Initiates a public or private channel-based conversation
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.create
+      operationId: conversations_create
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                user_ids:
+                  type: string
+                  description: '**Required** for workspace apps. A list of between 1 and 30 human users that will be added to the newly-created conversation. This argument has no effect when used by classic Slack apps.'
+                name:
+                  type: string
+                  description: Name of the public or private channel to create
+                is_private:
+                  type: boolean
+                  description: Create a private channel instead of a public one
+          application/json:
+            schema:
+              properties:
+                user_ids:
+                  type: string
+                  description: '**Required** for workspace apps. A list of between 1 and 30 human users that will be added to the newly-created conversation. This argument has no effect when used by classic Slack apps.'
+                name:
+                  type: string
+                  description: Name of the public or private channel to create
+                is_private:
+                  type: boolean
+                  description: Create a private channel instead of a public one
+      responses:
+        '200':
+          description: 'If successful, the command returns a rather stark [conversation object](/types/conversation)'
+          content:
+            application/json:
+              schema:
+                title: conversations.create success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response conversations.create method
+        default:
+          description: Typical error response when name already in use
+          content:
+            application/json:
+              schema:
+                title: conversations.create error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.create method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.history:
+    get:
+      tags:
+        - conversations
+      description: Fetches a conversation's history of messages and events.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.history
+      operationId: conversations_history
+      parameters:
+        - name: inclusive
+          in: query
+          description: Include messages with latest or oldest timestamp in results only when either timestamp is specified.
+          schema:
+            type: boolean
+        - name: cursor
+          in: query
+          description: 'Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request''s `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.'
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `conversations:history`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn''t been reached.'
+          schema:
+            type: integer
+        - name: oldest
+          in: query
+          description: Start of time range of messages to include in results.
+          schema:
+            type: number
+        - name: channel
+          in: query
+          description: Conversation ID to fetch history for.
+          schema:
+            type: string
+        - name: latest
+          in: query
+          description: End of time range of messages to include in results.
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Typical success response containing a channel's messages
+          content:
+            application/json:
+              schema:
+                title: conversations.history success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.history method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.history error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.history method
+      security:
+        - slackAuth:
+            - channels:history
+            - groups:history
+            - im:history
+            - mpim:history
+  /conversations.info:
+    get:
+      tags:
+        - conversations
+      description: Retrieve information about a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.info
+      operationId: conversations_info
+      parameters:
+        - name: include_num_members
+          in: query
+          description: Set to `true` to include the member count for the specified conversation. Defaults to `false`
+          schema:
+            type: boolean
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `conversations:read`'
+          schema:
+            type: string
+        - name: channel
+          in: query
+          description: Conversation ID to learn more about
+          schema:
+            type: string
+        - name: include_locale
+          in: query
+          description: Set this to `true` to receive the locale for this conversation. Defaults to `false`
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 'Typical success response for a public channel. (Also, a response from a private channel and a multi-party IM is very similar to this example.)'
+          content:
+            application/json:
+              schema:
+                title: conversations.info success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response conversations.info
+        default:
+          description: Typical error response when a channel cannot be found
+          content:
+            application/json:
+              schema:
+                title: conversations.info error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.info method
+      security:
+        - slackAuth:
+            - channels:read
+            - groups:read
+            - im:read
+            - mpim:read
+  /conversations.invite:
+    post:
+      tags:
+        - conversations
+      description: Invites users to a channel.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.invite
+      operationId: conversations_invite
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                users:
+                  type: string
+                  description: A comma separated list of user IDs. Up to 30 users may be listed.
+                channel:
+                  type: string
+                  description: The ID of the public or private channel to invite user(s) to.
+          application/json:
+            schema:
+              properties:
+                users:
+                  type: string
+                  description: A comma separated list of user IDs. Up to 30 users may be listed.
+                channel:
+                  type: string
+                  description: The ID of the public or private channel to invite user(s) to.
+      responses:
+        '200':
+          description: Typical success response when an invitation is extended
+          content:
+            application/json:
+              schema:
+                title: conversations.invite error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.invite method
+        default:
+          description: Typical error response when an invite is attempted on a conversation type that does not support it
+          content:
+            application/json:
+              schema:
+                title: conversations.invite error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.invite method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.join:
+    post:
+      tags:
+        - conversations
+      description: Joins an existing conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.join
+      operationId: conversations_join
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `channels:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: ID of conversation to join
+          application/json:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: ID of conversation to join
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.join success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.join method
+        default:
+          description: Typical error response if the conversation is archived and cannot be joined
+          content:
+            application/json:
+              schema:
+                title: conversations.join error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.join method
+      security:
+        - slackAuth:
+            - channels:write
+  /conversations.kick:
+    post:
+      tags:
+        - conversations
+      description: Removes a user from a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.kick
+      operationId: conversations_kick
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                user:
+                  type: string
+                  description: User ID to be removed.
+                channel:
+                  type: string
+                  description: ID of conversation to remove user from.
+          application/json:
+            schema:
+              properties:
+                user:
+                  type: string
+                  description: User ID to be removed.
+                channel:
+                  type: string
+                  description: ID of conversation to remove user from.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.kick success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response conversations.kick method
+        default:
+          description: Typical error response when you attempt to kick yourself from a channel
+          content:
+            application/json:
+              schema:
+                title: conversations.kick error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response conversations.kick method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.leave:
+    post:
+      tags:
+        - conversations
+      description: Leaves a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.leave
+      operationId: conversations_leave
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: Conversation to leave
+          application/json:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: Conversation to leave
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.leave success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.leave method
+        default:
+          description: Typical error response when attempting to leave a workspace's "general" channel
+          content:
+            application/json:
+              schema:
+                title: conversations.leave error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.leave method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.list:
+    get:
+      tags:
+        - conversations
+      description: Lists all channels in a Slack team.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.list
+      operationId: conversations_list
+      parameters:
+        - name: cursor
+          in: query
+          description: 'Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request''s `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.'
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `conversations:read`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn''t been reached. Must be an integer no larger than 1000.'
+          schema:
+            type: integer
+        - name: exclude_archived
+          in: query
+          description: Set to `true` to exclude archived channels from the list
+          schema:
+            type: boolean
+        - name: types
+          in: query
+          description: 'Mix and match channel types by providing a comma-separated list of any combination of `public_channel`, `private_channel`, `mpim`, `im`'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response with only public channels
+          content:
+            application/json:
+              schema:
+                title: conversations.list success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.list method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.list error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.list method
+      security:
+        - slackAuth:
+            - channels:read
+            - groups:read
+            - im:read
+            - mpim:read
+  /conversations.members:
+    get:
+      tags:
+        - conversations
+      description: Retrieve members of a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.members
+      operationId: conversations_members
+      parameters:
+        - name: cursor
+          in: query
+          description: 'Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request''s `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.'
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `conversations:read`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn''t been reached.'
+          schema:
+            type: integer
+        - name: channel
+          in: query
+          description: ID of the conversation to retrieve members for
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical paginated success response
+          content:
+            application/json:
+              schema:
+                title: conversations.members success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response conversations.members method
+        default:
+          description: Typical error response when an invalid cursor is provided
+          content:
+            application/json:
+              schema:
+                title: conversations.members error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response conversations.members method
+      security:
+        - slackAuth:
+            - channels:read
+            - groups:read
+            - im:read
+            - mpim:read
+  /conversations.open:
+    post:
+      tags:
+        - conversations
+      description: Opens or resumes a direct message or multi-person direct message.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.open
+      operationId: conversations_open
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                return_im:
+                  type: boolean
+                  description: 'Boolean, indicates you want the full IM channel definition in the response.'
+                users:
+                  type: string
+                  description: 'Comma separated lists of users. If only one user is included, this creates a 1:1 DM.  The ordering of the users is preserved whenever a multi-person direct message is returned. Supply a `channel` when not supplying `users`.'
+                channel:
+                  type: string
+                  description: Resume a conversation by supplying an `im` or `mpim`'s ID. Or provide the `users` field instead.
+          application/json:
+            schema:
+              properties:
+                return_im:
+                  type: boolean
+                  description: 'Boolean, indicates you want the full IM channel definition in the response.'
+                users:
+                  type: string
+                  description: 'Comma separated lists of users. If only one user is included, this creates a 1:1 DM.  The ordering of the users is preserved whenever a multi-person direct message is returned. Supply a `channel` when not supplying `users`.'
+                channel:
+                  type: string
+                  description: Resume a conversation by supplying an `im` or `mpim`'s ID. Or provide the `users` field instead.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.open success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: 'Schema for successful response from conversations.open method when opening channels, ims, mpims'
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.open error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.open method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.rename:
+    post:
+      tags:
+        - conversations
+      description: Renames a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.rename
+      operationId: conversations_rename
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: New name for conversation.
+                channel:
+                  type: string
+                  description: ID of conversation to rename
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: New name for conversation.
+                channel:
+                  type: string
+                  description: ID of conversation to rename
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.rename success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.rename method
+        default:
+          description: Typical error response when the calling user is not a member of the conversation
+          content:
+            application/json:
+              schema:
+                title: conversations.rename error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.rename method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.replies:
+    get:
+      tags:
+        - conversations
+      description: Retrieve a thread of messages posted to a conversation
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.replies
+      operationId: conversations_replies
+      parameters:
+        - name: inclusive
+          in: query
+          description: Include messages with latest or oldest timestamp in results only when either timestamp is specified.
+          schema:
+            type: boolean
+        - name: ts
+          in: query
+          description: Unique identifier of a thread's parent message.
+          schema:
+            type: number
+        - name: cursor
+          in: query
+          description: 'Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request''s `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.'
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `conversations:history`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn''t been reached.'
+          schema:
+            type: integer
+        - name: oldest
+          in: query
+          description: Start of time range of messages to include in results.
+          schema:
+            type: number
+        - name: channel
+          in: query
+          description: Conversation ID to fetch thread from.
+          schema:
+            type: string
+        - name: latest
+          in: query
+          description: End of time range of messages to include in results.
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.replies success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.replies method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.replies error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.replies method
+      security:
+        - slackAuth:
+            - channels:history
+            - groups:history
+            - im:history
+            - mpim:history
+  /conversations.setPurpose:
+    post:
+      tags:
+        - conversations
+      description: Sets the purpose for a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.setPurpose
+      operationId: conversations_setPurpose
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                purpose:
+                  type: string
+                  description: 'A new, specialer purpose'
+                channel:
+                  type: string
+                  description: Conversation to set the purpose of
+          application/json:
+            schema:
+              properties:
+                purpose:
+                  type: string
+                  description: 'A new, specialer purpose'
+                channel:
+                  type: string
+                  description: Conversation to set the purpose of
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.setPurpose success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.setPurpose method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.setPurpose error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.setPurpose method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.setTopic:
+    post:
+      tags:
+        - conversations
+      description: Sets the topic for a conversation.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.setTopic
+      operationId: conversations_setTopic
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                topic:
+                  type: string
+                  description: The new topic string. Does not support formatting or linkification.
+                channel:
+                  type: string
+                  description: Conversation to set the topic of
+          application/json:
+            schema:
+              properties:
+                topic:
+                  type: string
+                  description: The new topic string. Does not support formatting or linkification.
+                channel:
+                  type: string
+                  description: Conversation to set the topic of
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.setTopic success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.setTopic method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.setTopic error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.setTopic method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /conversations.unarchive:
+    post:
+      tags:
+        - conversations
+      description: Reverses conversation archival.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/conversations.unarchive
+      operationId: conversations_unarchive
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `conversations:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: ID of conversation to unarchive
+          application/json:
+            schema:
+              properties:
+                channel:
+                  type: string
+                  description: ID of conversation to unarchive
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: conversations.unarchive success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from conversations.unarchive method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: conversations.unarchive error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from conversations.unarchive method
+      security:
+        - slackAuth:
+            - channels:write
+            - groups:write
+            - im:write
+            - mpim:write
+  /reminders.add:
+    post:
+      tags:
+        - reminders
+      description: Creates a reminder.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/reminders.add
+      operationId: reminders_add
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `reminders:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                text:
+                  type: string
+                  description: The content of the reminder
+                user:
+                  type: string
+                  description: 'The user who will receive the reminder. If no user is specified, the reminder will go to user who created it.'
+                time:
+                  type: string
+                  description: 'When this reminder should happen: the Unix timestamp (up to five years from now), the number of seconds until the reminder (if within 24 hours), or a natural language description (Ex. "in 15 minutes," or "every Thursday")'
+          application/json:
+            schema:
+              properties:
+                text:
+                  type: string
+                  description: The content of the reminder
+                user:
+                  type: string
+                  description: 'The user who will receive the reminder. If no user is specified, the reminder will go to user who created it.'
+                time:
+                  type: string
+                  description: 'When this reminder should happen: the Unix timestamp (up to five years from now), the number of seconds until the reminder (if within 24 hours), or a natural language description (Ex. "in 15 minutes," or "every Thursday")'
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: reminders.add schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from reminders.add method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: reminders.add error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from reminders.add method
+      security:
+        - slackAuth:
+            - reminders:write
+  /reminders.complete:
+    post:
+      tags:
+        - reminders
+      description: Marks a reminder as complete.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/reminders.complete
+      operationId: reminders_complete
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `reminders:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                reminder:
+                  type: string
+                  description: The ID of the reminder to be marked as complete
+          application/json:
+            schema:
+              properties:
+                reminder:
+                  type: string
+                  description: The ID of the reminder to be marked as complete
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: reminders.complete schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from reminders.complete method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: reminders.complete error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from reminders.complete method
+      security:
+        - slackAuth:
+            - reminders:write
+  /reminders.delete:
+    post:
+      tags:
+        - reminders
+      description: Deletes a reminder.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/reminders.delete
+      operationId: reminders_delete
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `reminders:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                reminder:
+                  type: string
+                  description: The ID of the reminder
+          application/json:
+            schema:
+              properties:
+                reminder:
+                  type: string
+                  description: The ID of the reminder
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: reminders.delete schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from reminders.delete method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: reminders.delete error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from reminders.delete method
+      security:
+        - slackAuth:
+            - reminders:write
+  /reminders.info:
+    get:
+      tags:
+        - reminders
+      description: Gets information about a reminder.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/reminders.info
+      operationId: reminders_info
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `reminders:read`'
+          schema:
+            type: string
+        - name: reminder
+          in: query
+          description: The ID of the reminder
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: reminders.info schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from reminders.info method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: reminders.info error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from reminders.info method
+      security:
+        - slackAuth:
+            - reminders:read
+  /reminders.list:
+    get:
+      tags:
+        - reminders
+      description: Lists all reminders created by or for a given user.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/reminders.list
+      operationId: reminders_list
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `reminders:read`'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: reminders.list schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from reminders.list method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: reminders.list error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from reminders.list method
+      security:
+        - slackAuth:
+            - reminders:read
+  /users.conversations:
+    get:
+      tags:
+        - users
+      description: List conversations the calling user may access.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.conversations
+      operationId: users_conversations
+      parameters:
+        - name: cursor
+          in: query
+          description: 'Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request''s `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.'
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `conversations:read`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn''t been reached. Must be an integer no larger than 1000.'
+          schema:
+            type: integer
+        - name: user
+          in: query
+          description: Browse conversations by a specific user ID's membership. Non-public channels are restricted to those where the calling user shares membership.
+          schema:
+            type: string
+        - name: exclude_archived
+          in: query
+          description: Set to `true` to exclude archived channels from the list
+          schema:
+            type: boolean
+        - name: types
+          in: query
+          description: 'Mix and match channel types by providing a comma-separated list of any combination of `public_channel`, `private_channel`, `mpim`, `im`'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response with only public channels. Note how `num_members` and `is_member` are not returned like typical `conversations` objects.
+          content:
+            application/json:
+              schema:
+                title: users.conversations success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.conversations method. Returned conversation objects do not include `num_members` or `is_member`
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.conversations error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.conversations method
+      security:
+        - slackAuth:
+            - channels:read
+            - groups:read
+            - im:read
+            - mpim:read
+  /users.deletePhoto:
+    post:
+      tags:
+        - users
+      description: Delete the user profile photo
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.deletePhoto
+      operationId: users_deletePhoto
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                token:
+                  type: string
+                  description: 'Authentication token. Requires scope: `users.profile:write`'
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.deletePhoto schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.deletePhoto method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.deletePhoto error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.deletePhoto method
+      security:
+        - slackAuth:
+            - users.profile:write
+  /users.getPresence:
+    get:
+      tags:
+        - users
+      description: Gets user presence information.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.getPresence
+      operationId: users_getPresence
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `users:read`'
+          schema:
+            type: string
+        - name: user
+          in: query
+          description: User to get presence info on. Defaults to the authed user.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'When requesting information for a different user, this method just returns the current presence (either `active` or `away`).'
+          content:
+            application/json:
+              schema:
+                title: 'API method: users.getPresence'
+                type: object
+                additionalProperties:
+                  type: object
+                description: Generated from users.getPresence with shasum e7251aec575d8863f9e0eb38663ae9dc26655f65
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.counts error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response users.getPresence method
+      security:
+        - slackAuth:
+            - users:read
+  /users.identity:
+    get:
+      tags:
+        - users
+      description: Get a user's identity.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.identity
+      operationId: users_identity
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `identity.basic`'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'You will receive at a minimum the following information:'
+          content:
+            application/json:
+              schema:
+                title: users.identity schema
+                type: object
+                description: Schema for successful response from users.identity method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.identity error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.identity method
+      security:
+        - slackAuth:
+            - identity.basic
+  /users.info:
+    get:
+      tags:
+        - users
+      description: Gets information about a user.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.info
+      operationId: users_info
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `users:read`'
+          schema:
+            type: string
+        - name: user
+          in: query
+          description: User to get info on
+          schema:
+            type: string
+        - name: include_locale
+          in: query
+          description: Set this to `true` to receive the locale for this user. Defaults to `false`
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.info success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.info method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.info error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.info method
+      security:
+        - slackAuth:
+            - users:read
+  /users.list:
+    get:
+      tags:
+        - users
+      description: Lists all users in a Slack team.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.list
+      operationId: users_list
+      parameters:
+        - name: cursor
+          in: query
+          description: 'Paginate through collections of data by setting the `cursor` parameter to a `next_cursor` attribute returned by a previous request''s `response_metadata`. Default value fetches the first "page" of the collection. See [pagination](/docs/pagination) for more detail.'
+          schema:
+            type: string
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `users:read`'
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: 'The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the users list hasn''t been reached.'
+          schema:
+            type: integer
+        - name: include_locale
+          in: query
+          description: Set this to `true` to receive the locale for users. Defaults to `false`
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.list schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.list method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.list error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.list method
+      security:
+        - slackAuth:
+            - users:read
+  /users.lookupByEmail:
+    get:
+      tags:
+        - users
+      description: Find a user with an email address.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.lookupByEmail
+      operationId: users_lookupByEmail
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `users:read.email`'
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: An email address belonging to a user in the workspace
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.lookupByEmail success schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.lookupByEmail method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.lookupByEmail error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.lookupByEmail method
+      security:
+        - slackAuth:
+            - users:read.email
+  /users.profile.get:
+    get:
+      tags:
+        - users.profile
+        - users
+      description: Retrieves a user's profile information.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.profile.get
+      operationId: users_profile_get
+      parameters:
+        - name: token
+          in: query
+          description: 'Authentication token. Requires scope: `users.profile:read`'
+          schema:
+            type: string
+        - name: include_labels
+          in: query
+          description: Include labels for each ID in custom profile fields
+          schema:
+            type: boolean
+        - name: user
+          in: query
+          description: User to retrieve profile info for
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.profile.get schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.profile.get method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.profile.get error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.profile.get method
+      security:
+        - slackAuth:
+            - users.profile:read
+  /users.profile.set:
+    post:
+      tags:
+        - users.profile
+        - users
+      description: Set the profile information for a user.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.profile.set
+      operationId: users_profile_set
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `users.profile:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                profile:
+                  type: string
+                  description: Collection of key:value pairs presented as a URL-encoded JSON hash. At most 50 fields may be set. Each field name is limited to 255 characters.
+                user:
+                  type: string
+                  description: ID of user to change. This argument may only be specified by team admins on paid teams.
+                value:
+                  type: string
+                  description: Value to set a single key to. Usable only if `profile` is not passed.
+                name:
+                  type: string
+                  description: Name of a single key to set. Usable only if `profile` is not passed.
+          application/json:
+            schema:
+              properties:
+                profile:
+                  type: string
+                  description: Collection of key:value pairs presented as a URL-encoded JSON hash. At most 50 fields may be set. Each field name is limited to 255 characters.
+                user:
+                  type: string
+                  description: ID of user to change. This argument may only be specified by team admins on paid teams.
+                value:
+                  type: string
+                  description: Value to set a single key to. Usable only if `profile` is not passed.
+                name:
+                  type: string
+                  description: Name of a single key to set. Usable only if `profile` is not passed.
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.profile.set schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.profile.set method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.profile.set error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.profile.set method
+      security:
+        - slackAuth:
+            - users.profile:write
+  /users.setActive:
+    post:
+      tags:
+        - users
+      description: Marked a user as active. Deprecated and non-functional.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.setActive
+      operationId: users_setActive
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `users:write`'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: Default success template
+                required:
+                  - ok
+                type: object
+                properties:
+                  ok:
+                    $ref: '#/components/schemas/defs_ok_true'
+                description: Verbose schema not yet ready for this method.
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: Default error template
+                required:
+                  - ok
+                type: object
+                properties:
+                  ok:
+                    $ref: '#/components/schemas/defs_ok_true'
+                description: Verbose schema not yet ready for this method.
+      security:
+        - slackAuth:
+            - users:write
+  /users.setPhoto:
+    post:
+      tags:
+        - users
+      description: Set the user profile photo
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.setPhoto
+      operationId: users_setPhoto
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                image:
+                  type: string
+                  description: File contents via `multipart/form-data`.
+                crop_w:
+                  type: integer
+                  description: Width/height of crop box (always square)
+                token:
+                  type: string
+                  description: 'Authentication token. Requires scope: `users.profile:write`'
+                crop_y:
+                  type: integer
+                  description: Y coordinate of top-left corner of crop box
+                crop_x:
+                  type: integer
+                  description: X coordinate of top-left corner of crop box
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.setPhoto schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.setPhoto method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.setPhoto error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.setPhoto method
+      security:
+        - slackAuth:
+            - users.profile:write
+  /users.setPresence:
+    post:
+      tags:
+        - users
+      description: Manually sets user presence.
+      externalDocs:
+        description: API method documentation
+        url: https://api.slack.com/methods/users.setPresence
+      operationId: users_setPresence
+      parameters:
+        - name: token
+          in: header
+          description: 'Authentication token. Requires scope: `users:write`'
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                presence:
+                  type: string
+                  description: Either `auto` or `away`
+          application/json:
+            schema:
+              properties:
+                presence:
+                  type: string
+                  description: Either `auto` or `away`
+      responses:
+        '200':
+          description: Typical success response
+          content:
+            application/json:
+              schema:
+                title: users.setPresence schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for successful response from users.setPresence method
+        default:
+          description: Typical error response
+          content:
+            application/json:
+              schema:
+                title: users.setPresence error schema
+                type: object
+                additionalProperties:
+                  type: object
+                description: Schema for error response from users.setPresence method
+      security:
+        - slackAuth:
+            - users:write
+components:
+  schemas:
+    objs_subteam:
+      title: Subteam/Usergroup Object
+      required:
+        - auto_provision
+        - auto_type
+        - created_by
+        - date_create
+        - date_delete
+        - date_update
+        - deleted_by
+        - description
+        - enterprise_subteam_id
+        - handle
+        - id
+        - is_external
+        - is_subteam
+        - is_usergroup
+        - name
+        - prefs
+        - team_id
+        - updated_by
+      type: object
+      properties:
+        auto_provision:
+          type: boolean
+        auto_type:
+          type: object
+        created_by:
+          $ref: '#/components/schemas/defs_user_id'
+        date_create:
+          type: integer
+        date_delete:
+          type: integer
+        date_update:
+          type: integer
+        deleted_by:
+          type: object
+        description:
+          type: string
+        enterprise_subteam_id:
+          type: string
+        handle:
+          type: string
+        id:
+          $ref: '#/components/schemas/defs_subteam_id'
+        is_external:
+          type: boolean
+        is_subteam:
+          type: boolean
+        is_usergroup:
+          type: boolean
+        name:
+          type: string
+        prefs:
+          required:
+            - channels
+            - groups
+          type: object
+          properties:
+            channels:
+              type: array
+              items:
+                $ref: '#/components/schemas/defs_channel_id'
+            groups:
+              type: array
+              items:
+                $ref: '#/components/schemas/defs_group_id'
+        team_id:
+          $ref: '#/components/schemas/defs_team'
+        updated_by:
+          $ref: '#/components/schemas/defs_user_id'
+        user_count:
+          type: integer
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_user_id'
+    objs_team:
+      title: Team Object
+      required:
+        - domain
+        - email_domain
+        - icon
+        - id
+        - name
+      type: object
+      properties:
+        archived:
+          type: boolean
+        avatar_base_url:
+          type: string
+          format: uri
+        created:
+          type: integer
+        date_create:
+          type: integer
+        deleted:
+          type: boolean
+        description:
+          type: string
+        discoverable:
+          type: string
+        domain:
+          type: string
+        email_domain:
+          type: string
+        enterprise_id:
+          $ref: '#/components/schemas/defs_enterprise_id'
+        enterprise_name:
+          $ref: '#/components/schemas/defs_enterprise_name'
+        has_compliance_export:
+          type: boolean
+        icon:
+          $ref: '#/components/schemas/objs_icon'
+        id:
+          $ref: '#/components/schemas/defs_team'
+        is_assigned:
+          type: boolean
+        is_enterprise:
+          type: integer
+        limit_ts:
+          type: integer
+        messages_count:
+          type: integer
+        msg_edit_window_mins:
+          type: integer
+        name:
+          type: string
+        over_integrations_limit:
+          type: boolean
+        over_storage_limit:
+          type: boolean
+        plan:
+          enum:
+            - ''
+            - std
+            - plus
+            - compliance
+            - enterprise
+          type: string
+    defs_app_id:
+      title: App ID
+      pattern: '^A[A-Z0-9]{8}$'
+      type: string
+    defs_dm_id:
+      title: Direct Message Channel ID
+      pattern: '^[D][A-Z0-9]{8}$'
+      type: string
+    objs_team_profile_field:
+      required:
+        - hint
+        - id
+        - label
+        - options
+        - ordering
+        - type
+      type: object
+      properties:
+        field_name:
+          type: string
+        hint:
+          type: string
+        id:
+          pattern: '^X[a-zA-Z0-9]{9}$'
+          type: string
+        is_hidden:
+          type: boolean
+        label:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+        ordering:
+          type: number
+        possible_values:
+          type: array
+          items:
+            type: string
+        type:
+          enum:
+            - text
+            - date
+            - link
+            - mailto
+            - options_list
+            - user
+          type: string
+    objs_comments:
+      title: file comments object
+      type: array
+      items:
+        type: object
+    objs_reminder:
+      required:
+        - creator
+        - id
+        - recurring
+        - text
+        - user
+      type: object
+      properties:
+        complete_ts:
+          type: integer
+        creator:
+          $ref: '#/components/schemas/defs_user_id'
+        id:
+          $ref: '#/components/schemas/defs_reminder_id'
+        recurring:
+          type: boolean
+        text:
+          type: string
+        time:
+          type: integer
+        user:
+          $ref: '#/components/schemas/defs_user_id'
+    defs_subteam_id:
+      title: Subteam ID
+      pattern: '^S[A-Z0-9]{8}$'
+      type: string
+    defs_ts:
+      title: Timestamp in format 0123456789.012345
+      pattern: '^\d{10}\.\d{6}$'
+      type: string
+    defs_reminder_id:
+      title: Reminder ID
+      pattern: '^Rm[A-Z0-9]{8}$'
+      type: string
+    objs_message:
+      title: Message object
+      required:
+        - text
+        - ts
+        - type
+      type: object
+      properties:
+        attachments:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            required:
+              - id
+            type: object
+            properties:
+              image_height:
+                type: integer
+              image_url:
+                type: string
+              id:
+                type: integer
+              image_width:
+                type: integer
+              fallback:
+                type: string
+              image_bytes:
+                type: integer
+        blocks:
+          $ref: '#/components/schemas/blocks'
+        bot_id:
+          type: object
+        client_msg_id:
+          type: string
+        comment:
+          $ref: '#/components/schemas/objs_comment'
+        display_as_bot:
+          type: boolean
+        file:
+          $ref: '#/components/schemas/objs_file'
+        files:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/objs_file'
+        icons:
+          type: object
+          properties:
+            emoji:
+              type: string
+        inviter:
+          $ref: '#/components/schemas/defs_user_id'
+        is_delayed_message:
+          type: boolean
+        is_intro:
+          type: boolean
+        is_starred:
+          type: boolean
+        last_read:
+          $ref: '#/components/schemas/defs_ts'
+        latest_reply:
+          $ref: '#/components/schemas/defs_ts'
+        name:
+          type: string
+        old_name:
+          type: string
+        parent_user_id:
+          $ref: '#/components/schemas/defs_user_id'
+        permalink:
+          type: string
+          format: uri
+        pinned_to:
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_channel'
+        purpose:
+          type: string
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/objs_reaction'
+        replies:
+          type: array
+          items:
+            required:
+              - ts
+              - user
+            type: object
+            properties:
+              user:
+                $ref: '#/components/schemas/defs_user_id'
+              ts:
+                $ref: '#/components/schemas/defs_ts'
+        reply_count:
+          type: integer
+        reply_users:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_user_id'
+        reply_users_count:
+          type: integer
+        source_team:
+          $ref: '#/components/schemas/defs_workspace_id'
+        subscribed:
+          type: boolean
+        subtype:
+          type: string
+        team:
+          $ref: '#/components/schemas/defs_workspace_id'
+        text:
+          type: string
+        thread_ts:
+          $ref: '#/components/schemas/defs_ts'
+        topic:
+          type: string
+        ts:
+          $ref: '#/components/schemas/defs_ts'
+        type:
+          type: string
+        unread_count:
+          type: integer
+        upload:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/defs_user_id'
+        user_profile:
+          $ref: '#/components/schemas/objs_user_profile_short'
+        user_team:
+          $ref: '#/components/schemas/defs_workspace_id'
+        username:
+          type: string
+    defs_topic_purpose_creator:
+      title: 'User ID or empty string, used for topic and purpose creation'
+      pattern: '^[UW][A-Z0-9]{8}$|^$'
+      type: string
+    objs_comment:
+      title: File Comment Object
+      required:
+        - comment
+        - created
+        - id
+        - is_intro
+        - timestamp
+        - user
+      type: object
+      properties:
+        comment:
+          type: string
+        created:
+          type: integer
+        id:
+          $ref: '#/components/schemas/defs_comment_id'
+        is_intro:
+          type: boolean
+        is_starred:
+          type: boolean
+        num_stars:
+          type: integer
+        pinned_info:
+          $ref: '#/components/schemas/defs_pinned_info'
+        pinned_to:
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_channel'
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/objs_reaction'
+        timestamp:
+          type: integer
+        user:
+          $ref: '#/components/schemas/defs_user_id'
+    objs_enterprise_user:
+      required:
+        - enterprise_id
+        - enterprise_name
+        - id
+        - is_admin
+        - is_owner
+        - teams
+      type: object
+      properties:
+        enterprise_id:
+          $ref: '#/components/schemas/defs_enterprise_id'
+        enterprise_name:
+          $ref: '#/components/schemas/defs_enterprise_name'
+        id:
+          $ref: '#/components/schemas/defs_enterprise_user_id'
+        is_admin:
+          type: boolean
+        is_owner:
+          type: boolean
+        teams:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_team'
+    defs_team:
+      title: Team ID
+      pattern: '^[T][A-Z0-9]{8}$'
+      type: string
+    objs_paging:
+      title: paging object
+      required:
+        - page
+        - total
+      type: object
+      properties:
+        count:
+          type: integer
+        page:
+          type: integer
+        pages:
+          type: integer
+        per_page:
+          type: integer
+        spill:
+          type: integer
+        total:
+          type: integer
+    objs_user_profile_short:
+      required:
+        - avatar_hash
+        - display_name
+        - first_name
+        - image_72
+        - is_restricted
+        - is_ultra_restricted
+        - name
+        - real_name
+        - team
+      type: object
+      properties:
+        avatar_hash:
+          type: string
+        display_name:
+          type: string
+        first_name:
+          type: string
+        image_72:
+          type: string
+          format: uri
+        is_restricted:
+          type: boolean
+        is_ultra_restricted:
+          type: boolean
+        name:
+          type: string
+        real_name:
+          type: string
+        team:
+          $ref: '#/components/schemas/defs_workspace_id'
+    defs_group_id:
+      title: Private Channel ID
+      pattern: '^[G][A-Z0-9]{8}$'
+      type: string
+    defs_ok_false:
+      title: default failure response
+      enum:
+        - false
+      type: boolean
+    defs_enterprise_id:
+      title: Enterprise ID
+      pattern: '^[E][A-Z0-9]{8}$'
+      type: string
+    defs_bot_id:
+      title: Bot User ID
+      pattern: '^B[A-Z0-9]{8}$'
+      type: string
+    objs_reaction:
+      title: Reaction object
+      required:
+        - count
+        - name
+        - users
+      type: object
+      properties:
+        count:
+          type: integer
+        name:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_user_id'
+    objs_icon:
+      type: object
+      properties:
+        image_102:
+          type: string
+        image_132:
+          type: string
+        image_230:
+          type: string
+        image_34:
+          type: string
+        image_44:
+          type: string
+        image_68:
+          type: string
+        image_88:
+          type: string
+        image_default:
+          type: boolean
+    defs_comment_id:
+      title: File Comment ID
+      pattern: '^Fc[A-Z0-9]{8}$'
+      type: string
+    defs_channel_name:
+      title: Name of a channel
+      type: string
+    objs_file:
+      title: file object
+      type: object
+      properties:
+        channels:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_channel_id'
+        comments_count:
+          type: integer
+        created:
+          type: integer
+        display_as_bot:
+          type: boolean
+        editable:
+          type: boolean
+        editor:
+          $ref: '#/components/schemas/defs_user_id'
+        external_id:
+          type: string
+        external_type:
+          type: string
+        external_url:
+          type: string
+          format: uri
+        filetype:
+          type: string
+        groups:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_group_id'
+        has_rich_preview:
+          type: boolean
+        id:
+          $ref: '#/components/schemas/defs_file_id'
+        image_exif_rotation:
+          type: integer
+        ims:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_dm_id'
+        is_external:
+          type: boolean
+        is_public:
+          type: boolean
+        is_starred:
+          type: boolean
+        is_tombstoned:
+          type: boolean
+        last_editor:
+          $ref: '#/components/schemas/defs_user_id'
+        mimetype:
+          type: string
+        mode:
+          type: string
+        name:
+          type: string
+        num_stars:
+          type: integer
+        original_h:
+          type: integer
+        original_w:
+          type: integer
+        permalink:
+          type: string
+          format: uri
+        permalink_public:
+          type: string
+          format: uri
+        pinned_info:
+          $ref: '#/components/schemas/defs_pinned_info'
+        pinned_to:
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_channel'
+        pretty_type:
+          type: string
+        public_url_shared:
+          type: boolean
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/objs_reaction'
+        shares:
+          type: object
+          properties:
+            private:
+              type: object
+            public:
+              type: object
+        size:
+          type: integer
+        source_team:
+          $ref: '#/components/schemas/defs_team'
+        state:
+          type: string
+        thumb_1024:
+          type: string
+          format: uri
+        thumb_1024_h:
+          type: integer
+        thumb_1024_w:
+          type: integer
+        thumb_160:
+          type: string
+          format: uri
+        thumb_360:
+          type: string
+          format: uri
+        thumb_360_h:
+          type: integer
+        thumb_360_w:
+          type: integer
+        thumb_480:
+          type: string
+          format: uri
+        thumb_480_h:
+          type: integer
+        thumb_480_w:
+          type: integer
+        thumb_64:
+          type: string
+          format: uri
+        thumb_720:
+          type: string
+          format: uri
+        thumb_720_h:
+          type: integer
+        thumb_720_w:
+          type: integer
+        thumb_80:
+          type: string
+          format: uri
+        thumb_800:
+          type: string
+          format: uri
+        thumb_800_h:
+          type: integer
+        thumb_800_w:
+          type: integer
+        thumb_960:
+          type: string
+          format: uri
+        thumb_960_h:
+          type: integer
+        thumb_960_w:
+          type: integer
+        timestamp:
+          type: integer
+        title:
+          type: string
+        updated:
+          type: integer
+        url_private:
+          type: string
+          format: uri
+        url_private_download:
+          type: string
+          format: uri
+        user:
+          type: string
+        user_team:
+          $ref: '#/components/schemas/defs_team'
+        username:
+          type: string
+    blocks:
+      title: Block Kit blocks
+      type: array
+      items:
+        required:
+          - type
+        type: object
+        properties:
+          type:
+            type: string
+      description: 'This is a very loose definition, in the future, we''ll populate this with deeper schema in this definition namespace.'
+    defs_channel_id:
+      title: Channel ID
+      pattern: '^[C][A-Z0-9]{8}$'
+      type: string
+    defs_channel:
+      title: Channel-like conversation ID
+      pattern: '^[CGD][A-Z0-9]{8}$'
+      type: string
+    objs_resources:
+      title: resources in info from apps.permissions.info
+      required:
+        - ids
+      type: object
+      properties:
+        excluded_ids:
+          type: array
+          items:
+            type: object
+        ids:
+          type: array
+          items:
+            type: object
+        wildcard:
+          type: boolean
+    defs_pinned_info:
+      title: Info for a pinned item
+      type: object
+      additionalProperties:
+        required:
+          - pinned_by
+          - pinned_ts
+        type: object
+        properties:
+          pinned_by:
+            $ref: '#/components/schemas/defs_user_id'
+          pinned_ts:
+            type: integer
+    defs_ok_true:
+      title: default success response
+      enum:
+        - true
+      type: boolean
+    objs_user:
+      type: object
+    defs_enterprise_name:
+      title: Name of the enterprise org
+      type: string
+    objs_group:
+      title: Group object
+      required:
+        - created
+        - creator
+        - id
+        - is_group
+        - members
+        - name
+        - name_normalized
+        - purpose
+        - topic
+      type: object
+      properties:
+        created:
+          type: integer
+        creator:
+          $ref: '#/components/schemas/defs_user_id'
+        id:
+          $ref: '#/components/schemas/defs_group_id'
+        is_archived:
+          type: boolean
+        is_deleted:
+          type: boolean
+        is_group:
+          type: boolean
+        is_moved:
+          type: integer
+        is_mpim:
+          type: boolean
+        is_open:
+          type: boolean
+        is_pending_ext_shared:
+          type: boolean
+        last_read:
+          $ref: '#/components/schemas/defs_ts'
+        latest:
+          type: object
+        members:
+          minItems: 1
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_user_id'
+        name:
+          type: string
+        name_normalized:
+          type: string
+        num_members:
+          type: integer
+        priority:
+          type: number
+        purpose:
+          required:
+            - creator
+            - last_set
+            - value
+          type: object
+          properties:
+            last_set:
+              type: integer
+            creator:
+              $ref: '#/components/schemas/defs_topic_purpose_creator'
+            value:
+              type: string
+        topic:
+          required:
+            - creator
+            - last_set
+            - value
+          type: object
+          properties:
+            last_set:
+              type: integer
+            creator:
+              $ref: '#/components/schemas/defs_topic_purpose_creator'
+            value:
+              type: string
+        unread_count:
+          type: integer
+        unread_count_display:
+          type: integer
+    objs_user_profile:
+      title: User profile object
+      required:
+        - avatar_hash
+        - display_name
+        - display_name_normalized
+        - real_name
+        - real_name_normalized
+      type: object
+      properties:
+        always_active:
+          type: boolean
+        api_app_id:
+          $ref: '#/components/schemas/defs_app_id'
+        avatar_hash:
+          type: string
+        bot_id:
+          $ref: '#/components/schemas/defs_bot_id'
+        display_name:
+          type: string
+        display_name_normalized:
+          type: string
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+        guest_channels:
+          type: string
+        guest_expiration_ts:
+          type: integer
+        guest_invited_by:
+          type: string
+        image_1024:
+          type: string
+          format: uri
+        image_192:
+          type: string
+          format: uri
+        image_24:
+          type: string
+          format: uri
+        image_32:
+          type: string
+          format: uri
+        image_48:
+          type: string
+          format: uri
+        image_512:
+          type: string
+          format: uri
+        image_72:
+          type: string
+          format: uri
+        image_original:
+          type: string
+          format: uri
+        is_custom_image:
+          type: boolean
+        last_name:
+          type: string
+        phone:
+          type: string
+        real_name:
+          type: string
+        real_name_normalized:
+          type: string
+        skype:
+          type: string
+        status_emoji:
+          type: string
+        status_expiration:
+          type: integer
+        status_text:
+          type: string
+        status_text_canonical:
+          type: string
+        team:
+          $ref: '#/components/schemas/defs_workspace_id'
+        teams:
+          $ref: '#/components/schemas/defs_workspace_id'
+        title:
+          type: string
+    objs_conversation:
+      type: object
+    defs_file_id:
+      title: File ID
+      pattern: '^[F][A-Z0-9]{8}$'
+      type: string
+    defs_user_id:
+      title: User ID
+      pattern: '^[UW][A-Z0-9]{8}$'
+      type: string
+    objs_channel:
+      title: Channel Object
+      required:
+        - created
+        - creator
+        - id
+        - is_channel
+        - is_mpim
+        - is_org_shared
+        - is_private
+        - is_shared
+        - members
+        - name
+        - name_normalized
+        - purpose
+        - topic
+      type: object
+      properties:
+        accepted_user:
+          $ref: '#/components/schemas/defs_user_id'
+        created:
+          type: integer
+        creator:
+          $ref: '#/components/schemas/defs_user_id'
+        id:
+          $ref: '#/components/schemas/defs_channel_id'
+        is_archived:
+          type: boolean
+        is_channel:
+          type: boolean
+        is_general:
+          type: boolean
+        is_member:
+          type: boolean
+        is_moved:
+          type: integer
+        is_mpim:
+          type: boolean
+        is_org_shared:
+          type: boolean
+        is_pending_ext_shared:
+          type: boolean
+        is_private:
+          type: boolean
+        is_read_only:
+          type: boolean
+        is_shared:
+          type: boolean
+        last_read:
+          $ref: '#/components/schemas/defs_ts'
+        latest:
+          type: object
+        members:
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_user_id'
+        name:
+          type: string
+        name_normalized:
+          type: string
+        num_members:
+          type: integer
+        pending_shared:
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_team'
+        previous_names:
+          minItems: 0
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/defs_channel_name'
+        priority:
+          type: number
+        purpose:
+          required:
+            - creator
+            - last_set
+            - value
+          type: object
+          properties:
+            last_set:
+              type: integer
+            creator:
+              $ref: '#/components/schemas/defs_topic_purpose_creator'
+            value:
+              type: string
+        topic:
+          required:
+            - creator
+            - last_set
+            - value
+          type: object
+          properties:
+            last_set:
+              type: integer
+            creator:
+              $ref: '#/components/schemas/defs_topic_purpose_creator'
+            value:
+              type: string
+        unlinked:
+          title: Field to determine whether a channel has ever been shared/disconnected in the past
+          type: integer
+        unread_count:
+          type: integer
+        unread_count_display:
+          type: integer
+    objs_scopes:
+      type: array
+      items:
+        title: Named OAuth scopes
+        type: string
+    objs_response_metadata:
+      title: new paging style
+      required:
+        - next_cursor
+      type: object
+      properties:
+        next_cursor:
+          type: string
+    defs_enterprise_user_id:
+      title: Enterprise User ID
+      pattern: '^[W][A-Z0-9]{8}$'
+      type: string
+    defs_workspace_id:
+      title: Team or Enterprise ID
+      pattern: '^[TE][A-Z0-9]{8}$'
+      type: string
+    objs_im:
+      title: IM Object
+      required:
+        - created
+        - id
+        - is_im
+        - is_org_shared
+        - is_user_deleted
+        - user
+      type: object
+      properties:
+        created:
+          type: integer
+        id:
+          $ref: '#/components/schemas/defs_dm_id'
+        is_app_home:
+          type: boolean
+        is_ext_shared:
+          type: boolean
+        is_im:
+          type: boolean
+        is_org_shared:
+          type: boolean
+        is_shared:
+          type: boolean
+        is_user_deleted:
+          type: boolean
+        priority:
+          type: number
+        user:
+          $ref: '#/components/schemas/defs_user_id'
+  securitySchemes:
+    slackAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://slack.com/oauth/authorize
+          tokenUrl: https://slack.com/api/oauth.access
+          scopes:
+            admin: admin
+            admin.users:write: admin.users:write
+            bot: Bot user scope
+            channels:history: channels:history
+            channels:read: channels:read
+            channels:write: channels:write
+            chat:write: chat:write
+            chat:write:bot: Author messages as a bot
+            chat:write:user: chat:write:user
+            conversations:history: conversations:history
+            conversations:read: conversations:read
+            conversations:write: conversations:write
+            dnd:read: dnd:read
+            dnd:write: dnd:write
+            emoji:read: emoji:read
+            files:read: files:read
+            files:write:user: files:write:user
+            groups:history: groups:history
+            groups:read: groups:read
+            groups:write: groups:write
+            identity.basic: identity.basic
+            im:history: im:history
+            im:read: im:read
+            im:write: im:write
+            links:write: links:write
+            mpim:history: mpim:history
+            mpim:read: mpim:read
+            mpim:write: mpim:write
+            none: No scope required
+            pins:read: pins:read
+            pins:write: pins:write
+            reactions:read: reactions:read
+            reactions:write: reactions:write
+            reminders:read: reminders:read
+            reminders:write: reminders:write
+            rtm:stream: rtm:stream
+            search:read: search:read
+            stars:read: stars:read
+            stars:write: stars:write
+            team:read: team:read
+            tokens.basic: tokens.basic
+            usergroups:read: usergroups:read
+            usergroups:write: usergroups:write
+            users.profile:read: users.profile:read
+            users.profile:write: users.profile:write
+            users:read: users:read
+            users:read.email: users:read.email
+            users:write: users:write
+externalDocs:
+  description: Learn more about the Slack Web API
+  url: https://api.slack.com/web

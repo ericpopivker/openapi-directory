@@ -1,0 +1,1300 @@
+openapi: 3.0.1
+info:
+  title: Sales force api
+  version: '0.46'
+paths:
+  '/sobjects/Contact/{id}':
+    get:
+      tags:
+        - Contact
+      summary: Get by id
+      operationId: get-contact-by-id
+      parameters:
+        - name: id
+          in: path
+          description: Contact id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        default:
+          description: unexpected error
+    patch:
+      tags:
+        - Contact
+      summary: Update
+      operationId: update-contact
+      parameters:
+        - name: id
+          in: path
+          description: Contact id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update Contact
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        default:
+          description: unexpected error
+  /sobjects/Contact:
+    post:
+      tags:
+        - Contact
+      summary: Create
+      operationId: create-contact
+      requestBody:
+        description: Create Contact
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+        default:
+          description: unexpected error
+  '/sobjects/Lead/{id}':
+    get:
+      tags:
+        - Lead
+      summary: Get by id
+      operationId: get-lead-by-id
+      parameters:
+        - name: id
+          in: path
+          description: Lead id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        default:
+          description: unexpected error
+    patch:
+      tags:
+        - Lead
+      summary: Update
+      operationId: update-lead
+      parameters:
+        - name: id
+          in: path
+          description: Lead id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update Lead
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        default:
+          description: unexpected error
+  /sobjects/Lead:
+    post:
+      tags:
+        - Lead
+      summary: Create
+      operationId: create-lead
+      requestBody:
+        description: Create Lead
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+        default:
+          description: unexpected error
+  '/sobjects/Opportunity/{id}':
+    get:
+      tags:
+        - Opportunity
+      summary: Get by id
+      operationId: get-opportunity-by-id
+      parameters:
+        - name: id
+          in: path
+          description: Opportunity id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+        default:
+          description: unexpected error
+    patch:
+      tags:
+        - Opportunity
+      summary: Update
+      operationId: update-opportunity
+      parameters:
+        - name: id
+          in: path
+          description: Opportunity id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update Opportunity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+        default:
+          description: unexpected error
+  /sobjects/Opportunity:
+    post:
+      tags:
+        - Opportunity
+      summary: Create
+      operationId: create-opportunity
+      requestBody:
+        description: Create Opportunity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+        default:
+          description: unexpected error
+  '/sobjects/Campaign/{id}':
+    get:
+      tags:
+        - Campaign
+      summary: Get by id
+      operationId: get-campaign-by-id
+      parameters:
+        - name: id
+          in: path
+          description: Campaign id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        default:
+          description: unexpected error
+    patch:
+      tags:
+        - Campaign
+      summary: Update
+      operationId: update-campaign
+      parameters:
+        - name: id
+          in: path
+          description: Campaign id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update Campaign
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        default:
+          description: unexpected error
+  /sobjects/Campaign:
+    post:
+      tags:
+        - Campaign
+      summary: Create
+      operationId: create-campaign
+      requestBody:
+        description: Create Campaign
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+        default:
+          description: unexpected error
+  '/sobjects/CampaignMember/{id}':
+    get:
+      tags:
+        - CampaignMember
+      summary: Get by id
+      operationId: get-campaignmember-by-id
+      parameters:
+        - name: id
+          in: path
+          description: CampaignMember id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignMemberResponse'
+        default:
+          description: unexpected error
+    patch:
+      tags:
+        - CampaignMember
+      summary: Update
+      operationId: update-campaignmember
+      parameters:
+        - name: id
+          in: path
+          description: CampaignMember id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update CampaignMember
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignMemberRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignMemberResponse'
+        default:
+          description: unexpected error
+  /sobjects/CampaignMember:
+    post:
+      tags:
+        - CampaignMember
+      summary: Create
+      operationId: create-campaignmember
+      requestBody:
+        description: Create CampaignMember
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignMemberRequest'
+        required: true
+      responses:
+        '200':
+          description: Requested object
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+        default:
+          description: unexpected error
+components:
+  schemas:
+    ContactRequest:
+      required:
+        - LastName
+      properties:
+        CleanStatus:
+          type: string
+          description: ' Indicates the record’s clean status as compared with Data.com. Values include: Matched, Different, Acknowledged, NotFound, Inactive, Pending, SelectMatch, or Skipped.Several values for CleanStatus appear with different labels on the contact record. Matched appears as In Sync Acknowledged appears as Reviewed Pending appears as Not Compared '
+        Description:
+          type: string
+          description: 'A description of the contact. Label is Contact Description up to 32 KB. '
+        Email:
+          type: string
+          description: 'The contact’s email address. '
+        EmailBouncedDate:
+          type: string
+          description: 'If bounce management is activated and an email sent to the contact bounces, the date and time of the bounce.'
+        EmailBouncedReason:
+          type: string
+          description: 'If bounce management is activated and an email sent to the contact bounces, the reason for the bounce.'
+        Fax:
+          type: string
+          description: 'The contact’s fax number. Label is Business Fax. '
+        FirstName:
+          type: string
+          description: 'The contact’s first name up to 40 characters. '
+        IndividualId:
+          type: string
+          description: ID of the data privacy record associated with this contact. This field is available if Data Protection and Privacy is enabled.
+        IsDeleted:
+          type: boolean
+          description: Indicates whether the object has been moved to the Recycle Bin (true) or not (false). Label is Deleted.
+        Jigsaw:
+          type: string
+          description: 'References the company’s ID in Data.com. If an account has a value in this field, it means that the account was imported from Data.com. If the field value is null, the account was not imported from Data.com. Maximum size is 20 characters. Available in API version 22.0 and later. Label is Data.com Key. Important The Jigsaw field is exposed in the API to support troubleshooting for import errors and reimporting of corrected data. Do not modify this value. '
+        LastName:
+          type: string
+          description: 'Required. Last name of the contact up to 80 characters. '
+        LeadSource:
+          type: string
+          description: 'The lead’s source. '
+        MailingCity:
+          type: string
+          description: 'Mailing address details. '
+        MailingState:
+          type: string
+          description: 'Mailing address details. '
+        MailingCountry:
+          type: string
+          description: 'Mailing address details. '
+        MailingPostalCode:
+          type: string
+          description: 'Mailing address details. '
+        MailingStateCode:
+          type: string
+          description: The ISO codes for the mailing address’s state and country.
+        MailingCountryCode:
+          type: string
+          description: The ISO codes for the mailing address’s state and country.
+        MailingStreet:
+          type: string
+          description: 'Street address for mailing address. '
+        MailingLatitude:
+          type: string
+          description: 'Used with MailingLongitude to specify the precise geolocation of a mailing address. Acceptable values are numbers between –90 and 90 up to 15 decimal places. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        MailingLongitude:
+          type: string
+          description: 'Used with MailingLatitude to specify the precise geolocation of a mailing address. Acceptable values are numbers between –180 and 180 up to 15 decimal places. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        MobilePhone:
+          type: string
+          description: Contact’s mobile phone number.
+        Phone:
+          type: string
+          description: 'Telephone number for the contact. Label is Business Phone. '
+        ReportsToId:
+          type: string
+          description: 'This field doesn’t appear if IsPersonAccount is true. '
+        Salutation:
+          type: string
+          description: 'Honorific abbreviation, word, or phrase to be used in front of name in greetings, such as Dr. or Mrs. '
+        Title:
+          type: string
+          description: 'Title of the contact, such as CEO or Vice President. '
+    ContactResponse:
+      required:
+        - LastName
+      properties:
+        CleanStatus:
+          type: string
+          description: ' Indicates the record’s clean status as compared with Data.com. Values include: Matched, Different, Acknowledged, NotFound, Inactive, Pending, SelectMatch, or Skipped.Several values for CleanStatus appear with different labels on the contact record. Matched appears as In Sync Acknowledged appears as Reviewed Pending appears as Not Compared '
+        Description:
+          type: string
+          description: 'A description of the contact. Label is Contact Description up to 32 KB. '
+        Email:
+          type: string
+          description: 'The contact’s email address. '
+        EmailBouncedDate:
+          type: string
+          description: 'If bounce management is activated and an email sent to the contact bounces, the date and time of the bounce.'
+        EmailBouncedReason:
+          type: string
+          description: 'If bounce management is activated and an email sent to the contact bounces, the reason for the bounce.'
+        Fax:
+          type: string
+          description: 'The contact’s fax number. Label is Business Fax. '
+        FirstName:
+          type: string
+          description: 'The contact’s first name up to 40 characters. '
+        IndividualId:
+          type: string
+          description: ID of the data privacy record associated with this contact. This field is available if Data Protection and Privacy is enabled.
+        IsDeleted:
+          type: boolean
+          description: Indicates whether the object has been moved to the Recycle Bin (true) or not (false). Label is Deleted.
+        Jigsaw:
+          type: string
+          description: 'References the company’s ID in Data.com. If an account has a value in this field, it means that the account was imported from Data.com. If the field value is null, the account was not imported from Data.com. Maximum size is 20 characters. Available in API version 22.0 and later. Label is Data.com Key. Important The Jigsaw field is exposed in the API to support troubleshooting for import errors and reimporting of corrected data. Do not modify this value. '
+        LastActivityDate:
+          type: string
+          description: 'Value is the most recent of either: Due date of the most recent event logged against the record. Due date of the most recently closed task associated with the record. '
+        LastName:
+          type: string
+          description: 'Required. Last name of the contact up to 80 characters. '
+        LastReferencedDate:
+          type: string
+          description: The timestamp for when the current user last viewed a record related to this record.
+        LastViewedDate:
+          type: string
+          description: 'The timestamp for when the current user last viewed this record. If this value is null, this record might only have been referenced (LastReferencedDate) and not viewed.'
+        LeadSource:
+          type: string
+          description: 'The lead’s source. '
+        MobilePhone:
+          type: string
+          description: Contact’s mobile phone number.
+        Name:
+          type: string
+          description: 'Concatenation of FirstName, MiddleName, LastName, and Suffix up to 121 characters. '
+        Phone:
+          type: string
+          description: 'Telephone number for the contact. Label is Business Phone. '
+        PhotoUrl:
+          type: string
+          description: ' Path to be combined with the URL of a Salesforce instance (Example: https://yourInstance.salesforce.com/) to generate a URL to request the social network profile image associated with the contact. Generated URL returns an HTTP redirect (code 302) to the social network profile image for the contact. Empty if Social Accounts and Contacts isn''t enabled or if Social Accounts and Contacts is disabled for the requesting user. '
+        ReportsToId:
+          type: string
+          description: 'This field doesn’t appear if IsPersonAccount is true. '
+        Salutation:
+          type: string
+          description: 'Honorific abbreviation, word, or phrase to be used in front of name in greetings, such as Dr. or Mrs. '
+        Title:
+          type: string
+          description: 'Title of the contact, such as CEO or Vice President. '
+    LeadRequest:
+      required:
+        - Company
+        - LastName
+      properties:
+        AnnualRevenue:
+          type: string
+          description: Annual revenue for the lead’s company.
+        City:
+          type: string
+          description: City for the lead’s address.
+        CleanStatus:
+          type: string
+          description: ' Indicates the record’s clean status compared with Data.com. Values include: Matched, Different, Acknowledged, NotFound, Inactive, Pending, SelectMatch, or Skipped.Several values for CleanStatus appear with different labels on the lead record. Matched appears as In Sync Acknowledged appears as Reviewed Pending appears as Not Compared '
+        Company:
+          type: string
+          description: 'Required. The lead’s company. Note If person account record types have been enabled, and if the value of Company is null, the lead converts to a person account. '
+        CompanyDunsNumber:
+          type: string
+          description: ' The Data Universal Numbering System (D-U-N-S) number, which is a unique, nine-digit number assigned to every business location in the Dun &amp; Bradstreet database that has a unique, separate, and distinct operation. Industries and companies use D-U-N-S numbers as a global standard for business identification and tracking. Maximum size is 9 characters. Note This field is only available to organizations that use Data.com Prospector or Data.com Clean. '
+        Country:
+          type: string
+          description: The lead’s country.
+        CountryCode:
+          type: string
+          description: The ISO country code for the lead’s address.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Description:
+          type: string
+          description: The lead’s description.
+        Division:
+          type: string
+          description: 'A logical segment of your organization''s data. For example, if your company is organized into different business units, you could create a division for each business unit, such as “North America,” “Healthcare,” or “Consulting.” Available only if the organization has the Division permission enabled.'
+        Email:
+          type: string
+          description: The lead’s email address.
+        Fax:
+          type: string
+          description: The lead’s fax number.
+        FirstName:
+          type: string
+          description: The lead’s first name up to 40 characters.
+        IndividualId:
+          type: string
+          description: ID of the data privacy record associated with this lead. This field is available if you enabled Data Protection and Privacy in Setup.
+        Industry:
+          type: string
+          description: Industry in which the lead works.
+        IsConverted:
+          type: boolean
+          description: Indicates whether the lead has been converted (true) or not (false). Label is Converted.
+        IsDeleted:
+          type: boolean
+          description: Indicates whether the object has been moved to the Recycle Bin (true) or not (false). Label is Deleted.
+        IsUnreadByOwner:
+          type: boolean
+          description: 'If true, lead has been assigned, but not yet viewed. See Unread Leads for more information. Label is Unread By Owner.'
+        Jigsaw:
+          type: string
+          description: 'References the ID of a contact in Data.com. If a lead has a value in this field, it means that a contact was imported as a lead from Data.com. If the contact (converted to a lead) was not imported from Data.com, the field value is null. Maximum size is 20 characters. Available in API version 22.0 and later. Label is Data.com Key. Important The Jigsawfield is exposed in the API to support troubleshooting for import errors and reimporting of corrected data. Do not modify the value in the Jigsaw field. '
+        LastName:
+          type: string
+          description: Required. Last name of the lead up to 80 characters.
+        Latitude:
+          type: string
+          description: 'Used with Longitude to specify the precise geolocation of an address. Acceptable values are numbers between –90 and 90 up to 15 decimal places. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        Longitude:
+          type: string
+          description: 'Used with Latitude to specify the precise geolocation of an address. Acceptable values are numbers between –180 and 180 up to 15 decimal places. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        LeadSource:
+          type: string
+          description: The lead’s source.
+        MobilePhone:
+          type: string
+          description: The lead’s mobile phone number.
+        NumberOfEmployees:
+          type: string
+          description: Number of employees at the lead’s company. Label is Employees.
+        OwnerId:
+          type: string
+          description: ID of the lead’s owner.
+        Phone:
+          type: string
+          description: The lead’s phone number.
+        PostalCode:
+          type: string
+          description: Postal code for the address of the lead. Label is Zip/Postal Code.
+        Rating:
+          type: string
+          description: Rating of the lead.
+        Salutation:
+          type: string
+          description: Salutation for the lead.
+        State:
+          type: string
+          description: State for the address of the lead.
+        StateCode:
+          type: string
+          description: The ISO state code for the lead’s address.
+        Status:
+          type: string
+          description: 'Status code for this converted lead. Status codes are defined in Status and represented in the API by the LeadStatus object. '
+        Street:
+          type: string
+          description: Street number and name for the address of the lead.
+        Title:
+          type: string
+          description: 'Title for the lead, such as CFO or CEO.'
+        Website:
+          type: string
+          description: Website for the lead.
+    LeadResponse:
+      required:
+        - Company
+        - LastName
+      properties:
+        Address:
+          type: string
+          description: 'The compound form of the address. Read-only. For details on compound address fields, see Address Compound Fields.'
+        AnnualRevenue:
+          type: string
+          description: Annual revenue for the lead’s company.
+        City:
+          type: string
+          description: City for the lead’s address.
+        CleanStatus:
+          type: string
+          description: ' Indicates the record’s clean status compared with Data.com. Values include: Matched, Different, Acknowledged, NotFound, Inactive, Pending, SelectMatch, or Skipped.Several values for CleanStatus appear with different labels on the lead record. Matched appears as In Sync Acknowledged appears as Reviewed Pending appears as Not Compared '
+        Company:
+          type: string
+          description: 'Required. The lead’s company. Note If person account record types have been enabled, and if the value of Company is null, the lead converts to a person account. '
+        CompanyDunsNumber:
+          type: string
+          description: ' The Data Universal Numbering System (D-U-N-S) number, which is a unique, nine-digit number assigned to every business location in the Dun &amp; Bradstreet database that has a unique, separate, and distinct operation. Industries and companies use D-U-N-S numbers as a global standard for business identification and tracking. Maximum size is 9 characters. Note This field is only available to organizations that use Data.com Prospector or Data.com Clean. '
+        ConvertedAccountId:
+          type: string
+          description: 'Object reference ID that points to the account into which the lead converted. '
+        ConvertedContactId:
+          type: string
+          description: 'Object reference ID that points to the contact into which the lead converted. '
+        ConvertedDate:
+          type: string
+          description: Date on which this lead was converted.
+        ConvertedOpportunityId:
+          type: string
+          description: Object reference ID that points to the opportunity into which the lead has been converted.
+        Country:
+          type: string
+          description: The lead’s country.
+        CountryCode:
+          type: string
+          description: The ISO country code for the lead’s address.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Description:
+          type: string
+          description: The lead’s description.
+        Division:
+          type: string
+          description: 'A logical segment of your organization''s data. For example, if your company is organized into different business units, you could create a division for each business unit, such as “North America,” “Healthcare,” or “Consulting.” Available only if the organization has the Division permission enabled.'
+        Email:
+          type: string
+          description: The lead’s email address.
+        EmailBouncedDate:
+          type: string
+          description: 'If bounce management is activated and an email sent to the lead bounced, the date and time of the bounce.'
+        EmailBouncedReason:
+          type: string
+          description: 'If bounce management is activated and an email sent to the lead bounced, the reason for the bounce.'
+        Fax:
+          type: string
+          description: The lead’s fax number.
+        FirstName:
+          type: string
+          description: The lead’s first name up to 40 characters.
+        GeocodeAccuracy:
+          type: string
+          description: 'Accuracy level of the geocode for the address. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        IndividualId:
+          type: string
+          description: ID of the data privacy record associated with this lead. This field is available if you enabled Data Protection and Privacy in Setup.
+        Industry:
+          type: string
+          description: Industry in which the lead works.
+        IsConverted:
+          type: boolean
+          description: Indicates whether the lead has been converted (true) or not (false). Label is Converted.
+        IsDeleted:
+          type: boolean
+          description: Indicates whether the object has been moved to the Recycle Bin (true) or not (false). Label is Deleted.
+        IsUnreadByOwner:
+          type: boolean
+          description: 'If true, lead has been assigned, but not yet viewed. See Unread Leads for more information. Label is Unread By Owner.'
+        Jigsaw:
+          type: string
+          description: 'References the ID of a contact in Data.com. If a lead has a value in this field, it means that a contact was imported as a lead from Data.com. If the contact (converted to a lead) was not imported from Data.com, the field value is null. Maximum size is 20 characters. Available in API version 22.0 and later. Label is Data.com Key. Important The Jigsawfield is exposed in the API to support troubleshooting for import errors and reimporting of corrected data. Do not modify the value in the Jigsaw field. '
+        LastActivityDate:
+          type: string
+          description: ' Value is the most recent of either: Due date of the most recent event logged against the record. Due date of the most recently closed task associated with the record. '
+        LastName:
+          type: string
+          description: Required. Last name of the lead up to 80 characters.
+        LastReferencedDate:
+          type: string
+          description: The timestamp for when the current user last viewed a record related to this record.
+        LastViewedDate:
+          type: string
+          description: 'The timestamp for when the current user last viewed this record. If this value is null, this record might only have been referenced (LastReferencedDate) and not viewed.'
+        Latitude:
+          type: string
+          description: 'Used with Longitude to specify the precise geolocation of an address. Acceptable values are numbers between –90 and 90 up to 15 decimal places. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        Longitude:
+          type: string
+          description: 'Used with Latitude to specify the precise geolocation of an address. Acceptable values are numbers between –180 and 180 up to 15 decimal places. For details on geolocation compound fields, see Compound Field Considerations and Limitations.'
+        LeadSource:
+          type: string
+          description: The lead’s source.
+        MasterRecordId:
+          type: string
+          description: 'If this record was deleted as the result of a merge, this field contains the ID of the record that was kept. If this record was deleted for any other reason, or has not been deleted, the value is null. Note When using Apex triggers to determine which record was deleted in a merge event, this field’s value is the ID of the record that remains in Trigger.old. In Trigger.new, the value is null. '
+        MobilePhone:
+          type: string
+          description: The lead’s mobile phone number.
+        Name:
+          type: string
+          description: 'Concatenation of FirstName, MiddleName, LastName, and Suffix up to 121 characters.'
+        NumberOfEmployees:
+          type: string
+          description: Number of employees at the lead’s company. Label is Employees.
+        OwnerId:
+          type: string
+          description: ID of the lead’s owner.
+        PartnerAccountId:
+          type: string
+          description: 'ID of the partner account for the partner user that owns this lead. Available if Partner Relationship Management is enabled or if Communities is enabled and you have partner portal licenses. Note If you are uploading leads using API version 15.0 or earlier, and one of the leads in the batch has a partner user as the owner, the Partner Account field on all leads in the batch is set to that partner user’s account regardless of whether the partner user is the owner. In version 16.0, the Partner Account field is set to the appropriate account for the partner user that owns the lead. If the owner of the lead is not a partner user, this field remains empty. '
+        Phone:
+          type: string
+          description: The lead’s phone number.
+        PhotoUrl:
+          type: string
+          description: ' Path to be combined with the URL of a Salesforce instance (Example: https://yourInstance.salesforce.com/) to generate a URL to request the social network profile image associated with the lead. Generated URL returns an HTTP redirect (code 302) to the social network profile image for the lead. Empty if Social Accounts and Contacts isn''t enabled or if Social Accounts and Contacts has been disabled for the requesting user. '
+        PostalCode:
+          type: string
+          description: Postal code for the address of the lead. Label is Zip/Postal Code.
+        Rating:
+          type: string
+          description: Rating of the lead.
+        Salutation:
+          type: string
+          description: Salutation for the lead.
+        ScoreIntelligenceId:
+          type: string
+          description: The ID of the intelligent field record that contains lead score.
+        State:
+          type: string
+          description: State for the address of the lead.
+        StateCode:
+          type: string
+          description: The ISO state code for the lead’s address.
+        Status:
+          type: string
+          description: 'Status code for this converted lead. Status codes are defined in Status and represented in the API by the LeadStatus object. '
+        Street:
+          type: string
+          description: Street number and name for the address of the lead.
+        Title:
+          type: string
+          description: 'Title for the lead, such as CFO or CEO.'
+        Website:
+          type: string
+          description: Website for the lead.
+    OpportunityRequest:
+      required:
+        - CloseDate
+        - Name
+        - StageName
+      properties:
+        Amount:
+          type: string
+          description: 'Estimated total sale amount. For opportunities with products, the amount is the sum of the related products. Any attempt to update this field, if the record has products, will be ignored. The update call will not be rejected, and other fields will be updated as specified, but the Amount will be unchanged.'
+        CampaignId:
+          type: string
+          description: ID of a related Campaign. This field is defined only for those organizations that have the campaign feature Campaigns enabled. The User must have read access rights to the cross-referenced Campaign object in order to create or update that campaign into this field on the opportunity.
+        CloseDate:
+          type: string
+          description: Required. Date when the opportunity is expected to close.
+        ContactId:
+          type: string
+          description: 'ID of the contact associated with this opportunity, set as the primary contact. Read-only field that is derived from the opportunity contact role, which is created at the same time the opportunity is created. This field can only be populated when it’s created, and can’t be updated. To update the value in this field, change the IsPrimary flag on the OpportunityContactRole associated with this opportunity. Available in API version 46.0 and later.'
+        ContractId:
+          type: string
+          description: ID of the contract that’s associated with this opportunity.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Description:
+          type: string
+          description: 'Text description of the opportunity. Limit: 32,000 characters.'
+        ForecastCategoryName:
+          type: string
+          description: ' Available in API version 12.0 and later. The name of the forecast category. It is implied, but not directly controlled, by the StageName field. You can override this field to a different value than is implied by the StageName value.'
+        HasOpenActivity:
+          type: boolean
+          description: Indicates whether an opportunity has an open event or task (true) or not (false). Available in API version 35.0 and later.
+        HasOpportunityLineItem:
+          type: boolean
+          description: 'Read-only field that indicates whether the opportunity has associated line items. A value of true means that Opportunity line items have been created for the opportunity. An opportunity can have opportunity line items only if the opportunity has a price book. The opportunity line items must correspond to PricebookEntry objects that are listed in the opportunity Pricebook2. However, you can insert opportunity line items on an opportunity that does not have an associated Pricebook2. For the first opportunity line item that you insert on an opportunity without a Pricebook2, the API automatically sets the Pricebook2Id field, if the opportunity line item corresponds to a PricebookEntry in an active Pricebook2 that has a CurrencyIsoCode field that matches the CurrencyIsoCode field of the opportunity. If the Pricebook2 is not active or the CurrencyIsoCode fields do not match, then the API returns an error. You can’t update the Pricebook2Id or PricebookId fields if opportunity line items exist on the Opportunity. You must delete the line items before attempting to update the PricebookId field.'
+        HasOverdueTask:
+          type: boolean
+          description: Indicates whether an opportunity has an overdue task (true) or not (false). Available in API version 35.0 and later.
+        IsClosed:
+          type: boolean
+          description: 'Directly controlled by StageName. You can query and filter on this field, but you can’t directly set it in a create, upsert, or update request. It can only be set via StageName. Label is Closed.'
+        IsDeleted:
+          type: boolean
+          description: Indicates whether the object has been moved to the Recycle Bin (true) or not (false). Label is Deleted.
+        IsExcludedFromTerritory2Filter:
+          type: boolean
+          description: 'Used for Filter-Based Opportunity Territory Assignment (Pilot in Spring ’15 / API version 33). Indicates whether the opportunity is excluded (True) or included (False) each time the APEX filter is executed. '
+        IsSplit:
+          type: boolean
+          description: 'Read-only field that indicates whether credit for the opportunity is split between opportunity team members. Label is IsSplit. This field is available in versions 14.0 and later for organizations that enabled Opportunity Splits during the pilot period. Warning This field should not be used. However, it’s documented for the benefit of pilot customers who find references to IsSplit in code. '
+        IsWon:
+          type: boolean
+          description: 'Directly controlled by StageName. You can query and filter on this field, but you can’t directly set the value. It can only be set via StageName. Label is Won.'
+        LeadSource:
+          type: string
+          description: 'Source of this opportunity, such as Advertisement or Trade Show.'
+        Name:
+          type: string
+          description: 'Required. A name for this opportunity. Limit: 120 characters.'
+        NextStep:
+          type: string
+          description: 'Description of next task in closing opportunity. Limit: 255 characters.'
+        OwnerId:
+          type: string
+          description: 'ID of the User who has been assigned to work this opportunity.If you update this field, the previous owner''s access becomes Read Only or the access specified in your organization-wide default for opportunities, whichever is greater. If you have set up opportunity teams in your organization, updating this field has different consequences depending on your version of the API: For API version 12.0 and later, sharing records are kept, as they are for all objects. For API version before 12.0, sharing records are deleted. For API version 16.0 and later, users must have the “Transfer Record” permission in order to update (transfer) account ownership using this field. '
+        Pricebook2Id:
+          type: string
+          description: 'ID of a related Pricebook2 object. The Pricebook2Id field indicates which Pricebook2 applies to this opportunity. The Pricebook2Id field is defined only for those organizations that have products enabled as a feature. You can specify values for only one field (Pricebook2Id or PricebookId)—not both fields. For this reason, both fields are declared nillable.'
+        PricebookId:
+          type: string
+          description: 'Unavailable as of version 3.0. As of version 8.0, the Pricebook object is no longer available. Use the Pricebook2Id field instead, specifying the ID of the Pricebook2 record.'
+        Probability:
+          type: string
+          description: 'Percentage of estimated confidence in closing the opportunity. It is implied, but not directly controlled, by the StageName field. You can override this field to a different value than what is implied by the StageName. Note If you''re changing the Probability field through the API using a partner WSDL call, or an Apex before trigger, and the value may have several decimal places, we recommend rounding the value to a whole number. For example, the following Apex in a before trigger uses the round method to change the field value: o.probability = o.probability.round(); '
+        StageName:
+          type: string
+          description: 'Required. Current stage of this record. The StageName field controls several other fields on an opportunity. Each of the fields can be directly set or implied by changing the StageName field. In addition, the StageName field is a picklist, so it has additional members in the returned describeSObjectResult to indicate how it affects the other fields. To obtain the stage name values in the picklist, query the OpportunityStage object. If the StageName is updated, then the ForecastCategoryName, IsClosed, IsWon, and Probability are automatically updated based on the stage-category mapping.'
+        SyncedQuoteID:
+          type: string
+          description: Read only in an Apex trigger. The ID of the Quote that syncs with the opportunity. Setting this field lets you start and stop syncing between the opportunity and a quote. The ID has to be for a quote that is a child of the opportunity.
+        Territory2Id:
+          type: string
+          description: The ID of the territory that is assigned to the opportunity. Available only if Enterprise Territory Management has been enabled for your organization.
+        TotalOpportunityQuantity:
+          type: string
+          description: Number of items included in this opportunity. Used in quantity-based forecasting.
+        Type:
+          type: string
+          description: 'Type of opportunity. For example, Existing Business or New Business. Label is Opportunity Type.'
+    OpportunityResponse:
+      required:
+        - CloseDate
+        - Name
+        - StageName
+      properties:
+        Amount:
+          type: string
+          description: 'Estimated total sale amount. For opportunities with products, the amount is the sum of the related products. Any attempt to update this field, if the record has products, will be ignored. The update call will not be rejected, and other fields will be updated as specified, but the Amount will be unchanged.'
+        CampaignId:
+          type: string
+          description: ID of a related Campaign. This field is defined only for those organizations that have the campaign feature Campaigns enabled. The User must have read access rights to the cross-referenced Campaign object in order to create or update that campaign into this field on the opportunity.
+        CloseDate:
+          type: string
+          description: Required. Date when the opportunity is expected to close.
+        ContactId:
+          type: string
+          description: 'ID of the contact associated with this opportunity, set as the primary contact. Read-only field that is derived from the opportunity contact role, which is created at the same time the opportunity is created. This field can only be populated when it’s created, and can’t be updated. To update the value in this field, change the IsPrimary flag on the OpportunityContactRole associated with this opportunity. Available in API version 46.0 and later.'
+        ContractId:
+          type: string
+          description: ID of the contract that’s associated with this opportunity.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Description:
+          type: string
+          description: 'Text description of the opportunity. Limit: 32,000 characters.'
+        ExpectedRevenue:
+          type: string
+          description: 'Read-only field that is equal to the product of the opportunity Amount field and the Probability. You can’t directly set this field, but you can indirectly set it by setting the Amount or Probability fields.'
+        Fiscal:
+          type: string
+          description: 'If fiscal years are not enabled, the name of the fiscal quarter or period in which the opportunity CloseDate falls. Value should be in YYY Q format, for example, ''2006 1'' for first quarter of 2006.'
+        FiscalQuarter:
+          type: string
+          description: 'Represents the fiscal quarter. Valid values are 1, 2, 3, or 4.'
+        FiscalYear:
+          type: string
+          description: 'Represents the fiscal year, for example, 2006.'
+        ForecastCategory:
+          type: string
+          description: 'Restricted picklist field. It is implied, but not directly controlled, by the StageName field. You can override this field to a different value than is implied by the StageName value. The values of this field are fixed enumerated values. The field labels are localized to the language of the user performing the operation, if localized versions of those labels are available for that language in the user interface.In API version 12.0 and later, the value of this field is automatically set based on the value of the ForecastCategoryName and can’t be updated any other way. The field properties Create, Defaulted on create, Nillable, and Update are not available in version 12.0. '
+        ForecastCategoryName:
+          type: string
+          description: ' Available in API version 12.0 and later. The name of the forecast category. It is implied, but not directly controlled, by the StageName field. You can override this field to a different value than is implied by the StageName value.'
+        HasOpenActivity:
+          type: boolean
+          description: Indicates whether an opportunity has an open event or task (true) or not (false). Available in API version 35.0 and later.
+        HasOpportunityLineItem:
+          type: boolean
+          description: 'Read-only field that indicates whether the opportunity has associated line items. A value of true means that Opportunity line items have been created for the opportunity. An opportunity can have opportunity line items only if the opportunity has a price book. The opportunity line items must correspond to PricebookEntry objects that are listed in the opportunity Pricebook2. However, you can insert opportunity line items on an opportunity that does not have an associated Pricebook2. For the first opportunity line item that you insert on an opportunity without a Pricebook2, the API automatically sets the Pricebook2Id field, if the opportunity line item corresponds to a PricebookEntry in an active Pricebook2 that has a CurrencyIsoCode field that matches the CurrencyIsoCode field of the opportunity. If the Pricebook2 is not active or the CurrencyIsoCode fields do not match, then the API returns an error. You can’t update the Pricebook2Id or PricebookId fields if opportunity line items exist on the Opportunity. You must delete the line items before attempting to update the PricebookId field.'
+        HasOverdueTask:
+          type: boolean
+          description: Indicates whether an opportunity has an overdue task (true) or not (false). Available in API version 35.0 and later.
+        IsClosed:
+          type: boolean
+          description: 'Directly controlled by StageName. You can query and filter on this field, but you can’t directly set it in a create, upsert, or update request. It can only be set via StageName. Label is Closed.'
+        IsDeleted:
+          type: boolean
+          description: Indicates whether the object has been moved to the Recycle Bin (true) or not (false). Label is Deleted.
+        IsExcludedFromTerritory2Filter:
+          type: boolean
+          description: 'Used for Filter-Based Opportunity Territory Assignment (Pilot in Spring ’15 / API version 33). Indicates whether the opportunity is excluded (True) or included (False) each time the APEX filter is executed. '
+        IsSplit:
+          type: boolean
+          description: 'Read-only field that indicates whether credit for the opportunity is split between opportunity team members. Label is IsSplit. This field is available in versions 14.0 and later for organizations that enabled Opportunity Splits during the pilot period. Warning This field should not be used. However, it’s documented for the benefit of pilot customers who find references to IsSplit in code. '
+        IsWon:
+          type: boolean
+          description: 'Directly controlled by StageName. You can query and filter on this field, but you can’t directly set the value. It can only be set via StageName. Label is Won.'
+        LastActivityDate:
+          type: string
+          description: 'Value is one of the following, whichever is the most recent: Due date of the most recent event logged against the record. Due date of the most recently closed task associated with the record. '
+        LastReferencedDate:
+          type: string
+          description: The timestamp for when the current user last viewed a record related to this record.
+        LastViewedDate:
+          type: string
+          description: 'The timestamp for when the current user last viewed this record. If this value is null, this record might only have been referenced (LastReferencedDate) and not viewed.'
+        LeadSource:
+          type: string
+          description: 'Source of this opportunity, such as Advertisement or Trade Show.'
+        Name:
+          type: string
+          description: 'Required. A name for this opportunity. Limit: 120 characters.'
+        NextStep:
+          type: string
+          description: 'Description of next task in closing opportunity. Limit: 255 characters.'
+        OwnerId:
+          type: string
+          description: 'ID of the User who has been assigned to work this opportunity.If you update this field, the previous owner''s access becomes Read Only or the access specified in your organization-wide default for opportunities, whichever is greater. If you have set up opportunity teams in your organization, updating this field has different consequences depending on your version of the API: For API version 12.0 and later, sharing records are kept, as they are for all objects. For API version before 12.0, sharing records are deleted. For API version 16.0 and later, users must have the “Transfer Record” permission in order to update (transfer) account ownership using this field. '
+        Pricebook2Id:
+          type: string
+          description: 'ID of a related Pricebook2 object. The Pricebook2Id field indicates which Pricebook2 applies to this opportunity. The Pricebook2Id field is defined only for those organizations that have products enabled as a feature. You can specify values for only one field (Pricebook2Id or PricebookId)—not both fields. For this reason, both fields are declared nillable.'
+        PricebookId:
+          type: string
+          description: 'Unavailable as of version 3.0. As of version 8.0, the Pricebook object is no longer available. Use the Pricebook2Id field instead, specifying the ID of the Pricebook2 record.'
+        Probability:
+          type: string
+          description: 'Percentage of estimated confidence in closing the opportunity. It is implied, but not directly controlled, by the StageName field. You can override this field to a different value than what is implied by the StageName. Note If you''re changing the Probability field through the API using a partner WSDL call, or an Apex before trigger, and the value may have several decimal places, we recommend rounding the value to a whole number. For example, the following Apex in a before trigger uses the round method to change the field value: o.probability = o.probability.round(); '
+        StageName:
+          type: string
+          description: 'Required. Current stage of this record. The StageName field controls several other fields on an opportunity. Each of the fields can be directly set or implied by changing the StageName field. In addition, the StageName field is a picklist, so it has additional members in the returned describeSObjectResult to indicate how it affects the other fields. To obtain the stage name values in the picklist, query the OpportunityStage object. If the StageName is updated, then the ForecastCategoryName, IsClosed, IsWon, and Probability are automatically updated based on the stage-category mapping.'
+        SyncedQuoteID:
+          type: string
+          description: Read only in an Apex trigger. The ID of the Quote that syncs with the opportunity. Setting this field lets you start and stop syncing between the opportunity and a quote. The ID has to be for a quote that is a child of the opportunity.
+        Territory2Id:
+          type: string
+          description: The ID of the territory that is assigned to the opportunity. Available only if Enterprise Territory Management has been enabled for your organization.
+        TotalOpportunityQuantity:
+          type: string
+          description: Number of items included in this opportunity. Used in quantity-based forecasting.
+        Type:
+          type: string
+          description: 'Type of opportunity. For example, Existing Business or New Business. Label is Opportunity Type.'
+    CampaignRequest:
+      required:
+        - Name
+      properties:
+        ActualCost:
+          type: string
+          description: Amount of money spent to run the campaign.
+        BudgetedCost:
+          type: string
+          description: Amount of money budgeted for the campaign.
+        CampaignImageId:
+          type: string
+          description: ID of the campaign image. Available in API version 42.0 and later.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Description:
+          type: string
+          description: 'Description of the campaign. Limit: 32 KB. Only the first 255 characters display in reports.'
+        EndDate:
+          type: string
+          description: Ending date for the campaign. Responses received after this date are still counted.
+        ExpectedResponse:
+          type: string
+          description: Percentage of responses you expect to receive for the campaign.
+        ExpectedRevenue:
+          type: string
+          description: Amount of money you expect to generate from the campaign.
+        IsActive:
+          type: boolean
+          description: Indicates whether this campaign is active (true) or not (false). Default value is false. Label is Active.
+        Name:
+          type: string
+          description: 'Required. Name of the campaign. Limit: is 80 characters.'
+        NumberSent:
+          type: string
+          description: 'Number of individuals targeted by the campaign. For example, the number of emails sent. Label is Num Sent.'
+        OwnerId:
+          type: string
+          description: ID of the user who owns this campaign. Default value is the user logging in to the API to perform the create.
+        ParentCampaign:
+          type: string
+          description: The campaign above the selected campaign in the campaign hierarchy.
+        ParentId:
+          type: string
+          description: ' ID of the parent Campaign record, if any. '
+        StartDate:
+          type: string
+          description: Starting date for the campaign.
+        Status:
+          type: string
+          description: 'Status of the campaign, for example, Planned, In Progress. Limit: 40 characters.'
+        Type:
+          type: string
+          description: 'Type of campaign, for example, Direct Mail or Referral Program. Limit: 40 characters.'
+    CampaignResponse:
+      required:
+        - Name
+      properties:
+        ActualCost:
+          type: string
+          description: Amount of money spent to run the campaign.
+        AmountAllOpportunities:
+          type: string
+          description: 'Amount of money in all opportunities associated with the campaign, including closed/won opportunities. Label is Value Opportunities in Campaign.'
+        AmountWonOpportunities:
+          type: string
+          description: Amount of money in closed or won opportunities associated with the campaign. Label is Value Won Opportunities in Campaign.
+        BudgetedCost:
+          type: string
+          description: Amount of money budgeted for the campaign.
+        CampaignImageId:
+          type: string
+          description: ID of the campaign image. Available in API version 42.0 and later.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Description:
+          type: string
+          description: 'Description of the campaign. Limit: 32 KB. Only the first 255 characters display in reports.'
+        EndDate:
+          type: string
+          description: Ending date for the campaign. Responses received after this date are still counted.
+        ExpectedResponse:
+          type: string
+          description: Percentage of responses you expect to receive for the campaign.
+        ExpectedRevenue:
+          type: string
+          description: Amount of money you expect to generate from the campaign.
+        HierarchyActualCost:
+          type: string
+          description: Calculated field for the total amount of money spent to run the campaigns in a campaign hierarchy. Label is Total Actual Cost in Hierarchy.
+        HierarchyBudgetedCost:
+          type: string
+          description: Calculated field for the total amount of money budgeted for the campaigns in a campaign hierarchy. Label isTotal Budgeted Cost in Hierarchy.
+        HierarchyExpectedRevenue:
+          type: string
+          description: Calculated field for the total amount of money you expect to generate from the campaigns in a campaign hierarchy. Label is Total Expected Revenue in Hierarchy.
+        HierarchyNumberSent:
+          type: string
+          description: 'Calculated field for the total number of individuals targeted by the campaigns in a campaign hierarchy. For example, the number of email messagess sent. Label is Total Num Sent in Hierarchy.'
+        IsActive:
+          type: boolean
+          description: Indicates whether this campaign is active (true) or not (false). Default value is false. Label is Active.
+        LastActivityDate:
+          type: string
+          description: 'Value is one of the following, whichever is the most recent: Due date of the most recent event logged against the record. Due date of the most recently closed task associated with the record. '
+        LastReferencedDate:
+          type: string
+          description: The timestamp for when the current user last viewed a record related to this record.
+        LastViewedDate:
+          type: string
+          description: 'The timestamp for when the current user last viewed this record. If this value is null, this record might only have been referenced (LastReferencedDate) and not viewed.'
+        Name:
+          type: string
+          description: 'Required. Name of the campaign. Limit: is 80 characters.'
+        NumberOfContacts:
+          type: string
+          description: Number of contacts associated with the campaign. Label is Total Contacts.
+        NumberOfConvertedLeads:
+          type: string
+          description: Number of leads that were converted to an account and contact due to the marketing efforts in the campaign. Label is Converted Leads.
+        NumberOfLeads:
+          type: string
+          description: Number of leads associated with the campaign. Label is Leads in Campaign.
+        NumberOfOpportunities:
+          type: string
+          description: Number of opportunities associated with the campaign. Label is Opportunities in Campaign.
+        NumberOfResponses:
+          type: string
+          description: Number of contacts and unconverted leads with a Member Status equivalent to “Responded” for the campaign. Label is Responses in Campaign.
+        NumberOfWonOpportunities:
+          type: string
+          description: Number of closed or won opportunities associated with the campaign. Label is Won Opportunities in Campaign.
+        NumberSent:
+          type: string
+          description: 'Number of individuals targeted by the campaign. For example, the number of emails sent. Label is Num Sent.'
+        OwnerId:
+          type: string
+          description: ID of the user who owns this campaign. Default value is the user logging in to the API to perform the create.
+        ParentCampaign:
+          type: string
+          description: The campaign above the selected campaign in the campaign hierarchy.
+        ParentId:
+          type: string
+          description: ' ID of the parent Campaign record, if any. '
+        StartDate:
+          type: string
+          description: Starting date for the campaign.
+        Status:
+          type: string
+          description: 'Status of the campaign, for example, Planned, In Progress. Limit: 40 characters.'
+        TotalAmountAllOpportunities:
+          type: string
+          description: 'Calculated field for total amount of all opportunities associated with the campaign hierarchy, including closed/won opportunities. Label is Total Value Opportunities in Hierarchy.'
+        TotalAmountAllWonOpportunities:
+          type: string
+          description: Calculated field for amount of all closed/won opportunities associated with the campaign hierarchy. Label is Total Value Won Opportunities in Hierarchy.
+        TotalNumberofContacts:
+          type: string
+          description: Calculated field for number of contacts associated with the campaign hierarchy. Label is Total Contacts in Hierarchy.
+        TotalNumberofConvertedLeads:
+          type: string
+          description: 'Calculated field for the total number of leads associated with the campaign hierarchy that were converted into accounts, contacts, and opportunities. Label is Total Converted Leads in Hierarchy.'
+        TotalNumberofLeads:
+          type: string
+          description: Calculated field for total number of leads associated with the campaign hierarchy. This number also includes converted leads. Label is Total Leads in Hierarchy.
+        TotalNumberofOpportunities:
+          type: string
+          description: Calculated field for the total number of opportunities associated with the campaign hierarchy. Label is Total Opportunities in Hierarchy.
+        TotalNumberofResponses:
+          type: string
+          description: Calculated field for number of contacts and unconverted leads that have a Member Status equivalent to “Responded” for the campaign hierarchy. Label is Total Responses in Hierarchy.
+        TotalNumberofWonOpportunities:
+          type: string
+          description: Calculated field for the total number of won opportunities associated with the campaign hierarchy. Label is Total Won Opportunities in Hierarchy.
+        Type:
+          type: string
+          description: 'Type of campaign, for example, Direct Mail or Referral Program. Limit: 40 characters.'
+    CampaignMemberRequest:
+      required:
+        - CampaignId
+        - ContactId
+        - LeadId
+      properties:
+        CampaignId:
+          type: string
+          description: Required. ID of the Campaign to which this Lead or Contact is associated.
+        ContactId:
+          type: string
+          description: Required. ID of the Contact who is associated with a Campaign.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        HasResponded:
+          type: boolean
+          description: Indicates whether the campaign member has responded to the campaign (true) or not (false). Label is Responded.
+        LeadId:
+          type: string
+          description: Required. ID of the Lead who is associated with a Campaign.
+        Status:
+          type: string
+          description: 'Controls the HasResponded flag on this object. You can''t directly set the HasResponded flag, as it is read-only. You can set it indirectly by setting this field in a create or update call. Each predefined value implies a HasResponded flag value. Each time you update this field, you implicitly update the HasResponded flag. In the Salesforce user interface, Marketing users can define valid status values for the Status picklist. They can choose one status as the default status. For each Status field value, they can also select which values to count as “Responded,” meaning that the HasResponded flag is set to true for those values.40 character limit. Note When creating or updating campaign members, use the text value for Status instead of the ID from the CampaignMemberStatus object. '
+    CampaignMemberResponse:
+      required:
+        - CampaignId
+        - ContactId
+        - LeadId
+      properties:
+        CampaignId:
+          type: string
+          description: Required. ID of the Campaign to which this Lead or Contact is associated.
+        City:
+          type: string
+          description: The city for the address of the lead or contact.
+        CompanyOrAccount:
+          type: string
+          description: The company or account of the lead or contact.
+        ContactId:
+          type: string
+          description: Required. ID of the Contact who is associated with a Campaign.
+        CurrencyIsoCode:
+          type: string
+          description: Available only for organizations with the multicurrency feature enabled. Contains the ISO code for any currency allowed by the organization.
+        Country:
+          type: string
+          description: The country for the address of the lead or contact.
+        Description:
+          type: string
+          description: The description of the associated lead or contact.
+        Email:
+          type: string
+          description: Email address for the contact or lead.
+        Fax:
+          type: string
+          description: Fax number for the contact or lead.
+        FirstName:
+          type: string
+          description: The first name of the contact or lead.
+        FirstRespondedDate:
+          type: string
+          description: Indicates the date on which the campaign member was first given a responded status.
+        HasOptedOutOfFax:
+          type: boolean
+          description: Indicates that the contact or lead does not wish to receive faxes.
+        HasResponded:
+          type: boolean
+          description: Indicates whether the campaign member has responded to the campaign (true) or not (false). Label is Responded.
+        LastName:
+          type: string
+          description: The last name of the contact or lead. Limit is 80 characters.
+        LeadId:
+          type: string
+          description: Required. ID of the Lead who is associated with a Campaign.
+        LeadOrContactId:
+          type: string
+          description: ' The ID of the associated lead or contact. '
+        LeadOrContactOwnerId:
+          type: string
+          description: The ID of the owner of the associated lead or contact.
+        LeadSource:
+          type: string
+          description: The source from which the lead was obtained.
+        MobilePhone:
+          type: string
+          description: The mobile phone number of the lead or contact.
+        Name:
+          type: string
+          description: First and last name of the contact or lead with which the campaign member is associated.
+        Phone:
+          type: string
+          description: The phone number of the lead or contact.
+        PostalCode:
+          type: string
+          description: The postal code of the lead or contact.
+        Salutation:
+          type: string
+          description: Salutation for the lead or contact.
+        State:
+          type: string
+          description: The state for the address of the lead or contact. Limit is 80 characters.
+        Status:
+          type: string
+          description: 'Controls the HasResponded flag on this object. You can''t directly set the HasResponded flag, as it is read-only. You can set it indirectly by setting this field in a create or update call. Each predefined value implies a HasResponded flag value. Each time you update this field, you implicitly update the HasResponded flag. In the Salesforce user interface, Marketing users can define valid status values for the Status picklist. They can choose one status as the default status. For each Status field value, they can also select which values to count as “Responded,” meaning that the HasResponded flag is set to true for those values.40 character limit. Note When creating or updating campaign members, use the text value for Status instead of the ID from the CampaignMemberStatus object. '
+        Street:
+          type: string
+          description: The street for the address of the lead or contact.
+        Title:
+          type: string
+          description: Title for the lead or contact.
+        Type:
+          type: string
+          description: Indicates whether the campaign member is a lead or a contact.

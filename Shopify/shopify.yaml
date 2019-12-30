@@ -1,0 +1,353 @@
+openapi: 3.0.1
+info: 
+  version: '2019/10'
+  title: Shopify
+paths:
+  /orders.json:
+    get:
+      description: 'Get orders'
+      summary: Get-Orders
+      tags:
+      - Orders
+      operationId: GetOrders
+      parameters:
+        - name: limit
+          in: query                    
+          schema:
+            type: string
+        - name: since_id
+          in: query
+          schema:
+            type: integer
+        - name: created_at_min
+          in: query
+          schema:
+            type: string
+        - name: created_at_max
+          in: query
+          schema:
+            type: string
+        - name: updated_at_min
+          in: query
+          schema:
+            type: string
+        - name: updated_at_max
+          in: query
+          schema:
+            type: string
+        - name: processed_at_min
+          in: query
+          schema:
+            type: string
+        - name: processed_at_max
+          in: query
+          schema:
+            type: string
+        - name: attribution_app_id
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: open (default), closed, cancelled, any
+          schema:
+            type: string
+        - name: financial_status
+          in: query
+          description: authorized, pending, paid, partially_paid, refunded, refunded, partially_refunded, any, any
+          schema:
+            type: string
+        - name: fulfillment_status
+          in: query
+          description: shipped, partial, partial, any, unfulfilled
+          schema:
+            type: string
+
+
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrderResponse'
+
+
+
+# ---------- COMPONENTS -----------------------------------------------------------------------------------------------------
+
+components:
+  schemas:
+    GetOrderResponse:
+      type: object      
+      properties:
+        orders:
+          type: array          
+          items:
+            $ref: '#/components/schemas/Order'
+
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        number:
+          type: number
+        node: 
+          type: string
+        token:
+          type: string
+        gateway:
+          type: string
+        test: 
+          type: boolean
+        total_price: 
+          type: number
+        subtotal_price:
+          type: number
+        total_weight:
+          type: number
+        total_tax:
+          type: number
+        taxes_included:
+          type: boolean
+        currency:
+          type: string
+        financial_status:
+          type: string
+        confirmed: 
+          type: boolean
+        total_discounts:
+          type: number
+        total_line_items_price:
+          type: number
+        name:
+          type: string
+        user_id:
+          type: string
+        processed_at:
+          type: string
+        # phone:
+        # app_id:
+        # browser_ip:
+        # landing_site_ref
+        order_number:
+          type: integer
+        # discount_applications
+        # discount_codes
+        # note_attributes
+        # payment_gateway_names
+        # processing_method
+        # checkout_id
+        source_name:
+          type: string
+        
+        fulfillment_status:
+          type: string
+        tags: 
+          type: string
+        contact_email:
+          type: string
+        order_status_url: 
+          type: string
+        presentment_currency:
+          type: string
+        
+        # total_line_items_price_set
+        # total_discounts_set
+        # total_shipping_price_set
+        # subtotal_price_set
+        # total_price_set
+        # total_tax_set
+        # tax_lines
+
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItem'
+        #fulfillments
+        #refunds
+        #total_tip_received
+        #admin_graphql_api_id
+        #shipping_lines
+        
+        billing_address:
+          $ref: '#/components/schemas/Address'
+        shipping_address:
+          $ref: '#/components/schemas/Address'
+        customer:
+          $ref: '#/components/schemas/Customer'
+
+    Address:
+      type: object
+      properties: 
+        first_name:
+          type: string
+        address1:
+          type: string
+        phone:
+          type: string
+        city:
+          type: string
+        zip:
+          type: string
+        province:
+          type: string
+        country:
+          type: string
+        last_name:
+          type: string
+        address2:
+          type: string
+        company:
+          type: string
+        latitude:
+          type: string
+        longitude:
+          type: string
+        name:
+          type: string
+        country_code:
+          type: string
+        province_code:
+          type: string
+        
+
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        accepts_marketing:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        orders_count:
+          type: string
+        state:
+          type: string
+        total_spent:
+          type: number
+        last_order_id:
+          type: integer
+        note:
+          type: string
+        verified_email:
+          type: boolean
+        #multipass_identifier
+        #tax_exempt
+        #todo: check type
+        phone:
+          type: string
+        tags: 
+          type: string
+        last_order_name:
+          type: string
+        currency:
+          type: string
+        #accepts_marketing_updated_at
+        #marketing_opt_in_level
+        #admin_graphql_api_id
+        default_address:
+          $ref: '#/components/schemas/Address'
+          properties:
+            id:
+              type: integer
+
+
+        
+
+
+    LineItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        variant_id:
+          type: integer
+        title:
+            type: string
+        quantity:
+          type: integer
+        sku:
+          type: string
+        variant_title:
+          type: string
+        vendor:
+          type: string
+        fulfillment_service:
+          type: string
+        product_id:
+          type: integer
+        requires_shipping:
+          type: boolean
+        taxable:
+          type: boolean
+        gift_card:
+          type: boolean
+        name:
+          type: string
+        variant_inventory_management:
+          type: string
+        # properties
+        product_exists:
+          type: boolean
+        fulfillable_quantity:
+          type: integer
+        grams:
+          type: number
+        price:
+          type: number
+        total_discount:
+          type: number
+        fulfillment_status:
+          type: string
+        #price_set
+        #total_discount_set
+        #discount_allocations
+        #admin_graphql_api_id
+        #tax_lines
+
+        
+        
+        
+        
+
+        
+
+        
+        
+        
+        
+
+
+
+
+
+
+
+        
+
+
+        
+        
+        
+
+
+        
+        
+        

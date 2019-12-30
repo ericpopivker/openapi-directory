@@ -14,20 +14,29 @@ But if you are DIY type of guy, you can just download one our our cleaned up Ope
 Here is the list of included Yaml files:
 
 
-## Sendgird
+### [Clearbit](./Clearbit)
 
-## Jira
+### [GitHub](./GitHub)
 
-## Salesforce
+### [Hubspot](./Hubspot)
 
-## Hubspot
+### [Jira](./Jira)
 
+### [MindBody](./MindBody)
 
-## Slack
+### [NationBuilder](./NationBuilder)
 
+### [QuickBooks](./QuickBooks)
 
+### [Salesforce](./Salesforce)
 
+### [Sendgrid](./Sendgrid)
 
+### [Shopify](./Shopify)
+
+### [Slack](./Slack)
+
+### [Square](./Square)
 
 
 # If you don't see API in list

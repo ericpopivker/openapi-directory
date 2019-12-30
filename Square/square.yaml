@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: Square API
+  description: 'Square API'
+  version: '1.0'
+servers:
+- url: https://connect.squareup.com
+paths:
+  /v2/orders/search:
+    post:
+      tags:
+        - Orders
+      summary: GetOrders
+      description: 'Search orders'
+      operationId: GetOrders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - location_ids
+              properties:
+                location_ids:
+                  type: array
+                  items:
+                    type: string
+                query:
+                  type: object
+                  properties:
+                    filter:
+                      type: object
+                      properties:
+                        date_time_filter:
+                          type: object
+                          properties:
+                            closed_at: 
+                              type: object
+                              properties:
+                                start_at:
+                                  type: string
+                                end_at:
+                                  type: string
+      responses:
+        200:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content: {}
+      deprecated: false
+      servers:
+        - url: https://connect.squareup.com
+          variables: {}
+      security:
+        - Authorization: []
+  /v2/customers/{customerId}:
+    get: 
+      tags:
+        - Customers
+      summary: GetCustomer
+      description: 'Get Customer'
+      operationId: GetCustomer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: "ZQHM6FZXBMS5Q8XKC0W146X7J4"
+      responses:
+        200:
+          description: ""
+          content: {}
+        400:
+          description: ""
+          content: {}
+      deprecated: false
+      servers:
+        - url: https://connect.squareup.com
+          variables: {}
+      security:
+        - Authorization: []
+components:
+  parameters:
+    trait_authorizationHeader_Authorization:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        default: Bearer <<apiKey>>
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - Authorization: []

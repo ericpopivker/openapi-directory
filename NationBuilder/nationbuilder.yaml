@@ -1,0 +1,2514 @@
+openapi: 3.0.1
+info:
+  title: Nation Builder API
+  version: 1.0.0
+servers:
+  - url: 'https://{slug}.nationbuilder.com/api/v1'
+paths:
+  /donations:
+    get:
+      tags:
+        - Donations
+      description: Returns a list of donations
+      operationId: list-donations
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+          schema:
+            type: string
+        - name: __nonce
+          in: query
+          description: pagination nonce
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Donation list response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/donationList'
+
+    post:
+      tags:
+        - Donations
+      description: Creates a donation with the provided data
+      operationId: create-donations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - donation
+              type: object
+              properties:
+                donation:
+                  $ref: '#/components/schemas/createDonation'
+      responses:
+        '200':
+          description: OK
+  /donations/search:
+    get:
+      tags:
+        - Donations
+      description: Search for donations with provided attributes
+      operationId: search-donations
+      parameters:
+        - name: created_since
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: succeeded_since
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: failed_since
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: __token
+          in: query
+          description: pagination token
+          schema:
+            type: string
+        - name: __nonce
+          in: query
+          description: pagination nonce
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Person list response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/donationList'
+  '/donations/{id}':
+    put:
+      tags:
+        - Donations
+      description: Updates a donation with the provided data
+      operationId: update-donations
+      parameters:
+        - name: id
+          in: path
+          description: the donation's ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - donation
+              type: object
+              properties:
+                donation:
+                  $ref: '#/components/schemas/donation'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Donations
+      description: Removes the donation with the matching ID
+      operationId: destroy-donations
+      parameters:
+        - name: id
+          in: path
+          description: the donation's ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /people:
+    get:
+      tags:
+        - People
+      description: Returns a list of people
+      operationId: list-people
+      parameters:
+        - name: __token
+          in: query
+          description: pagination token
+          schema:
+            type: string
+        - name: __nonce
+          in: query
+          description: pagination nonce
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Person list response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personList'
+
+    post:
+      tags:
+        - People
+      description: Creates a person with the provided data
+      operationId: create-people
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - person
+              type: object
+              properties:
+                person:
+                  $ref: '#/components/schemas/createPerson'
+      responses:
+        '200':
+          description: OK
+  /people/count:
+    get:
+      tags:
+        - People
+      description: Returns a count of people in the nation
+      operationId: count-people
+      responses:
+        '200':
+          description: Person count response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  people_count:
+                    type: integer
+                    description: count
+  '/people/{id}':
+    get:
+      tags:
+        - People
+      description: Returns a full representation of the person
+      operationId: show-people
+      parameters:
+        - name: id
+          in: path
+          description: the persons id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Person properties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  person:
+                    $ref: '#/components/schemas/person'
+    put:
+      tags:
+        - People
+      description: Updates a person with the provided data
+      operationId: update-people
+      parameters:
+        - name: id
+          in: path
+          description: the persons ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                person:
+                  $ref: '#/components/schemas/person'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - People
+      description: Removes the person with the matching ID
+      operationId: destroy-people
+      parameters:
+        - in: path
+          name: id
+          description: the persons ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+  /people/match:
+    get:
+      tags:
+        - People
+      description: Finds people that match certain attributes exactly
+      operationId: match-people
+      parameters:
+        - name: email
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: first_name
+          in: query
+          description: deprecated
+          schema:
+            type: string
+        - name: last_name
+          in: query
+          description: deprecated
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: deprecated
+          schema:
+            type: string
+        - name: mobile
+          in: query
+          description: deprecated
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Person properties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  person:
+                    $ref: '#/components/schemas/person'
+  /people/search:
+    get:
+      tags:
+        - People
+      description: Search for people using non-unique traits
+      operationId: search-people
+      parameters:
+        - name: first_name
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: last_name
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: city
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: sex
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: birthdate
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: updated_since
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: with_mobile
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: custom_values
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: civicrm_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: county_file_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: datatrust_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: dw_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: external_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: media_market_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: membership_level_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: ngp_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: pf_strat_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: rnc_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: rnc_regid
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: salesforce_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: state_file_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: van_id
+          in: query
+          description: No description
+          schema:
+            type: string
+        - name: __token
+          in: query
+          description: pagination token
+          schema:
+            type: string
+        - name: __nonce
+          in: query
+          description: pagination nonce
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Person list response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personList'
+
+  /people/nearby:
+    get:
+      tags:
+        - People
+      description: Searches for people near a location defined by latitude and longitude
+      operationId: nearby-people
+      parameters:
+        - name: location
+          in: query
+          description: 'origin of search in the format ''latitude,longitude'''
+          required: true
+          schema:
+            type: string
+        - name: distance
+          in: query
+          description: radius in miles for which to include results
+          schema:
+            type: string
+        - name: __token
+          in: query
+          description: pagination token
+          schema:
+            type: string
+        - name: __nonce
+          in: query
+          description: pagination nonce
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Person list response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/personList'
+  /people/me:
+    get:
+      tags:
+        - People
+      description: Returns the access token's resource owner's representation
+      operationId: me-people
+      responses:
+        '200':
+          description: OK
+  '/people/{id}/register':
+    get:
+      tags:
+        - People
+      description: Starts user registration person for the given person
+      operationId: register-people
+      parameters:
+        - name: id
+          in: path
+          description: the persons id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - People
+      description: Tags a person
+      operationId: tag-person-people
+      parameters:
+        - name: id
+          in: path
+          description: the persons id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - person
+              type: object
+              properties:
+                person:
+                  $ref: '#/components/schemas/person'
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - People
+      description: Removes tags from a person
+      operationId: bulk-tag-removal-people
+      parameters:
+        - name: id
+          in: path
+          description: the persons ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /people/add:
+    put:
+      tags:
+        - People
+      description: Updates a matched person (without overriding data) or creates a new one if the person doesn't exist
+      operationId: add-people
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - person
+              type: object
+              properties:
+                person:
+                  $ref: '#/components/schemas/person'
+      responses:
+        '200':
+          description: OK
+
+  /webhooks/{id}:    
+    delete:    
+      tags:
+        - Webhooks
+      operationId: 'webhook_delete'
+      description: Delete webhook
+      parameters:
+        - name: id
+          in: path
+          description: Id of webhook
+          required: true
+          x-attributes:
+            - 'webhook_id'
+          schema: 
+            type: string      
+      responses:        
+        '200':
+          description: OK
+        '204':
+          description: OK
+
+  
+  /webhooks:    
+    description: manage webhooks    
+    post:
+      tags:
+        - Webhooks
+      description: Create webhook
+      operationId: webhook-create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object              
+              required:
+                - webhook
+              properties:
+                webhook:                                   
+                  type: object
+                  x-attributes: 
+                    - hide
+                  required:
+                    - url
+                    - event
+                    - version
+                  properties:
+                    url:
+                      x-attributes: 
+                        - callback_url
+                      type: string
+                      description: Callback url                      
+                    event:
+                      x-attributes: 
+                        - callback_event
+                      type: string
+                      description: The event you want to observe 
+                    version:
+                      x-attributes:
+                        - hide 
+                      type: integer
+                      default: 4
+                      description: The payload version you want to receive. Choose from 1, 2, 3 or 4
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  webhook:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        x-attributes:
+                          - 'webhook_id'          
+      callbacks:
+        person_created:   
+          x-tags: People
+          x-description: Person created            
+          '{$request.body#/callbackUrl}':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                       type: object
+                       properties:
+                        nation_slug:
+                          type: string
+                        token: 
+                          type: string
+                        version:
+                          type: integer                          
+                        payload:
+                          type: object
+                          $ref: '#/components/schemas/person'
+              responses:
+                '200':
+                  description: OK
+        person_changed: 
+          x-tags: 'People'
+          x-description: Person changed
+          '{$request.body#/callbackUrl}':
+            post:
+              responses:
+                '200':
+                  description: OK
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                       type: object
+                       properties:
+                        nation_slug:
+                          type: string
+                        token: 
+                          type: string
+                        version:
+                          type: integer
+                        payload:
+                          type: object
+                          properties:
+                            person:
+                              type: object                              
+                              $ref: '#/components/schemas/person'
+              
+        person_merged: 
+          x-tags: 'People'          
+          x-description: Person merged
+          '{$request.body#/callbackUrl}':
+            post:
+              responses:
+                '200':
+                  description: OK
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        nation_slug:
+                          type: string
+                        token: 
+                          type: string
+                        version:
+                          type: integer
+                        payload:
+                          type: object
+                          properties:
+                            merged:
+                              type: object
+                              properties:
+                                person:
+                                  type: object
+                                  $ref: '#/components/schemas/person'
+                            deleted:
+                              type: object
+                              properties:
+                                person:
+                                  type: object
+                                  $ref: '#/components/schemas/person'
+
+
+
+        person_contacted:
+          x-tags: People
+          x-description: Person Contacted
+          '{$request.body#/callbackUrl}':
+            post:
+              responses: 
+                '200':
+                  description: OK
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                        type: object
+                        properties:
+                          nation_slug:
+                            type: string
+                          token: 
+                            type: string
+                          version:
+                            type: integer
+                          payload:
+                            type: object
+                            properties:
+                              person:
+                                type: object
+                                $ref: '#/components/schemas/person'
+                              author:  
+                                type: object
+                                $ref: '#/components/schemas/person'
+                              person_call:
+                                type: object
+                                properties:
+                                  contact_method_id:
+                                    type: integer
+                                  contact_method_name:
+                                    type: string
+                                  contact_status_id:
+                                    type: integer
+                                  contact_status_name:
+                                    type: string
+                                  call_type_id:
+                                    type: integer
+                                  call_type_name:
+                                    type: string
+                                  support_level:
+                                    type: integer
+                                  priority_level:
+                                    type: integer
+                              
+
+        donation_succeeded: 
+          x-tags: Donations
+          x-description: Donation succeeded
+          '{$request.body#/callbackUrl}':
+            post:
+              responses:
+                '200':
+                  description: OK
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        nation_slug:
+                          type: string
+                        token: 
+                          type: string
+                        version:
+                          type: integer
+                        payload:
+                          type: object
+                          properties:
+                            donation:                            
+                              $ref: '#/components/schemas/donation'
+        donation_changed: 
+          x-tags: Donations
+          x-description: Donation changed
+          '{$request.body#/callbackUrl}':
+            post:              
+              responses:
+                '200':
+                  description: OK
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        nation_slug:
+                          type: string
+                        token: 
+                          type: string
+                        version:
+                          type: integer
+                        payload:
+                          type: object
+                          properties:
+                            donation:                            
+                              $ref: '#/components/schemas/donation'
+
+        donation_canceled: 
+          x-tags: Donations
+          x-description: Donation Canceled
+          '{$request.body#/callbackUrl}':
+            post:
+              responses:
+                '200':
+                  description: OK
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        nation_slug:
+                          type: string
+                        token: 
+                          type: string
+                        version:
+                          type: integer
+                        payload:
+                          type: object
+                          properties:
+                            donation:                            
+                              $ref: '#/components/schemas/donation'
+
+
+components:
+  schemas:   
+
+    person:
+      title: Person Schema
+      required:
+        - id
+      properties:
+        active_customer_expires_at:
+          type: string
+          description: 'the date at which to consider a customer no longer active'
+        active_customer_started_at:
+          type: string
+          description: 'the date from which a customer is considered active'
+        author_id:
+          type: string
+          description: 'the resource ID of the person who created this person in the nation'
+        author:
+          type: string
+          description: 'an abbreviated person resource representing the person who created this person’s record'
+        auto_import_id:
+          type: string
+          description: 'the ID given to a signup when a person is auto imported'
+        availability:
+          type: string
+          description: 'date and time this person is available (such as for volunteer shifts)'
+        ballots:
+          type: string
+          description: 'an array of ballot resources representing votes in elections'
+        banned_at:
+          type: string
+          description: 'the time and date this person was banned'
+        billing_address:
+          $ref: '#/components/schemas/address'
+        bio:
+          type: string
+          description: 'the bio information that this person provided on their public profile via the “short bio” field'
+        birthdate:
+          type: string
+          description: 'this persons birth date'
+        call_status_id:
+          type: string
+          description: 'the ID of the call status associated with this person'
+        call_status_name:
+          type: string
+          description: 'the name of the call status associated with this person'
+        capital_amount_in_cents:
+          type: string
+          description: 'the balance of this person’s political or social capital, in cents'
+        children_count:
+          type: string
+          description: 'the number of people assigned to this person'
+        church:
+          type: string
+          description: 'the church that this person goes to'
+        city_district:
+          type: string
+          description: 'district field'
+        city_sub_district:
+          type: string
+          description: 'district field'
+        civicrm_id:
+          type: string
+          description: 'this person’s ID from CiviCRM'
+        closed_invoices_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of all this person’s closed invoices in cents'
+        closed_invoices_count:
+          type: string
+          description: 'the number of closed invoices associated with this person'
+        contact_status_id:
+          type: string
+          description: 'ID of a contact status associated with this person. Possible values: 1: answered, 2: badinfo, 9: inaccessible, 3: leftmessage, 4: meaningfulinteraction, 6: notinterested, 7: noanswer, 8: refused, 5: sendinformation, 0: other'
+        contact_status_name:
+          type: string
+          description: 'name of a contact status associated with this person: Possible values: answered, badinfo, inaccessible, leftmessage, meaningfulinteraction, notinterested, noanswer, refused, sendinformation, other'
+        could_vote_status:
+          type: string
+          description: 'boolean indicating if this person could vote in an election or not, derived from their election-related IDs'
+        county_district:
+          type: string
+          description: 'district field'
+        county_file_id:
+          type: string
+          description: 'this person’s ID from a county voter file'
+        created_at:
+          type: string
+          description: 'timestamp representing when this person was created in the nation and also a writable attribute for new signups'
+        demo:
+          type: string
+          description: 'Asian, Black, Hispanic, White, Other, Unknown'
+        do_not_call:
+          type: string
+          description: 'this is a boolean flag that lets us know if this person is on a do not call list'
+        do_not_contact:
+          type: string
+          description: 'this is a boolean flag that lets us know if this person is on a do not contact list'
+        donations_amount_in_cents:
+          type: string
+          description: 'aggregate amount of all this person’s donations in cents'
+        donations_amount_this_cycle_in_cents:
+          type: string
+          description: 'the aggregate value of the donations this person made this cycle in cents'
+        donations_count_this_cycle:
+          type: string
+          description: 'the number of donations this person made this cycle'
+        donations_count:
+          type: string
+          description: 'the total number of donations made by this person'
+        donations_pledged_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of the donations pledged by this person in cents'
+        donations_raised_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of the donations raised by this person in cents, including their own donations'
+        donations_raised_amount_this_cycle_in_cents:
+          type: string
+          description: 'the aggregate value of all donations raised this cycle by this person, including their own'
+        donations_raised_count_this_cycle:
+          type: string
+          description: 'the number of donations raised this cycle by this person, including their own'
+        donations_raised_count:
+          type: string
+          description: 'the total number of donations raised'
+        donations_to_raise_amount_in_cents:
+          type: string
+          description: 'the goal amount of donations for this person to raise in cents'
+        dw_id:
+          type: string
+          description: 'this person’s ID from Catalist'
+        email1_is_bad:
+          type: string
+          description: 'boolean indicating if email1 for this person is bad'
+        email1:
+          type: string
+          description: 'an email address for this person'
+        email2_is_bad:
+          type: string
+          description: 'boolean indicating if email2 for this person is bad'
+        email2:
+          type: string
+          description: 'an email address for this person'
+        email3_is_bad:
+          type: string
+          description: 'boolean indicating if email3 for this person is bad'
+        email3:
+          type: string
+          description: 'an email address for this person'
+        email4_is_bad:
+          type: string
+          description: 'boolean indicating if email4 for this person is bad'
+        email4:
+          type: string
+          description: 'an email address for this person'
+        email_opt_in:
+          type: string
+          description: 'boolean representing whether this person has opted-in to email correspondence'
+        email:
+          type: string
+          description: 'when reading this field clients can expect the persons best email address to be returned. A person can have up to 4 email addresses: email1, email2, email3 and email4. The best email address is the one that is not marked as bad and is also marked as primary, that is, it is referenced by the primary_email_id field. When writing this field, its value will be assigned to one of email1, email2, email3 and email4 and it will be marked as primary. If all 4 email fields are already populated then the first one marked as bad will be overwritten. If none of the 4 email fields are marked as bad then the value of email will be dropped. In this case one of the 4 email fields and the primary_email_id have to be directly updated.'
+        employer:
+          type: string
+          description: 'the name of the company for which this person works'
+        ethnicity:
+          type: string
+          description: 'the ethnicity of this person as free text'
+        external_id:
+          type: string
+          description: 'a string representing an external identifier for this person'
+        facebook_address:
+          type: string
+          description: 'this person’s address based on their Facebook profile'
+        facebook_profile_url:
+          type: string
+          description: 'the URL of this person’s Facebook profile'
+        facebook_updated_at:
+          type: string
+          description: 'the date and time this persons Facebook info was last updated'
+        facebook_username:
+          type: string
+          description: 'this persons Facebook username'
+        fax_number:
+          type: string
+          description: 'the fax number associated with this person'
+        federal_district:
+          type: string
+          description: 'district field'
+        federal_donotcall:
+          type: string
+          description: 'boolean value indicating if this user is on the U.S. Federal Do Not Call list'
+        fire_district:
+          type: string
+          description: 'district field'
+        first_donated_at:
+          type: string
+          description: 'date and time of this persons first donation'
+        first_fundraised_at:
+          type: string
+          description: 'date and time that this person first raised donation'
+        first_invoice_at:
+          type: string
+          description: 'date and time of this persons first invoice'
+        first_name:
+          type: string
+          description: 'the persons first name and middle names'
+        first_prospect_at:
+          type: string
+          description: 'date and time that this user first became a prospect'
+        first_recruited_at:
+          type: string
+          description: 'date and time that this user was first recruited'
+        first_supporter_at:
+          type: string
+          description: 'date and time that this user became a supporter for the first time'
+        first_volunteer_at:
+          type: string
+          description: 'date and time that this person first volunteered'
+        full_name:
+          type: string
+          description: 'this person’s full name'
+        has_facebook:
+          type: string
+          description: 'a boolean representing whether this person has Facebook information'
+        home_address:
+          $ref: '#/components/schemas/address'
+        id:
+          type: string
+          description: 'the NationBuilder ID of the person, specific to the authorized nation'
+        import_id:
+          type: string
+          description: 'the ID associated with this person when they were imported'
+        inferred_party:
+          type: string
+          description: 'the party the person is believed to be associated with'
+        inferred_support_level:
+          type: string
+          description: 'a possible support level'
+        invoice_payments_amount_in_cents:
+          type: string
+          description: 'total invoice payment amount (cents)'
+        invoice_payments_referred_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of invoice payments made by recruits of this person (cents)'
+        invoices_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of all of this person’s invoices (cents)'
+        invoices_count:
+          type: string
+          description: 'the number of invoices this person has'
+        is_absentee_voter:
+          type: string
+          description: 'a boolean field that indicates if the person votes absentee'
+        is_active_voter:
+          type: string
+          description: 'a boolean field that indicates if the person is actively voting'
+        is_deceased:
+          type: string
+          description: 'a boolean field that indicates if the person is alive or not'
+        is_donor:
+          type: string
+          description: 'a boolean field that indicates if the person has donated'
+        is_early_voter:
+          type: string
+          description: 'a boolean field that indicates if the person votes early'
+        is_fundraiser:
+          type: string
+          description: 'a boolean value that indicates if this person has previously fundraised'
+        is_ignore_donation_limits:
+          type: string
+          description: 'a boolean that indicates whether this person is not subject to donation limits associated with the nation'
+        is_leaderboardable:
+          type: string
+          description: 'a boolean that tells if this person is allowed to show up on the leaderboard'
+        is_mobile_bad:
+          type: string
+          description: 'a boolean reflecting whether this person’s cell number is invalid'
+        is_permanent_absentee_voter:
+          type: string
+          description: 'a boolean field that indicates if the person has registered as a permanent absentee voter'
+        is_possible_duplicate:
+          type: string
+          description: 'a boolean field that indicates if the NationBuilder matching algorithm thinks this person is a match to someone else in the nation'
+        is_profile_private:
+          type: string
+          description: 'a boolean that tells if this person’s profile is private'
+        is_profile_searchable:
+          type: string
+          description: 'a boolean that tells if this person’s profile is allowed to show up in search results'
+        is_prospect:
+          type: string
+          description: 'a boolean field that indicates if this person is a prospect'
+        is_supporter:
+          type: string
+          description: 'a boolean field that indicates if this person is a supporter'
+        is_survey_question_private:
+          type: string
+          description: 'a boolean field that indicates if this person’s survey responses are private'
+        is_twitter_follower:
+          type: string
+          description: 'whether the person is a Twitter follower of one of the nation’s broadcasters'
+        is_volunteer:
+          type: string
+          description: 'a boolean field that indicates whether the person has volunteered'
+        judicial_district:
+          type: string
+          description: 'a district field'
+        labour_region:
+          type: string
+          description: 'a district field'
+        language:
+          type: string
+          description: 'this person’s primary language'
+        last_call_id:
+          type: string
+          description: 'the id of the last contact to this person'
+        last_contacted_at:
+          type: string
+          description: 'the time and date of the last time this person was contacted'
+        last_contacted_by:
+          type: string
+          description: 'an abbreviated person resource representing the last user who contacted this person'
+        last_donated_at:
+          type: string
+          description: 'the time and date of this person’s last donation'
+        last_fundraised_at:
+          type: string
+          description: 'the time and date of the last time this person fundraised'
+        last_invoice_at:
+          type: string
+          description: 'the time and date of this person’s last invoice'
+        last_name:
+          type: string
+          description: 'this persons last name'
+        last_rule_violation_at:
+          type: string
+          description: 'the time and date of this person’s last rule violation'
+        legal_name:
+          type: string
+          description: 'the full (legal) name of this person'
+        linkedin_id:
+          type: string
+          description: 'this person’s ID from LinkedIn'
+        locale:
+          type: string
+          description: 'the ISO locale that the user has their administrative account set to (US, ES, FR etc.)'
+        mailing_address:
+          type: string
+          description: 'an address resource representing the mailing address'
+        marital_status:
+          type: string
+          description: 'the person’s marital status'
+        media_market_name:
+          type: string
+          description: 'the name of this person’s media market'
+        meetup_address:
+          type: string
+          description: 'an address resource based on this person’s profile in Meetup'
+        meetup_id:
+          type: string
+          description: 'this persons ID from Meetup'
+        membership_expires_at:
+          type: string
+          description: 'the time and date that this user’s membership expires'
+        membership_level_name:
+          type: string
+          description: 'the name of the level of this person’s membership'
+        membership_started_at:
+          type: string
+          description: 'the time and date that this user started a membership'
+        middle_name:
+          type: string
+          description: 'this person’s middle name'
+        mobile_normalized:
+          type: string
+          description: 'this persons cell phone number in normalized form'
+        mobile_opt_in:
+          type: string
+          description: 'a boolean representing whether the person has opted-in to mobile correspondence'
+        mobile:
+          type: string
+          description: 'this persons cell phone number'
+        nbec_guid:
+          type: string
+          description: 'this person’s ID from the NationBuilder Election Center'
+        nbec_precinct_code:
+          type: string
+          description: 'the unique identifier assigned to this person in the NationBuilder Election Center'
+        ngp_id:
+          type: string
+          description: 'this person’s ID from NGP'
+        note_updated_at:
+          type: string
+          description: 'the date and time the note attached to this person was updated'
+        note:
+          type: string
+          description: 'a note to attach to the persons profile'
+        occupation:
+          type: string
+          description: 'the type of work this person does'
+        outstanding_invoices_amount_in_cents:
+          type: string
+          description: 'the aggregate value of all this person’s outstanding invoices in cents'
+        outstanding_invoices_count:
+          type: string
+          description: 'the number of outstanding invoices this person has'
+        overdue_invoices_count:
+          type: string
+          description: 'the number of overdue invoices this person has'
+        page_slug:
+          type: string
+          description: 'the page this person first signed up from'
+        parent_id:
+          type: string
+          description: 'the NationBuilder ID of this person’s point person'
+        parent:
+          type: string
+          description: 'an abbreviated person resource representing this person’s point person'
+        party_member:
+          type: string
+          description: 'a boolean that tells if this person is a member of a political party'
+        party:
+          type: string
+          description: 'a one-letter code representing provincial parties for nations'
+        pf_strat_id:
+          type: string
+          description: 'a person’s historical ID from PoliticalForce'
+        phone_normalized:
+          type: string
+          description: 'this persons home phone number in normalized form'
+        phone_time:
+          type: string
+          description: 'the time that has been selected as the best time to call this person'
+        phone:
+          type: string
+          description: 'this persons home phone number'
+        precinct_code:
+          type: string
+          description: 'the code of the precinct that this person lives in'
+        precinct_id:
+          type: string
+          description: 'the ID of the precinct associated with this person'
+        precinct_name:
+          type: string
+          description: 'the name of the precinct that this person votes in'
+        prefix:
+          type: string
+          description: 'the name prefix of this person, i.e. Mr., Mrs.'
+        previous_party:
+          type: string
+          description: 'the party this person had selected before their current party selection'
+        primary_email_id:
+          type: string
+          description: 'the id of the primary email address associated with this person, one of: 1, 2, 3 or 4. This id corresponds to the 4 email addresses a person can have: email1, email2, email3 and email4.'
+        priority_level_changed_at:
+          type: string
+          description: 'the date and time that this person’s priority level changed'
+        priority_level:
+          type: string
+          description: 'the priority level associated with this person'
+        profile_content_html:
+          type: string
+          description: 'the profile content for this person’s public profile in HTML'
+        profile_content:
+          type: string
+          description: 'the content for this person’s public profile'
+        profile_headline:
+          type: string
+          description: 'the headline for this person’s public profile'
+        received_capital_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of political capital ever received by this person'
+        profile_image_url_ssl:
+          type: string
+          description: 'the URL for this persons thumbnail image'
+        recruiter_id:
+          type: string
+          description: 'the ID of the person who recruited this person'
+        recruiter:
+          type: string
+          description: 'an abbreviated person resource representing the person who recruited this person'
+        recruits_count:
+          type: string
+          description: 'the number of people that were recruited by this person'
+        registered_address:
+          type: object
+          description: 'an address resource representing the registered address'
+        registered_at:
+          type: string
+          description: 'the date this person registered to become a voter'
+        religion:
+          type: string
+          description: 'this person’s religion'
+        rnc_id:
+          type: string
+          description: 'this person’s ID from the RNC'
+        rnc_regid:
+          type: string
+          description: 'this person’s registration ID from the RNC'
+        rule_violations_count:
+          type: string
+          description: 'the number of times this person has violated one of the nation’s rules'
+        salesforce_id:
+          type: string
+          description: 'this person’s ID from Salesforce'
+        school_district:
+          type: string
+          description: 'a district field'
+        school_sub_district:
+          type: string
+          description: 'a district field'
+        sex:
+          type: string
+          description: 'this persons gender (M, F or O)'
+        signup_type:
+          type: string
+          description: '0 - for person, 1 - for organization'
+        spent_capital_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of capital ever spent by this person (in cents)'
+        state_file_id:
+          type: string
+          description: 'this person’s ID from a state voter file'
+        state_lower_district:
+          type: string
+          description: 'a district field'
+        state_upper_district:
+          type: string
+          description: 'a district field'
+        submitted_address:
+          type: string
+          description: 'the address this person submitted'
+        subnations:
+          type: string
+          description: 'an array of subnations that this person belongs to'
+        suffix:
+          type: string
+          description: 'the suffix this person uses w/their name, i.e. Jr., Sr. or III'
+        support_level_changed_at:
+          type: string
+          description: 'the time and date that this person’s support level changed'
+        support_level:
+          type: string
+          description: 'the level of support this person has for your nation, expressed as a number between 1 and 5, 1 being Strong support, 5 meaning strong opposition, and 3 meaning undecided.'
+        support_probability_score:
+          type: string
+          description: 'the likelihood that this person will support you at election time'
+        supranational_district:
+          type: string
+          description: 'district field'
+        tags:
+          type: string
+          description: 'the tags assigned to this person, as an array of strings'
+        turnout_probability_score:
+          type: string
+          description: 'the probability that this person will turn out to vote'
+        twitter_address:
+          type: string
+          description: 'this person’s location based on their Twitter profile'
+        twitter_description:
+          type: string
+          description: 'the description that this person provided in their Twitter profile'
+        twitter_followers_count:
+          type: string
+          description: 'the number of followers this person has on Twitter'
+        twitter_friends_count:
+          type: string
+          description: 'the number of friends this person has on Twitter'
+        twitter_id:
+          type: string
+          description: 'this person’s ID from Twitter'
+        twitter_location:
+          type: string
+          description: 'an address resource representing this person’s address based on Twitter’s location data'
+        twitter_login:
+          type: string
+          description: 'this person’s Twitter login name'
+        twitter_name:
+          type: string
+          description: 'this person’s Twitter handle, e.g. FoobarSoftwares'
+        twitter_updated_at:
+          type: string
+          description: 'the last time this person’s Twitter record was updated'
+        twitter_website:
+          type: string
+          description: 'the URL of the website that this person included in their Twitter profile'
+        unsubscribed_at:
+          type: string
+          description: 'the date/time that this person unsubscribed from emails'
+        updated_at:
+          type: string
+          description: 'the timestamp representing when this person was last updated'
+        user_submitted_address:
+          type: string
+          description: 'an address resource representing the address this person submitted'
+        username:
+          type: string
+          description: 'this person’s NationBuilder username'
+        van_id:
+          type: string
+          description: 'this person’s ID from VAN'
+        village_district:
+          type: string
+          description: 'a district field'
+        voter_updated_at:
+          type: string
+          description: 'the last time voter data was gathered for this person'
+        warnings_count:
+          type: string
+          description: 'the number of warnings this person has received'
+        website:
+          type: string
+          description: 'the URL of this person’s website'
+        work_address:
+          $ref: '#/components/schemas/address'
+        work_phone_number:
+          type: string
+          description: 'a work phone number for this person'
+
+    personList:
+      title: Person List Schema
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/person'
+
+    donationList:
+      title: Donation List Schema
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/donation'
+
+    donation:
+      title: Contact Schema
+      required:
+        - id
+      properties:
+        amount:
+          type: string
+          description: 'amount of donation in the nations currency'
+        amount_in_cents:
+          type: string
+          description: 'amount of donation in cents'
+        author_id:
+          type: string
+          description: 'id of the person who created the donation'
+        billing_address:
+          $ref: '#/components/schemas/address'
+        canceled_at:
+          type: string
+          description: 'timestamp representing when the donation was canceled'
+        check_number:
+          type: string
+          description: 'check/wire/MO number'
+        corporate_contribution:
+          type: string
+          description: 'true if the donation is a corporate contribution'
+        created_at:
+          type: string
+          description: 'timestamp representing when the donation was created'
+        donor_id:
+          type: string
+          description: 'the person id of the donor'
+        donor:
+          type: object
+          description: 'an abbreviated person resource representing the donor'
+          $ref: '#/components/schemas/abbreviatedPerson'
+        email:
+          type: string
+          description: 'the donors email address'
+        employer:
+          type: string
+          description: 'the name of the donors employer'
+        failed_at:
+          type: string
+          description: 'timestamp representing when the donation failed'
+        first_name:
+          type: string
+          description: 'the donors first name and middle name'
+        id:
+          type: string
+          description: 'id of the donation'
+        import_id:
+          type: string
+          description: 'id of the import job (if the donation was imported)'
+        is_private:
+          type: string
+          description: 'false if the donation should be posted publicly on the site'
+        last_name:
+          type: string
+          description: 'the donors last name'
+        mailing_slug:
+          type: string
+          description: 'slug of the mailing page'
+        merchant_account_id:
+          type: string
+          description: 'id of the merchant account used for paying the donation'
+        ngp_id:
+          type: string
+          description: 'an id which is present if the donor has been imported from NGP VAN'
+        note:
+          type: string
+          description: 'a note for this donation'
+        occupation:
+          type: string
+          description: 'the donors occupation'
+        page_slug:
+          type: string
+          description: 'slug of the donation page'
+        payment_type_name:
+          type: string
+          description: 'name of the payment type'
+        payment_type_ngp_code:
+          type: string
+          description: 'code of the payment type'
+        pledge_id:
+          type: string
+          description: 'the id of the pledge this donation fulfills. Pledges are promises received from supporters to donate money in the future.'
+        recruiter_name_or_email:
+          type: string
+          description: 'recruiters name or email address (will also be credited as the fundraiser for this donation)'
+        recurring_donation_id:
+          type: string
+          description: 'an id present if the donation is recurring'
+        succeeded_at:
+          type: string
+          description: 'timestamp representing when the donation succeeded'
+        tracking_code_slug:
+          type: string
+          description: 'tracking code for this donation'
+        updated_at:
+          type: string
+          description: 'timestamp representing when the donation was last updated'
+        work_address:
+          $ref: '#/components/schemas/address'
+    createDonation:
+      title: Create Donation Schema
+      properties:
+        amount:
+          type: string
+          description: 'amount of donation in the nations currency'
+        amount_in_cents:
+          type: string
+          description: 'amount of donation in cents'
+        author_id:
+          type: string
+          description: 'id of the person who created the donation'
+        billing_address:
+          $ref: '#/components/schemas/address'
+        canceled_at:
+          type: string
+          description: 'timestamp representing when the donation was canceled'
+        check_number:
+          type: string
+          description: 'check/wire/MO number'
+        corporate_contribution:
+          type: string
+          description: 'true if the donation is a corporate contribution'
+        created_at:
+          type: string
+          description: 'timestamp representing when the donation was created'
+        donor_id:
+          type: string
+          description: 'the person id of the donor'
+        donor:
+          type: object
+          description: 'an abbreviated person resource representing the donor'
+          $ref: '#/components/schemas/abbreviatedPerson'
+        email:
+          type: string
+          description: 'the donors email address'
+        employer:
+          type: string
+          description: 'the name of the donors employer'
+        failed_at:
+          type: string
+          description: 'timestamp representing when the donation failed'
+        first_name:
+          type: string
+          description: 'the donors first name and middle name'
+        import_id:
+          type: string
+          description: 'id of the import job (if the donation was imported)'
+        is_private:
+          type: string
+          description: 'false if the donation should be posted publicly on the site'
+        last_name:
+          type: string
+          description: 'the donors last name'
+        mailing_slug:
+          type: string
+          description: 'slug of the mailing page'
+        merchant_account_id:
+          type: string
+          description: 'id of the merchant account used for paying the donation'
+        ngp_id:
+          type: string
+          description: 'an id which is present if the donor has been imported from NGP VAN'
+        note:
+          type: string
+          description: 'a note for this donation'
+        occupation:
+          type: string
+          description: 'the donors occupation'
+        page_slug:
+          type: string
+          description: 'slug of the donation page'
+        payment_type_name:
+          type: string
+          description: 'name of the payment type'
+        payment_type_ngp_code:
+          type: string
+          description: 'code of the payment type'
+        pledge_id:
+          type: string
+          description: 'the id of the pledge this donation fulfills. Pledges are promises received from supporters to donate money in the future.'
+        recruiter_name_or_email:
+          type: string
+          description: 'recruiters name or email address (will also be credited as the fundraiser for this donation)'
+        recurring_donation_id:
+          type: string
+          description: 'an id present if the donation is recurring'
+        succeeded_at:
+          type: string
+          description: 'timestamp representing when the donation succeeded'
+        tracking_code_slug:
+          type: string
+          description: 'tracking code for this donation'
+        updated_at:
+          type: string
+          description: 'timestamp representing when the donation was last updated'
+        work_address:
+          $ref: '#/components/schemas/address'
+
+    abbreviatedPerson:
+      title: Person Schema
+      required:
+        - id
+      properties:
+        birthdate:
+          type: string
+          description: 'this persons birth date'
+        city_district:
+          type: string
+          description: 'district field'
+        civicrm_id:
+          type: string
+          description: 'this person’s ID from CiviCRM'
+        county_district:
+          type: string
+          description: 'district field'
+        county_file_id:
+          type: string
+          description: 'this person’s ID from a county voter file'
+        created_at:
+          type: string
+          description: 'timestamp representing when this person was created in the nation'
+        do_not_call:
+          type: string
+          description: 'this is a boolean flag that lets us know if this person is on a do not call list'
+        do_not_contact:
+          type: string
+          description: 'this is a boolean flag that lets us know if this person is on a do not contact list'
+        dw_id:
+          type: string
+          description: 'this person’s ID from Catalist'
+        email_opt_in:
+          type: string
+          description: 'boolean representing whether this person has opted-in to email correspondence'
+        email:
+          type: string
+          description: 'the person’s email address if reading or writing a single address'
+        employer:
+          type: string
+          description: 'the name of the company for which this person works'
+        external_id:
+          type: string
+          description: 'a string representing an external identifier for this person'
+        federal_district:
+          type: string
+          description: 'district field'
+        fire_district:
+          type: string
+          description: 'district field'
+        first_name:
+          type: string
+          description: 'the person’s first name and middle names'
+        has_facebook:
+          type: string
+          description: 'a boolean representing whether this person has Facebook information'
+        id:
+          type: string
+          description: 'the NationBuilder ID of the person, specific to the authorized nation'
+        is_twitter_follower:
+          type: string
+          description: 'whether the person is a Twitter follower of one of the nation’s broadcasters'
+        is_volunteer:
+          type: string
+          description: 'a boolean field that indicates whether the person has volunteered'
+        judicial_district:
+          type: string
+          description: 'a district field'
+        labour_region:
+          type: string
+          description: 'a district field'
+        last_name:
+          type: string
+          description: 'this person’s last name'
+        linkedin_id:
+          type: string
+          description: 'this person’s ID from LinkedIn'
+        mobile_opt_in:
+          type: string
+          description: 'a boolean representing whether the person has opted-in to mobile correspondence'
+        mobile:
+          type: string
+          description: 'this person’s cell phone number'
+        nbec_guid:
+          type: string
+          description: 'this person’s ID from the NationBuilder Election Center'
+        ngp_id:
+          type: string
+          description: 'this person’s ID from NGP'
+        note:
+          type: string
+          description: 'a note to attach to the person’s profile'
+        occupation:
+          type: string
+          description: 'the type of work this person does'
+        party:
+          type: string
+          description: 'a one-letter code representing provincial parties for nations'
+        pf_strat_id:
+          type: string
+          description: 'a person’s historical ID from PoliticalForce'
+        phone:
+          type: string
+          description: 'this persons home phone number'
+        precinct_id:
+          type: string
+          description: 'the ID of the precinct associated with this person'
+        primary_address:
+          $ref: '#/components/schemas/address'
+        recruiter_id:
+          type: string
+          description: 'the ID of the person who recruited this person'
+        rnc_id:
+          type: string
+          description: 'this person’s ID from the RNC'
+        rnc_regid:
+          type: string
+          description: 'this person’s registration ID from the RNC'
+        salesforce_id:
+          type: string
+          description: 'this person’s ID from Salesforce'
+        school_district:
+          type: string
+          description: 'a district field'
+        school_sub_district:
+          type: string
+          description: 'a district field'
+        sex:
+          type: string
+          description: 'this person’s gender (M, F or O)'
+        state_file_id:
+          type: string
+          description: 'this person’s ID from a state voter file'
+        state_lower_district:
+          type: string
+          description: 'a district field'
+        state_upper_district:
+          type: string
+          description: 'a district field'
+        support_level:
+          type: string
+          description: 'the level of support this person has for your nation, expressed as a number between 1 and 5, 1 being Strong support, 5 meaning strong opposition, and 3 meaning undecided.'
+        supranational_district:
+          type: string
+          description: 'district field'
+        tags:
+          type: string
+          description: 'the tags assigned to this person, as an array of strings'
+        twitter_id:
+          type: string
+          description: 'this person’s ID from Twitter'
+        twitter_name:
+          type: string
+          description: 'this person’s Twitter handle, e.g. FoobarSoftwares'
+        updated_at:
+          type: string
+          description: 'the timestamp representing when this person was last updated'
+        van_id:
+          type: string
+          description: 'this person’s ID from VAN'
+        village_district:
+          type: string
+          description: 'district field'
+    createPerson:
+      title: Create Person Schema
+      properties:
+        active_customer_expires_at:
+          type: string
+          description: 'the date at which to consider a customer no longer active'
+        active_customer_started_at:
+          type: string
+          description: 'the date from which a customer is considered active'
+        author_id:
+          type: string
+          description: 'the resource ID of the person who created this person in the nation'
+        author:
+          type: string
+          description: 'an abbreviated person resource representing the person who created this person’s record'
+        auto_import_id:
+          type: string
+          description: 'the ID given to a signup when a person is auto imported'
+        availability:
+          type: string
+          description: 'date and time this person is available (such as for volunteer shifts)'
+        ballots:
+          type: string
+          description: 'an array of ballot resources representing votes in elections'
+        banned_at:
+          type: string
+          description: 'the time and date this person was banned'
+        billing_address:
+          $ref: '#/components/schemas/address'
+        bio:
+          type: string
+          description: 'the bio information that this person provided on their public profile via the “short bio” field'
+        birthdate:
+          type: string
+          description: 'this persons birth date'
+        call_status_id:
+          type: string
+          description: 'the ID of the call status associated with this person'
+        call_status_name:
+          type: string
+          description: 'the name of the call status associated with this person'
+        capital_amount_in_cents:
+          type: string
+          description: 'the balance of this person’s political or social capital, in cents'
+        children_count:
+          type: string
+          description: 'the number of people assigned to this person'
+        church:
+          type: string
+          description: 'the church that this person goes to'
+        city_district:
+          type: string
+          description: 'district field'
+        city_sub_district:
+          type: string
+          description: 'district field'
+        civicrm_id:
+          type: string
+          description: 'this person’s ID from CiviCRM'
+        closed_invoices_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of all this person’s closed invoices in cents'
+        closed_invoices_count:
+          type: string
+          description: 'the number of closed invoices associated with this person'
+        contact_status_id:
+          type: string
+          description: 'ID of a contact status associated with this person. Possible values: 1: answered, 2: badinfo, 9: inaccessible, 3: leftmessage, 4: meaningfulinteraction, 6: notinterested, 7: noanswer, 8: refused, 5: sendinformation, 0: other'
+        contact_status_name:
+          type: string
+          description: 'name of a contact status associated with this person: Possible values: answered, badinfo, inaccessible, leftmessage, meaningfulinteraction, notinterested, noanswer, refused, sendinformation, other'
+        could_vote_status:
+          type: string
+          description: 'boolean indicating if this person could vote in an election or not, derived from their election-related IDs'
+        county_district:
+          type: string
+          description: 'district field'
+        county_file_id:
+          type: string
+          description: 'this person’s ID from a county voter file'
+        created_at:
+          type: string
+          description: 'timestamp representing when this person was created in the nation and also a writable attribute for new signups'
+        demo:
+          type: string
+          description: 'Asian, Black, Hispanic, White, Other, Unknown'
+        do_not_call:
+          type: string
+          description: 'this is a boolean flag that lets us know if this person is on a do not call list'
+        do_not_contact:
+          type: string
+          description: 'this is a boolean flag that lets us know if this person is on a do not contact list'
+        donations_amount_in_cents:
+          type: string
+          description: 'aggregate amount of all this person’s donations in cents'
+        donations_amount_this_cycle_in_cents:
+          type: string
+          description: 'the aggregate value of the donations this person made this cycle in cents'
+        donations_count_this_cycle:
+          type: string
+          description: 'the number of donations this person made this cycle'
+        donations_count:
+          type: string
+          description: 'the total number of donations made by this person'
+        donations_pledged_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of the donations pledged by this person in cents'
+        donations_raised_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of the donations raised by this person in cents, including their own donations'
+        donations_raised_amount_this_cycle_in_cents:
+          type: string
+          description: 'the aggregate value of all donations raised this cycle by this person, including their own'
+        donations_raised_count_this_cycle:
+          type: string
+          description: 'the number of donations raised this cycle by this person, including their own'
+        donations_raised_count:
+          type: string
+          description: 'the total number of donations raised'
+        donations_to_raise_amount_in_cents:
+          type: string
+          description: 'the goal amount of donations for this person to raise in cents'
+        dw_id:
+          type: string
+          description: 'this person’s ID from Catalist'
+        email1_is_bad:
+          type: string
+          description: 'boolean indicating if email1 for this person is bad'
+        email1:
+          type: string
+          description: 'an email address for this person'
+        email2_is_bad:
+          type: string
+          description: 'boolean indicating if email2 for this person is bad'
+        email2:
+          type: string
+          description: 'an email address for this person'
+        email3_is_bad:
+          type: string
+          description: 'boolean indicating if email3 for this person is bad'
+        email3:
+          type: string
+          description: 'an email address for this person'
+        email4_is_bad:
+          type: string
+          description: 'boolean indicating if email4 for this person is bad'
+        email4:
+          type: string
+          description: 'an email address for this person'
+        email_opt_in:
+          type: string
+          description: 'boolean representing whether this person has opted-in to email correspondence'
+        email:
+          type: string
+          description: 'when reading this field clients can expect the persons best email address to be returned. A person can have up to 4 email addresses: email1, email2, email3 and email4. The best email address is the one that is not marked as bad and is also marked as primary, that is, it is referenced by the primary_email_id field. When writing this field, its value will be assigned to one of email1, email2, email3 and email4 and it will be marked as primary. If all 4 email fields are already populated then the first one marked as bad will be overwritten. If none of the 4 email fields are marked as bad then the value of email will be dropped. In this case one of the 4 email fields and the primary_email_id have to be directly updated.'
+        employer:
+          type: string
+          description: 'the name of the company for which this person works'
+        ethnicity:
+          type: string
+          description: 'the ethnicity of this person as free text'
+        external_id:
+          type: string
+          description: 'a string representing an external identifier for this person'
+        facebook_address:
+          type: string
+          description: 'this person’s address based on their Facebook profile'
+        facebook_profile_url:
+          type: string
+          description: 'the URL of this person’s Facebook profile'
+        facebook_updated_at:
+          type: string
+          description: 'the date and time this persons Facebook info was last updated'
+        facebook_username:
+          type: string
+          description: 'this persons Facebook username'
+        fax_number:
+          type: string
+          description: 'the fax number associated with this person'
+        federal_district:
+          type: string
+          description: 'district field'
+        federal_donotcall:
+          type: string
+          description: 'boolean value indicating if this user is on the U.S. Federal Do Not Call list'
+        fire_district:
+          type: string
+          description: 'district field'
+        first_donated_at:
+          type: string
+          description: 'date and time of this persons first donation'
+        first_fundraised_at:
+          type: string
+          description: 'date and time that this person first raised donation'
+        first_invoice_at:
+          type: string
+          description: 'date and time of this persons first invoice'
+        first_name:
+          type: string
+          description: 'the persons first name and middle names'
+        first_prospect_at:
+          type: string
+          description: 'date and time that this user first became a prospect'
+        first_recruited_at:
+          type: string
+          description: 'date and time that this user was first recruited'
+        first_supporter_at:
+          type: string
+          description: 'date and time that this user became a supporter for the first time'
+        first_volunteer_at:
+          type: string
+          description: 'date and time that this person first volunteered'
+        full_name:
+          type: string
+          description: 'this person’s full name'
+        has_facebook:
+          type: string
+          description: 'a boolean representing whether this person has Facebook information'
+        home_address:
+          $ref: '#/components/schemas/address'
+        import_id:
+          type: string
+          description: 'the ID associated with this person when they were imported'
+        inferred_party:
+          type: string
+          description: 'the party the person is believed to be associated with'
+        inferred_support_level:
+          type: string
+          description: 'a possible support level'
+        invoice_payments_amount_in_cents:
+          type: string
+          description: 'total invoice payment amount (cents)'
+        invoice_payments_referred_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of invoice payments made by recruits of this person (cents)'
+        invoices_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of all of this person’s invoices (cents)'
+        invoices_count:
+          type: string
+          description: 'the number of invoices this person has'
+        is_absentee_voter:
+          type: string
+          description: 'a boolean field that indicates if the person votes absentee'
+        is_active_voter:
+          type: string
+          description: 'a boolean field that indicates if the person is actively voting'
+        is_deceased:
+          type: string
+          description: 'a boolean field that indicates if the person is alive or not'
+        is_donor:
+          type: string
+          description: 'a boolean field that indicates if the person has donated'
+        is_early_voter:
+          type: string
+          description: 'a boolean field that indicates if the person votes early'
+        is_fundraiser:
+          type: string
+          description: 'a boolean value that indicates if this person has previously fundraised'
+        is_ignore_donation_limits:
+          type: string
+          description: 'a boolean that indicates whether this person is not subject to donation limits associated with the nation'
+        is_leaderboardable:
+          type: string
+          description: 'a boolean that tells if this person is allowed to show up on the leaderboard'
+        is_mobile_bad:
+          type: string
+          description: 'a boolean reflecting whether this person’s cell number is invalid'
+        is_permanent_absentee_voter:
+          type: string
+          description: 'a boolean field that indicates if the person has registered as a permanent absentee voter'
+        is_possible_duplicate:
+          type: string
+          description: 'a boolean field that indicates if the NationBuilder matching algorithm thinks this person is a match to someone else in the nation'
+        is_profile_private:
+          type: string
+          description: 'a boolean that tells if this person’s profile is private'
+        is_profile_searchable:
+          type: string
+          description: 'a boolean that tells if this person’s profile is allowed to show up in search results'
+        is_prospect:
+          type: string
+          description: 'a boolean field that indicates if this person is a prospect'
+        is_supporter:
+          type: string
+          description: 'a boolean field that indicates if this person is a supporter'
+        is_survey_question_private:
+          type: string
+          description: 'a boolean field that indicates if this person’s survey responses are private'
+        is_twitter_follower:
+          type: string
+          description: 'whether the person is a Twitter follower of one of the nation’s broadcasters'
+        is_volunteer:
+          type: string
+          description: 'a boolean field that indicates whether the person has volunteered'
+        judicial_district:
+          type: string
+          description: 'a district field'
+        labour_region:
+          type: string
+          description: 'a district field'
+        language:
+          type: string
+          description: 'this person’s primary language'
+        last_call_id:
+          type: string
+          description: 'the id of the last contact to this person'
+        last_contacted_at:
+          type: string
+          description: 'the time and date of the last time this person was contacted'
+        last_contacted_by:
+          type: string
+          description: 'an abbreviated person resource representing the last user who contacted this person'
+        last_donated_at:
+          type: string
+          description: 'the time and date of this person’s last donation'
+        last_fundraised_at:
+          type: string
+          description: 'the time and date of the last time this person fundraised'
+        last_invoice_at:
+          type: string
+          description: 'the time and date of this person’s last invoice'
+        last_name:
+          type: string
+          description: 'this persons last name'
+        last_rule_violation_at:
+          type: string
+          description: 'the time and date of this person’s last rule violation'
+        legal_name:
+          type: string
+          description: 'the full (legal) name of this person'
+        linkedin_id:
+          type: string
+          description: 'this person’s ID from LinkedIn'
+        locale:
+          type: string
+          description: 'the ISO locale that the user has their administrative account set to (US, ES, FR etc.)'
+        mailing_address:
+          type: string
+          description: 'an address resource representing the mailing address'
+        marital_status:
+          type: string
+          description: 'the person’s marital status'
+        media_market_name:
+          type: string
+          description: 'the name of this person’s media market'
+        meetup_address:
+          type: string
+          description: 'an address resource based on this person’s profile in Meetup'
+        meetup_id:
+          type: string
+          description: 'this persons ID from Meetup'
+        membership_expires_at:
+          type: string
+          description: 'the time and date that this user’s membership expires'
+        membership_level_name:
+          type: string
+          description: 'the name of the level of this person’s membership'
+        membership_started_at:
+          type: string
+          description: 'the time and date that this user started a membership'
+        middle_name:
+          type: string
+          description: 'this person’s middle name'
+        mobile_normalized:
+          type: string
+          description: 'this persons cell phone number in normalized form'
+        mobile_opt_in:
+          type: string
+          description: 'a boolean representing whether the person has opted-in to mobile correspondence'
+        mobile:
+          type: string
+          description: 'this persons cell phone number'
+        nbec_guid:
+          type: string
+          description: 'this person’s ID from the NationBuilder Election Center'
+        nbec_precinct_code:
+          type: string
+          description: 'the unique identifier assigned to this person in the NationBuilder Election Center'
+        ngp_id:
+          type: string
+          description: 'this person’s ID from NGP'
+        note_updated_at:
+          type: string
+          description: 'the date and time the note attached to this person was updated'
+        note:
+          type: string
+          description: 'a note to attach to the persons profile'
+        occupation:
+          type: string
+          description: 'the type of work this person does'
+        outstanding_invoices_amount_in_cents:
+          type: string
+          description: 'the aggregate value of all this person’s outstanding invoices in cents'
+        outstanding_invoices_count:
+          type: string
+          description: 'the number of outstanding invoices this person has'
+        overdue_invoices_count:
+          type: string
+          description: 'the number of overdue invoices this person has'
+        page_slug:
+          type: string
+          description: 'the page this person first signed up from'
+        parent_id:
+          type: string
+          description: 'the NationBuilder ID of this person’s point person'
+        parent:
+          type: string
+          description: 'an abbreviated person resource representing this person’s point person'
+        party_member:
+          type: string
+          description: 'a boolean that tells if this person is a member of a political party'
+        party:
+          type: string
+          description: 'a one-letter code representing provincial parties for nations'
+        pf_strat_id:
+          type: string
+          description: 'a person’s historical ID from PoliticalForce'
+        phone_normalized:
+          type: string
+          description: 'this persons home phone number in normalized form'
+        phone_time:
+          type: string
+          description: 'the time that has been selected as the best time to call this person'
+        phone:
+          type: string
+          description: 'this persons home phone number'
+        precinct_code:
+          type: string
+          description: 'the code of the precinct that this person lives in'
+        precinct_id:
+          type: string
+          description: 'the ID of the precinct associated with this person'
+        precinct_name:
+          type: string
+          description: 'the name of the precinct that this person votes in'
+        prefix:
+          type: string
+          description: 'the name prefix of this person, i.e. Mr., Mrs.'
+        previous_party:
+          type: string
+          description: 'the party this person had selected before their current party selection'
+        primary_email_id:
+          type: string
+          description: 'the id of the primary email address associated with this person, one of: 1, 2, 3 or 4. This id corresponds to the 4 email addresses a person can have: email1, email2, email3 and email4.'
+        priority_level_changed_at:
+          type: string
+          description: 'the date and time that this person’s priority level changed'
+        priority_level:
+          type: string
+          description: 'the priority level associated with this person'
+        profile_content_html:
+          type: string
+          description: 'the profile content for this person’s public profile in HTML'
+        profile_content:
+          type: string
+          description: 'the content for this person’s public profile'
+        profile_headline:
+          type: string
+          description: 'the headline for this person’s public profile'
+        received_capital_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of political capital ever received by this person'
+        profile_image_url_ssl:
+          type: string
+          description: 'the URL for this persons thumbnail image'
+        recruiter_id:
+          type: string
+          description: 'the ID of the person who recruited this person'
+        recruiter:
+          type: string
+          description: 'an abbreviated person resource representing the person who recruited this person'
+        recruits_count:
+          type: string
+          description: 'the number of people that were recruited by this person'
+        registered_address:
+          type: object
+          description: 'an address resource representing the registered address'
+        registered_at:
+          type: string
+          description: 'the date this person registered to become a voter'
+        religion:
+          type: string
+          description: 'this person’s religion'
+        rnc_id:
+          type: string
+          description: 'this person’s ID from the RNC'
+        rnc_regid:
+          type: string
+          description: 'this person’s registration ID from the RNC'
+        rule_violations_count:
+          type: string
+          description: 'the number of times this person has violated one of the nation’s rules'
+        salesforce_id:
+          type: string
+          description: 'this person’s ID from Salesforce'
+        school_district:
+          type: string
+          description: 'a district field'
+        school_sub_district:
+          type: string
+          description: 'a district field'
+        sex:
+          type: string
+          description: 'this persons gender (M, F or O)'
+        signup_type:
+          type: string
+          description: '0 - for person, 1 - for organization'
+        spent_capital_amount_in_cents:
+          type: string
+          description: 'the aggregate amount of capital ever spent by this person (in cents)'
+        state_file_id:
+          type: string
+          description: 'this person’s ID from a state voter file'
+        state_lower_district:
+          type: string
+          description: 'a district field'
+        state_upper_district:
+          type: string
+          description: 'a district field'
+        submitted_address:
+          type: string
+          description: 'the address this person submitted'
+        subnations:
+          type: string
+          description: 'an array of subnations that this person belongs to'
+        suffix:
+          type: string
+          description: 'the suffix this person uses w/their name, i.e. Jr., Sr. or III'
+        support_level_changed_at:
+          type: string
+          description: 'the time and date that this person’s support level changed'
+        support_level:
+          type: string
+          description: 'the level of support this person has for your nation, expressed as a number between 1 and 5, 1 being Strong support, 5 meaning strong opposition, and 3 meaning undecided.'
+        support_probability_score:
+          type: string
+          description: 'the likelihood that this person will support you at election time'
+        supranational_district:
+          type: string
+          description: 'district field'
+        tags:
+          type: string
+          description: 'the tags assigned to this person, as an array of strings'
+        turnout_probability_score:
+          type: string
+          description: 'the probability that this person will turn out to vote'
+        twitter_address:
+          type: string
+          description: 'this person’s location based on their Twitter profile'
+        twitter_description:
+          type: string
+          description: 'the description that this person provided in their Twitter profile'
+        twitter_followers_count:
+          type: string
+          description: 'the number of followers this person has on Twitter'
+        twitter_friends_count:
+          type: string
+          description: 'the number of friends this person has on Twitter'
+        twitter_id:
+          type: string
+          description: 'this person’s ID from Twitter'
+        twitter_location:
+          type: string
+          description: 'an address resource representing this person’s address based on Twitter’s location data'
+        twitter_login:
+          type: string
+          description: 'this person’s Twitter login name'
+        twitter_name:
+          type: string
+          description: 'this person’s Twitter handle, e.g. FoobarSoftwares'
+        twitter_updated_at:
+          type: string
+          description: 'the last time this person’s Twitter record was updated'
+        twitter_website:
+          type: string
+          description: 'the URL of the website that this person included in their Twitter profile'
+        unsubscribed_at:
+          type: string
+          description: 'the date/time that this person unsubscribed from emails'
+        updated_at:
+          type: string
+          description: 'the timestamp representing when this person was last updated'
+        user_submitted_address:
+          type: string
+          description: 'an address resource representing the address this person submitted'
+        username:
+          type: string
+          description: 'this person’s NationBuilder username'
+        van_id:
+          type: string
+          description: 'this person’s ID from VAN'
+        village_district:
+          type: string
+          description: 'a district field'
+        voter_updated_at:
+          type: string
+          description: 'the last time voter data was gathered for this person'
+        warnings_count:
+          type: string
+          description: 'the number of warnings this person has received'
+        website:
+          type: string
+          description: 'the URL of this person’s website'
+        work_address:
+          $ref: '#/components/schemas/address'
+        work_phone_number:
+          type: string
+          description: 'a work phone number for this person'
+    address:
+      title: Address
+      properties:
+        address1:
+          type: string
+          description: 'first address line'
+        address2:
+          type: string
+          description: 'second address line'
+        address3:
+          type: string
+          description: 'third address line'
+        city:
+          type: string
+          description: 'city'
+        state:
+          type: string
+          description: 'state'
+        country_code:
+          type: string
+          description: 'country code (using ISO-3166-1 alpha-2)'
+        zip:
+          type: string
+          description: 'zip code'
+        lat:
+          type: number
+          description: 'latitude (using WGS-84)'
+        lng:
+          type: number
+          description: 'longitude (using WGS-84)'
