@@ -593,54 +593,76 @@ components:
       - Line
       - CustomerRef
       properties:
+        CustomerRef:
+          type: object
+          required:
+          - value
+          properties:
+              value:
+                type: string
+                description: 'The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.'
+              name:
+                type: string
+                description: 'An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.'
+        Line:
+          type: array
+          description: 'Individual line items of a transaction. Valid Line types include Sales item line  Group item line  Description only (also used for inline Subtotal lines)  Discount line Subtotal Line (used for the overall transaction) '
+          items:
+              type: object
+              $ref: '#/components/schemas/SalesItemLine'                  
         TxnDate:
           type: string
-          format: date
-          pattern: "yyyy/MM/dd"
+          format: date:yyyy/MM/dd          
           description: 'The date entered by the user when this transaction occurred. yyyy/MM/dd is the valid date format.For posting transactions, this is the posting date that affects the financial statements. If the date is not supplied, the current date on the server is used.Sort order is ASC by default.'
         ShipFromAddr:
           type: object
-            required:
-            - Line1
-            properties:
-              Line1:
-                type: string
-                description: 'address 1'
-              Line2:
-                type: string
-                description: 'address 2'         
-              City: 
-                type: string
-                description: 'City'    
-              CountrySubDivisionCode:
-                type: string
-                description: 'CountrySubDivisionCode'                
-              PostalCode:
-                type: string
-                description: 'PostalCode'         
-              Lat: 
-                type: string
-                description: 'latitude'    
-              Long:
-                type: string
-                description: 'longitude'
+          required:
+          - Line1
+          properties:
+            Line1:
+               type: string
+               description: 'address line 1'
+            Line2:
+               type: string
+               description: 'address line 2'    
+            Line3:
+               type: string
+            Line4:
+               type: string
+            Line5:
+               type: string
+            City: 
+               type: string
+               description: 'City'    
+            CountrySubDivisionCode:
+               type: string
+               description: 'CountrySubDivisionCode'                
+            PostalCode:
+               type: string
+               description: 'PostalCode'         
+            Lat: 
+               type: string
+               description: 'latitude'    
+            Long:
+               type: string
+               description: 'longitude'
           description: 'Identifies the address where the goods are shipped from. For transactions without shipping, it represents the address where the sale took place. For international addresses - countries should be passed as 3 ISO alpha-3 characters or the full name of the country.  If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created:Line1 and Line2 elements are populated with the customer name and company name.Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.'
         ShipDate:
           type: string
+          format: date:YYYY-MM-DD
           description: 'Date for delivery of goods or services. '
         TrackingNum:
           type: string
           description: 'Shipping provider''s tracking number for the delivery of the goods associated with the transaction.'
         PrintStatus:
-          type: select
+          type: string
           description: 'Printing status of the invoice. Valid values: NotSet, NeedToPrint, PrintComplete .'
-          options:
-            - NeedToPrint
-            - PrintComplete
-            - NotSet
+          enum : [NeedToPrint, PrintComplete, NotSet ]
+        #read only field
         DeliveryInfo:
           type: string
           description: 'Email delivery information. Returned when a request has been made to deliver email with the send operation. '
+        #internal field
         TxnSource:
           type: string
           description: 'Used internally to specify originating source of a credit card transaction.'
@@ -657,24 +679,20 @@ components:
                 type: string
                 description: 'Transaction Id of the related transaction.'
               TxnType:
-                type: select
-                options:
-                    - ReimburseCharge
-                    - ChargeCredit
-                    - StatementCharge
-                    - Payment
-                    - Estimate
-                    - TimeActivity
+                type: string
+                enum: [ReimburseCharge, ChargeCredit,  StatementCharge, Payment, Estimate, TimeActivity]
                 description: 'Transaction type of the linked object.'
               TxnLineId:
                 type: string
                 description: 'The line number of a specific line of the linked transaction. If supplied, the TxnId and TxnType attributes of the linked transaction must also be populated.'
         GlobalTaxCalculation:
           type: string
+          enum: [TaxExcluded, TaxInclusive,  NotApplicable]
           description: 'Method in which tax is applied. Allowed values are: TaxExcluded, TaxInclusive, and NotApplicable.'
         TotalAmt:
-          type: string
+          type: number
           description: 'Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes. Calculated by QuickBooks business logic; any value you supply is over-written by QuickBooks.'
+        #Active when Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to true
         AllowOnlineACHPayment:
           type: boolean
           description: 'Specifies if this invoice can be paid with online bank transfers and corresponds to the Free bank transfer online payment check box on the QuickBooks UI. Active when Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to true. If set to true, allow invoice to be paid with online bank transfers. The Free bank transfer online payment check box is checked on the QuickBooks UI for this invoice. If set to false, online bank transfers are not allowed. The Free bank transfer online payment check box is not checked on the QuickBooks UI for this invoice.'
@@ -694,11 +712,7 @@ components:
         PrivateNote:
           type: string
           description: 'User entered, organization-private note about the transaction. This note does not appear on the invoice to the customer. This field maps to the Statement Memo field on the Invoice form in the QuickBooks Online UI.'
-        Line:
-          type: array
-          description: 'Individual line items of a transaction. Valid Line types include Sales item line  Group item line  Description only (also used for inline Subtotal lines)  Discount line Subtotal Line (used for the overall transaction) '
-          items:
-            $ref: '#/components/schemas/SalesItemLine'
+        
         BillEmailCc:
           type: string
           description: 'Identifies the carbon copy e-mail address where the invoice is sent. If not specified, this field is populated from that defined in Preferences.SalesFormsPrefs.SalesEmailCc. If this email address is invalid, carbon copy email is not sent. '
@@ -741,17 +755,6 @@ components:
         AllowOnlinePayment:
           type: boolean
           description: 'Deprecated flag to allow online payments. In use before AllowOnlineCreditCardPayment and AllowOnlineACHPayment flags existed and provided to maintain backward compatibility. If set to true, this invoice was created before AllowOnlinePayment was deprecated and denotes both CC and ACH payments are allowed. In addition, the AllowOnlineCreditCardPayment and AllowOnlineACHPayment flags must be set to true. If set to false, this invoice was created after the AllowOnlinePayment flag was deprecated and is not used.  Do not modify.'
-        CustomerRef:
-          type: object
-          required:
-          - value
-          properties:
-            value:
-              type: string
-              description: 'The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.'
-            name:
-              type: string
-              description: 'An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.'
         CurrencyRef:
           type: object
           required:
@@ -1083,9 +1086,11 @@ components:
                     description: 'Specifies the position of the line in the collection of transaction lines. Positive integer.'
                   SalesItemLineDetail:
                     $ref: '#/components/schemas/SalesItemLineDetail'
+        #no need to show on UI
         DetailType:
           type: string
           description: 'Set to DiscountLineDetail this type of line.'
+          default: GroupLineDetail
         Description:
           type: string
           description: 'Free form text description of the line item that appears in the printed record.'
@@ -1102,24 +1107,9 @@ components:
         SalesItemLineDetail:
           $ref: '#/components/schemas/SalesItemLineDetail'
         DetailType:
-          type: select
+          type: string
           description: 'Set to SalesItemLineDetail for type of line.'
-          options:
-            - JournalEntryLineDetail
-            - DepositLineDetail
-            - SalesItemLineDetail
-            - PurchaseOrderItemLineDetail
-            - DiscountLineDetail
-            - TDSLineDetail
-            - SubTotalLineDetail
-            - ItemReceiptLineDetail
-            - PaymentLineDetail
-            - TaxLineDetail
-            - AccountBasedExpenseLineDetail
-            - SalesOrderItemLineDetail
-            - ItemBasedExpenseLineDetail
-            - GroupLineDetail
-            - DescriptionOnly
+          default: SalesItemLineDetail
         Amount:
           type: number
           description: 'The amount of the line item. For Invoice objects in global locales: when updating Amount, remove the TxnTaxDetail element in the object before submitting it in the update request payload.'
@@ -1142,12 +1132,11 @@ components:
           type: number
           description: 'Number of items for the line.'
         ServiceDate:
-          type: object
-          description: 'Date when the service is performed.'
-          properties:
-            date:
-              type: string
-              description: 'Local timezone: YYYY-MM-DD UTC: YYYY-MM-DDZ Specific time zone: YYYY-MM-DD+/-HH:MM'
+          type: string
+          description: 'Date when the service is performed. Local timezone: YYYY-MM-DD UTC: YYYY-MM-DDZ Specific time zone: YYYY-MM-DD+/-HH:MM'    
+          format: date:YYYY-MM-DD
+        #ItemAccountRef should be visible only  when there is a linkedtxn of type ReimburseCharge for this object.
+        #When ItemRef.Id is set to 1, ItemAccountRef maps to the reimbursable charge account.
         ItemAccountRef:
           type: object
           required:
@@ -1159,6 +1148,7 @@ components:
             name:
               type: string
               description: 'An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.'
+        #Reference to the Class for the line item. Available if Preferences.AccountingInfoPrefs.ClassTrackingPerLine is set to true
         ClassRef:
           type: object
           required:
@@ -1178,6 +1168,7 @@ components:
             value:
               type: string
               description: 'The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.'
+              enum: [TAX, NON]
             name:
               type: string
               description: 'An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.'
