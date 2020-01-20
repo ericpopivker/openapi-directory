@@ -623,25 +623,25 @@ components:
           type: object
           description: 'Identifies the e-mail address where the invoice is sent. You can send e-mail to more than one address by separating e-mails with comma. '
           required:
-          - address
+          - Address
           properties:
-              address:
+              Address:
                 type: string
         BillEmailCc:
-          type: string
+          type: object
           description: 'Identifies the carbon copy e-mail address where the invoice is sent. You can send e-mail to more than one address by separating e-mails with comma.'
           required:
-          - address
+          - Address
           properties:
-              address:
+              Address:
                 type: string
         BillEmailBcc:
-          type: string
+          type: object
           description: 'Identifies the blind carbon copy e-mail address where the invoice is sent. You can send e-mail to more than one address by separating e-mails with comma.'
           required:
-          - address
+          - Address
           properties:
-              address:
+              Address:
                 type: string
         #For posting transactions, this is the posting date that affects the financial statements. If the date is not supplied, the current date on the server is used.Sort order is ASC by default.
         TxnDate:
@@ -1249,7 +1249,7 @@ components:
         # 1 VAT as in the line item TaxCodeRef attribute, then the item account is used.
         # If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used.
         # If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
-       ItemRef:
+        ItemRef:
           type: object
           required:
           - value
