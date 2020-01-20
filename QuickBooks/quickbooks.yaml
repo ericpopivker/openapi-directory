@@ -1495,9 +1495,11 @@ components:
         City: 
             type: string
             description: 'City'    
+        # Dev -> should be full list of named enum country codes
         CountrySubDivisionCode:
             type: string
-            description: 'CountrySubDivisionCode'                
+            description: 'CountrySubDivisionCode'     
+            enum: [ES, LK, SD, SR, SJ, SZ]               
         PostalCode:
             type: string
             description: 'PostalCode'         
