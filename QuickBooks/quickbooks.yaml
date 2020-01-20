@@ -620,14 +620,29 @@ components:
         # DEV-> If EmailStatus=NeedToSend, BillEmail is a required input.
         #
         BillEmail:
-          type: string
+          type: object
           description: 'Identifies the e-mail address where the invoice is sent. You can send e-mail to more than one address by separating e-mails with comma. '
+          required:
+          - address
+          properties:
+              address:
+                type: string
         BillEmailCc:
           type: string
           description: 'Identifies the carbon copy e-mail address where the invoice is sent. You can send e-mail to more than one address by separating e-mails with comma.'
+          required:
+          - address
+          properties:
+              address:
+                type: string
         BillEmailBcc:
           type: string
           description: 'Identifies the blind carbon copy e-mail address where the invoice is sent. You can send e-mail to more than one address by separating e-mails with comma.'
+          required:
+          - address
+          properties:
+              address:
+                type: string
         #For posting transactions, this is the posting date that affects the financial statements. If the date is not supplied, the current date on the server is used.Sort order is ASC by default.
         TxnDate:
           type: string
@@ -674,10 +689,18 @@ components:
           type: string
           description: 'Shipping provider''s tracking number for the delivery of the goods associated with the transaction.'
         
-        
+        #
+        # Dev -> Zero or more related transactions to this Invoice object. User should be able to add  tranzactions or leave empty
+        #
+        # Dev -> The following linked relationships are supported:
+        #           Links to Estimate and TimeActivity objects can be established directly to this Invoice object with UI or with the API.
+        #           Create, Read, Update, and Query operations are avaialble at the API level for these types of links. 
+        #           Only one link can be made to an Estimate.
+        #           Progress Invoicing is not supported via the API.
+        #           
         LinkedTxn:
           type: array
-          description: 'Zero or more related transactions to this Invoice object. The following linked relationships are supported: Links to Estimate and TimeActivity objects can be established directly to this Invoice object with UI or with the API. Create, Read, Update, and Query operations are avaialble at the API level for these types of links.  Only one link can be made to an Estimate. Progress Invoicing is not supported via the API.  Links to expenses incurred on behalf of the customer are returned in the response with LinkedTxn.TxnType set to ReimburseCharge, ChargeCredit or StatementCharge corresponding to billable customer expenses of type Cash, Delayed Credit, and Delayed Charge, respectively. Links to these types of transactions are established within the QuickBooks UI, only, and are available as read-only at the API level.   Links to payments applied to an Invoice object are returned in the response with LinkedTxn.TxnType set to Payment. Links to Payment transactions are established within the QuickBooks UI, only, and are available as read-only at the API level.   Use LinkedTxn.TxnId as the ID in a separate read request for the specific resource to retrieve details of the linked object.'
+          description: '     Links to expenses incurred on behalf of the customer are returned in the response with LinkedTxn.TxnType set to ReimburseCharge, ChargeCredit or StatementCharge corresponding to billable customer expenses of type Cash, Delayed Credit, and Delayed Charge, respectively. Links to these types of transactions are established within the QuickBooks UI, only, and are available as read-only at the API level.   Links to payments applied to an Invoice object are returned in the response with LinkedTxn.TxnType set to Payment. Links to Payment transactions are established within the QuickBooks UI, only, and are available as read-only at the API level.   Use LinkedTxn.TxnId as the ID in a separate read request for the specific resource to retrieve details of the linked object.'
           items:
             type: object
             required:
@@ -696,11 +719,7 @@ components:
                 description: 'The line number of a specific line of the linked transaction. If supplied, the TxnId and TxnType attributes of the linked transaction must also be populated.'
         
         
-        GlobalTaxCalculation:
-          type: string
-          enum: [TaxExcluded, TaxInclusive,  NotApplicable]
-          description: 'Method in which tax is applied.'
-
+        
 
 
 
@@ -714,31 +733,49 @@ components:
         AllowOnlineACHPayment:
           type: boolean
           description: 'Specifies if this invoice can be paid with online bank transfers and corresponds to the Free bank transfer online payment check box on the QuickBooks UI. '
+       # Dev -> For France locale valid values include: WithinFrance FranceOverseas OutsideFranceWithEU OutsideEU For India locale, use state code values from the list below:
+       # List of valid items can be found here https://developer.intuit.com/app/developer/qbo/docs/api/accounting/ecommerce/invoice#the-invoice-object
         TransactionLocationType:
           type: string
-          description: 'The account location. For France locale valid values include: WithinFrance FranceOverseas OutsideFranceWithEU OutsideEU For India locale, use state code values from the list below:'
+          description: 'The account location.'
         
         
-        
+       # Dev ->  Applicable if multicurrency is enabled for the company. 
         ExchangeRate:
           type: number
-          description: 'The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. Applicable if multicurrency is enabled for the company.'
+          description: 'The number of home currency units it takes to equal one unit of currency specified by CurrencyRef.'
         Deposit:
           type: number
           description: 'The deposit made towards this invoice.'
+
+        GlobalTaxCalculation:
+          type: string
+          enum: [TaxExcluded, TaxInclusive,  NotApplicable]
+          description: 'Method in which tax is applied.'
+
+
         TxnTaxDetail:
           type: string
           description: 'This data type provides information for taxes charged on the transaction as a whole. It captures the details sales taxes calculated for the transaction based on the tax codes referenced by the transaction. This can be calculated by QuickBooks business logic or you may supply it when adding a transaction. See Global tax model for more information about this element. If sales tax is disabled (Preferences.TaxPrefs.UsingSalesTax is set to false) then TxnTaxDetail is ignored and not stored. '
         AllowOnlineCreditCardPayment:
           type: boolean
           description: 'Specifies if online credit card payments are allowed for this invoice and corresponds to the Cards online payment check box on the QuickBooks UI. Active when Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to true. If set to true, allow invoice to be paid with online credit card payments. The Cards online payment check box is checked on the QuickBooks UI. If set to false, online credit card payments are not allowed. The Cards online payment check box is not checked on the QuickBooks UI.'
+        # Dev-> Available for custom fields so configured for the company. Check Preferences.SalesFormsPrefs.CustomField and Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields currenly configured.
         CustomField:
-          type: string
-          description: 'One of, up to three custom fields for the transaction. Available for custom fields so configured for the company. Check Preferences.SalesFormsPrefs.CustomField and Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields currenly configured. Click here to learn about managing custom fields. '
-        
-        FreeFormAddress:
-          type: boolean
-          description: 'Denotes how ShipAddr is stored:&nbsp;formatted or unformatted. The value of this flag is system defined based on format of shipping address at object create time.If set to false, shipping address is returned in a formatted style using City, Country,&nbsp;CountrySubDivisionCode, Postal code.If set to true, shipping address is returned in an unformatted style using Line1 through Line5 attributes.'
+          type: object
+          description: 'One of, up to three custom fields for the transaction.  '
+          properties: 
+            #read only system defined
+            DefinitionId: 
+              type: string
+              description: "read only system defined"
+            StringValue:
+              type: string
+              description: "The value for the StringType custom field."
+            #readonly field
+            Name: 
+              type: string
+       
         ApplyTaxAfterDiscount:
           type: boolean
           description: 'If false or null, calculate the sales tax first, and then apply the discount. If true, subtract the discount first and then calculate the sales tax.'
@@ -788,6 +825,11 @@ components:
         #TxnSource:
         #  type: string
         #  description: 'Used internally to specify originating source of a credit card transaction.'
+
+        #system defined
+        #FreeFormAddress:
+        #  type: boolean
+        #  description: 'Denotes how ShipAddr is stored:&nbsp;formatted or unformatted. The value of this flag is system defined based on format of shipping address at object create time.If set to false, shipping address is returned in a formatted style using City, Country,&nbsp;CountrySubDivisionCode, Postal code.If set to true, shipping address is returned in an unformatted style using Line1 through Line5 attributes.'
     InvoiceResponse:
       type: object
       properties:
@@ -1132,6 +1174,7 @@ components:
           type: string
           description: 'Set to SalesItemLineDetail for type of line.'
           default: SalesItemLineDetail
+        # Dev-> Should be calculated automatically 
         Amount:
           type: number
           description: 'The amount of the line item. For Invoice objects in global locales: when updating Amount, remove the TxnTaxDetail element in the object before submitting it in the update request payload.'
@@ -1194,7 +1237,19 @@ components:
             name:
               type: string
               description: 'An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.'
-        ItemRef:
+       # Dev ->select * from Item 
+       # Dev -> need to show selet with list of available items
+       # Query the Item name list resource to determine the appropriate Item object for this reference. Use Item.Id and Item.Name from that object for ItemRef.value and ItemRef.name, respectively.
+       # Set ItemRef.value to SHIPPING_ITEM_ID when Line.amount represents transaction-wide shipping charges. Valid when Preferences.SalesFormsPrefs.AllowShipping is set to true.
+       #Set ItemRef.value to GRATUITY_ITEM_ID when Line.amount represents transaction-wide gratuity amount. Valid when Preferences.OtherPrefs.Name.SalesFormsPrefs.AllowGratuity is set to true.
+       # When a line lacks an ItemRef it is treated as documentation and the Line.Amountattribute is ignored.
+       # Applicable to invoice objects, only, and when linktxn specifies a ReimburseCharge. When Item.Id is set to 1, ItemAccountRef refers to reimburse expense account Id.
+        # For France locales: The account associated with the referenced Item object is looked up in the account category list.
+        # If this account has same location as specified in the transaction by the TransactionLocationType attribute and the same
+        # 1 VAT as in the line item TaxCodeRef attribute, then the item account is used.
+        # If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used.
+        # If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
+       ItemRef:
           type: object
           required:
           - value
