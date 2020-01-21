@@ -755,7 +755,8 @@ components:
 
 
         TxnTaxDetail:
-          type: string
+          type: object
+          $ref: '#/components/schemas/TxnTaxDetail'
           description: 'This data type provides information for taxes charged on the transaction as a whole. It captures the details sales taxes calculated for the transaction based on the tax codes referenced by the transaction. This can be calculated by QuickBooks business logic or you may supply it when adding a transaction. See Global tax model for more information about this element. If sales tax is disabled (Preferences.TaxPrefs.UsingSalesTax is set to false) then TxnTaxDetail is ignored and not stored. '
         AllowOnlineCreditCardPayment:
           type: boolean
@@ -779,9 +780,11 @@ components:
         ApplyTaxAfterDiscount:
           type: boolean
           description: 'If false or null, calculate the sales tax first, and then apply the discount. If true, subtract the discount first and then calculate the sales tax.'
+        #In use before AllowOnlineCreditCardPayment and AllowOnlineACHPayment flags existed and provided to maintain backward compatibility. If set to true, this invoice was created before AllowOnlinePayment was deprecated and denotes both CC and ACH payments are allowed.
+        # Dev ->  In addition, the AllowOnlineCreditCardPayment and AllowOnlineACHPayment flags must be set to true. If set to false, this invoice was created after the AllowOnlinePayment flag was deprecated and is not used.  Do not modify.
         AllowOnlinePayment:
           type: boolean
-          description: 'Deprecated flag to allow online payments. In use before AllowOnlineCreditCardPayment and AllowOnlineACHPayment flags existed and provided to maintain backward compatibility. If set to true, this invoice was created before AllowOnlinePayment was deprecated and denotes both CC and ACH payments are allowed. In addition, the AllowOnlineCreditCardPayment and AllowOnlineACHPayment flags must be set to true. If set to false, this invoice was created after the AllowOnlinePayment flag was deprecated and is not used.  Do not modify.'
+          description: 'Deprecated flag to allow online payments. '
         CurrencyRef:
           type: object
           required:
@@ -935,8 +938,9 @@ components:
           type: number
           description: 'The balance reflecting any payments made against the transaction. Initially set to the value of TotalAmt. A Balance of 0 indicates the invoice is fully paid. Calculated by QuickBooks business logic; any value you supply is over-written by QuickBooks.'
         TxnTaxDetail:
-          type: string
+          type: object            
           description: 'This data type provides information for taxes charged on the transaction as a whole. It captures the details sales taxes calculated for the transaction based on the tax codes referenced by the transaction. This can be calculated by QuickBooks business logic or you may supply it when adding a transaction. See Global tax model for more information about this element. If sales tax is disabled (Preferences.TaxPrefs.UsingSalesTax is set to false) then TxnTaxDetail is ignored and not stored. '
+          $ref: '#/components/schemas/TxnTaxDetail'
         AllowOnlineCreditCardPayment:
           type: boolean
           description: 'Specifies if online credit card payments are allowed for this invoice and corresponds to the Cards online payment check box on the QuickBooks UI. Active when Preferences.SalesFormsPrefs.ETransactionPaymentEnabled is set to true. If set to true, allow invoice to be paid with online credit card payments. The Cards online payment check box is checked on the QuickBooks UI. If set to false, online credit card payments are not allowed. The Cards online payment check box is not checked on the QuickBooks UI.'
@@ -1186,7 +1190,6 @@ components:
           description: 'Specifies the position of the line in the collection of transaction lines. Positive integer.'
     SalesItemLineDetail:
       type: object
-      description: 'SalesItemLineDetail'
       required:
       - ItemRef
       properties:
@@ -1509,3 +1512,74 @@ components:
         Long:
             type: string
             description: 'longitude'
+    TxnTaxDetail:
+      type: object
+      properties:
+        # Dev -> Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. 
+        # Use TaxCode.Id and TaxCode.Name from that object for TaxCodeRef.value and TaxCodeRef.name, respectively. If specified and sales tax is disabled (Preferences.TaxPrefs.UsingSalesTax is set to false), this element is ignored and not returned. 
+        # For sales transactions, only: if automated sales tax is enabled (Preferences.TaxPrefs.PartnerTaxEnabled is set to true) the supplied transaction tax code is replaced by the automated sales tax engine recommendation.
+        TxnTaxCodeRef: 
+          type: object
+          description: 'Transaction tax code'
+          required:
+          - value
+          properties: 
+            value:
+              type: string
+            name: 
+              type: string
+        TotalTax:
+          type: number
+          description: 'Total tax calculated for the transaction, excluding any tax lines manually inserted into the transaction line list.'
+        TaxLine:
+          type: array
+          description: "Tax line"
+          items:
+              type: object                
+              required:
+              - DetailType
+              - TaxLineDetail
+              properties: 
+                DetailType: 
+                  type: string
+                  enum: [TaxLineDetail]
+                TaxLineDetail:
+                  type: object
+                  $ref: '#/components/schemas/TaxLineDetail'
+                Amount:
+                  type: number
+                  description: 'The amount of tax for this tax line. '
+    TaxLineDetail:
+      type: object
+      required: 
+      - TaxRateRef
+      properties: 
+        # Reference to a TaxRate to apply to the entire transaction. 
+        # Dev-> Query the TaxRate name list resource to determine the appropriate TaxRage object for this reference. 
+        # Use TaxRate.Id and TaxRate.Name from that object for TaxRateRef.value and TaxRateRef.name, respectively.
+        # For non-US versions of QuickBooks, the TaxRate referenced here must also be one of the rates in the referenced tax code's rate list—either the SalesTaxRateList or the PurchaseTaxRateList—as applies to the transaction type. Any given rate may only be listed once.
+        TaxRateRef:
+          type: object
+          required:
+          - value
+          properties: 
+            value:
+              type: string
+            name: 
+              type: string
+        NetAmountTaxable:
+          type: number
+          description: '# This is the taxable amount on the total of the applicable tax rates. If TaxRate is applicable on two lines, this attribute represents the total of the two lines for which this rate is applied. This is different from the Line.Amount , which represents the final tax amount after the tax has been applied.'
+        PercentBased:
+          type: string
+          description: 'True — sales tax rate is expressed as a percentage. False — sales tax rate is expressed as a number amount.'
+          enum: [true, false]
+        TaxInclusiveAmount:
+          type: number
+          description: 'This is the total amount, including tax.'
+        OverrideDeltaAmount: 
+          type: number
+          description: 'The difference between the actual tax and the overridden amount supplied by the user.'          
+        TaxPercent: 
+          type: number
+          description: 'Numerical expression of the sales tax percent. For example, use "8.5" not "0.085".'
