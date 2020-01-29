@@ -500,7 +500,8 @@ components:
           type: object
           x-display-name:
           - Asset Account
-          $ref: '#/components/schemas/ReferenceType'
+          allOf:
+          - $ref: '#/components/schemas/ReferenceType'
         InvStartDate:
           type: string
           description: 'Date of opening balance for the inventory transaction.'
@@ -510,15 +511,20 @@ components:
           type: object
           x-display-name:
           - Expense account
-          $ref: '#/components/schemas/ReferenceType'
+          allOf:
+          - $ref: '#/components/schemas/ReferenceType'
 
         
         QtyOnHand:
           type: number
           description: 'Current quantity of the Inventory items available for sale'
+          x-display-name:
+          - Initial quantity
         Sku:
           type: string
           description: 'The stock keeping unit (SKU) for this Item. '
+          x-display-name:
+          - SKU
         SalesTaxIncluded:
           type: boolean
           description: 'True if the sales tax is included in the item amount, and therefore is not calculated for the transaction.'      
@@ -526,6 +532,8 @@ components:
         TrackQtyOnHand:
           type: boolean
           description: 'True if there is quantity on hand to be tracked.'
+          x-display-name:
+          - Track quantity on hand
         Description:
           type: string
           description: 'Description of the item.'
@@ -850,8 +858,9 @@ components:
           - Shipping address
           x-attributes:
           - advanced
-          type: object          
-          $ref: '#/components/schemas/Address'
+          type: object     
+          allOf:
+          - $ref: '#/components/schemas/Address'
           description: 'Identifies the address where the goods must be shipped.'        
         #If BillAddris not specified, and a default Customer:BillingAddr is specified in QuickBooks for this customer, the default bill-to address is used by QuickBooks.  For international addresses - countries should be passed as 3 ISO alpha-3 characters or the full name of the country.  If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created:Line1 and Line2 elements are populated with the customer name and company name.Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.
         #
@@ -860,7 +869,8 @@ components:
           x-display-name: 
           - Billing address
           type: object
-          $ref: '#/components/schemas/Address'
+          allOf:
+          - $ref: '#/components/schemas/Address'
           description: 'Bill-to address of the Invoice. '
         # For transactions without shipping, it represents the address where the sale took place. For international addresses - countries should be passed as 3 ISO alpha-3 characters or the full name of the country.  If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created:Line1 and Line2 elements are populated with the customer name and company name.Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.
         ShipFromAddr:
@@ -1257,6 +1267,8 @@ components:
       properties:
         Id:
           type: string
+          x-attributes:
+          - hide
         SubtotalLineDetail:
           type: object
           description: 'Subtotal LineDetail'
@@ -1287,6 +1299,8 @@ components:
       properties:
         Id:
           type: string
+          x-attributes: 
+          - hide
         DiscountLineDetail:
           type: object
           description: 'Subtotal LineDetail'
@@ -1328,6 +1342,8 @@ components:
       properties:
         Id:
           type: string
+          x-attributes: 
+          - hide
         DescriptionLineDetail:
           type: object
           description: 'DescriptionLineDetail'
@@ -1363,6 +1379,8 @@ components:
       properties:
         Id:
           type: string
+          x-attributes: 
+          - hide
         GroupLineDetail:
           type: object
           description: 'GroupLineDetail'
