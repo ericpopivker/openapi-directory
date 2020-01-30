@@ -146,15 +146,19 @@ components:
           description: The name of the company associated with the person or organization.
         PrimaryEmailAddr:
           type: object
+          x-display-name:
+          - Primary email address
           description: 'Primary email address. '
           required:
             - Address
           properties:
             Address:
               type: string
+              x-display-name: 
+              - Email
         Suffix:
           type: string
-          description: 'Suffix of the name. For example, Jr. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.'
+          description: 'Suffix of the name. '
         Title:
           type: string
           description: 'Title of the person. '
@@ -163,48 +167,37 @@ components:
           description: 'Middle name of the person. '
         FamilyName:
           type: string
-          description: 'Family name or the last name of the person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.'
+          x-display-name:
+          - Last name
+          description: 'Family name or the last name of the person. '
         GivenName:
           type: string
-          description: 'Given name or first name of a person. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.'
-
-
-
-
-
-
-
-
-        
-        
-        
+          x-display-name:
+          - First name
+          description: 'Given name or first name of a person. '            
         ResaleNum:
           type: string
+          x-display-name:
+          - Resale number
           description: Resale number or some additional info about the customer.
         PreferredDeliveryMethod:
           type: string
-          description: 'Preferred delivery method. Values are Print, Email, or None.'
-        
+          description: 'Preferred delivery method. '   
+          enum: [Print, Email,  None]
         CustomerTypeRef:
+          x-display-name:
+          - Customer type
           type: object
-          properties:
-            value:
-              type: string
-              x-display-name:
-              - Customer Type ID
-
+          $ref: '#/components/schemas/ReferenceType'
         Fax:
           type: object
           description: 'Fax number. '
           $ref: '#/components/schemas/FreeFormNumber'
         BillWithParent:
           type: boolean
-          description: 'If true, this Customer object is billed with its parent. '
-
-
-        
+          description: 'If true, this Customer object is billed with its parent. '        
         Mobile:
-          type: string
+          type: object
           description: 'Mobile phone number. '
           $ref: '#/components/schemas/FreeFormNumber'
         Job:
@@ -216,7 +209,7 @@ components:
           x-attributes:
           - hide
         PrimaryPhone:
-          type: string
+          type: object
           description: 'Primary phone number. '
           $ref: '#/components/schemas/FreeFormNumber'
         OpenBalanceDate:
@@ -227,7 +220,7 @@ components:
           type: boolean
           description: 'If true, transactions for this customer are taxable. Default behavior with minor version 10 and above: true, if DefaultTaxCodeRef is defined or false if TaxExemptionReasonId is set.'
         AlternatePhone:
-          type: string
+          type: object
           description: 'Alternate phone number. '
           $ref: '#/components/schemas/FreeFormNumber'
         Notes:
@@ -243,20 +236,27 @@ components:
           - hide 
         WebAddr:
           type: object
+          x-display-name:
+          - Web address
           properties:
             URI: 
               type: string
+              x-display-name:
+              - URI
           description: 'Website address. '
         Active:
           type: boolean
           description: 'If true, this entity is currently enabled for use by QuickBooks. If there is an amount in Customer.Balance when setting this Customer object to inactive through the QuickBooks UI, a CreditMemo balancing transaction is created for the amount.'
         Balance:
           type: number
-          description: 'Specifies the open balance amount or the amount unpaid by the customer. For the create operation, this represents the opening balance for the customer. When returned in response to the query request it represents the current open balance (unpaid amount) for that customer. Write-on-create.'
+          description: 'Specifies the open balance amount or the amount unpaid by the customer.'
         ShipAddr:
-          type: string
-          description: 'Default shipping address. If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created:Line1 and Line2 elements are populated with the customer name and company name.Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.'
-          $ref: '#/components/schemas/Address'
+          x-display-name:
+          - Shipping address
+          type: object
+          description: 'Default shipping address.'
+          allOf:
+          - $ref: '#/components/schemas/Address'
         IsProject:
           type: boolean
           description: 'If true, indicates this is a Project.'
@@ -264,11 +264,15 @@ components:
         
         PrintOnCheckName:
           type: string
-          description: 'Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. Constraints: Cannot be removed with sparse update.'
+          description: 'Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. '
         BillAddr:
-          type: string
-          description: 'Default billing address. If a physical address is updated from within the transaction object, the QuickBooks Online API flows individual address components differently into the Line elements of the transaction response then when the transaction was first created:Line1 and Line2 elements are populated with the customer name and company name.Original Line1 through Line 5 contents, City, SubDivisionCode, and PostalCode flow into Line3 through Line5as a free format strings.'
-          $ref: '#/components/schemas/Address'
+          x-diplay-name:
+          - Billing address
+          type: object
+          description: 'Default billing address. '
+          allOf:
+          - $ref: '#/components/schemas/Address'
+
 # ---- Customer respose
 
     CustomerResponse:
@@ -447,7 +451,7 @@ components:
           type: string
           default: false
           enum: [false, true]
-          
+          description: 'If true, this is a sub item. If false or null, this is a top-level item. '
         # Dev ->  If SubItem is true, then ParenRef is required.                        
         ParentRef:
           type: object
@@ -473,8 +477,6 @@ components:
           $ref: '#/components/schemas/Item'
           
 # ----- Item
-
-
         
     
     ItemCreateRequest:
@@ -491,7 +493,8 @@ components:
           type: object
           x-display-name:
           - Income Account
-          $ref: '#/components/schemas/ReferenceType'
+          allOf:
+          - $ref: '#/components/schemas/ReferenceType'
         Type:
           type: string
           description: 'Classification that specifies the use of this item.'
@@ -546,7 +549,7 @@ components:
           type: object
           x-display-name: 
           - Parent Item
-          description: 'The immediate parent of the sub item in the hierarchical Category:Sub-category list.'
+          description: 'The immediate parent of the sub item in the hierarchical Item:Sub-item list.'
           properties:
             value: 
               type: string
@@ -1556,24 +1559,24 @@ components:
       - CustomerRef
       properties:
         TotalAmt:
+          x-display-name:
+          - Total amount
           type: number
           description: 'Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes.'
         CustomerRef:
+          x-display-name:
+          - Customer
           type: object
           description: 'Reference to a customer or job'
-          $ref: '#/components/schemas/ReferenceType'
+          allOf:
+          - $ref: '#/components/schemas/ReferenceType'
         CurrencyRef:
           type: object
           description: 'Reference to the currency in which all amounts on the associated transaction are expressed'
-          required:
-          - value
-          properties:
-            value:
-              type: string
-              description: 'A three letter string representing the ISO 4217 code for the currency. For example, USD, AUD, EUR, and so on.'
-            name:
-              type: string
-              description: 'The full name of the currency.'
+          x-display-name:
+          - Currency
+          allOf:
+          - $ref: '#/components/schemas/CurrencyRef'
 
 # ----- Payment responce
 
@@ -1916,6 +1919,8 @@ components:
           - value
           properties:
             value:
+              x-display-name:
+              - Code
               type: string
               description: 'A three letter string representing the ISO 4217 code for the currency. For example, USD, AUD, EUR, and so on.'
             name:
