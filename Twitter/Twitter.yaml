@@ -1,0 +1,398 @@
+openapi: 3.0.1
+info:
+  title: Webflow API
+  description: 'Webflow API'
+  version: '1.0'
+paths:
+  /labs/1/tweets/{id}/hidden:
+    put:
+      tags:
+      - Tweets
+      summary: Hide
+      operationId: HideTweet
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hidden:
+                  type: string
+                  enum: [true]
+      responses:
+        200: 
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      hidden:
+                        type: string
+                      
+  /1.1/direct_messages/events/new:
+    post: 
+      tags:
+      - Direct messages
+      summary: Create
+      operationId: CreateDirectMessage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/event'
+      responses:
+        200: 
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/event'
+  /1.1/followers/ids:
+    get:
+      tags:
+      - Followers
+      summary: Find Ids
+      operationId: FindFolowerIds
+      parameters:
+        - in: query
+          name: cursor
+          schema:
+            type: integer
+        - in: query
+          name: count
+          schema:
+            type: integer
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ids: 
+                    type: array
+                    items:
+                      type: number
+                  next_cursor: 
+                    type: number
+                  next_cursor_str: 
+                    type: string
+                  previous_cursor: 
+                    type: number
+                  previous_cursor_str: 
+                    type: string
+  /1.1/followers/list:
+    get:
+      tags:
+      - Followers
+      summary: Find List
+      operationId: FindFollowersList
+      parameters:
+        - in: query
+          name: cursor
+          schema:
+            type: integer
+        - in: query
+          name: count
+          schema:
+            type: integer
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users: 
+                    type: array
+                    items:                    
+                      type: object
+                      $ref: '#/components/schemas/user'
+                  next_cursor: 
+                    type: number
+                  next_cursor_str: 
+                    type: string
+                  previous_cursor: 
+                    type: number
+                  previous_cursor_str: 
+                    type: string
+  /1.1/users/search:
+    get:
+      tags:
+      - Users
+      summary: Find
+      operationId: SearchUser
+      parameters: 
+        - in: query
+          name: q
+          required: true
+          description: The search query to run against people search.
+          schema:
+            type: string
+        - in: query
+          name: page
+          required: false
+          description: Specifies the page of results to retrieve
+          schema:
+            type: string
+        - in: query
+          name: count
+          required: false
+          description: The number of potential user results to retrieve per page. This value has a maximum of 20.
+          schema:
+            type: string
+        - in: query
+          name: include_entities
+          required: false
+          description: 	The entities node will not be included in embedded Tweet objects when set to false .
+          schema:
+            type: string
+            enum: [false, true]
+      responses:
+        200: 
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:                    
+                  type: object
+                  $ref: '#/components/schemas/user'
+  /1.1/search/tweets:
+    get:
+      tags:
+      - Tweets
+      summary: Find
+      operationId: SearchTweet
+      parameters:
+      - in: query
+        name: q
+        required: true
+        description: 'A UTF-8, URL-encoded search query of 500 characters maximum, including operators. Queries may additionally be limited by complexity.'
+        schema:
+          type: string
+      - in: query
+        name: geocode	
+        description: Returns tweets by users located within a given radius of the given latitude/longitude. 
+        schema:
+          type: string
+      - in: query 
+        name: lang	
+        description: 'Restricts tweets to the given language, given by an ISO 639-1 code'
+        schema:
+          type: string
+      - in: query 
+        name: locale	
+        description: Specify the language of the query you are sending (only ja is currently effective).
+        schema:
+          type: string
+      - in: query 
+        name: result_type		
+        description: Specifies what type of search results you would prefer to receive.                 
+        schema:
+          type: string
+          enum: [mixed, recent, popular]
+          default: mixed
+      - in: query 
+        name: count	
+        description: 'The number of tweets to return per page, up to a maximum of 100. Defaults to 15.' 
+        schema:
+          type: number
+      - in: query 
+        name: until	
+        description: Returns tweets created before the given date. Date should be formatted as YYYY-MM-DD. Keep in mind that the search index has a 7-day limit. 
+        schema:
+          type: string
+          format: date:YYYY-MM-DD
+      - in: query 
+        name: since_id	
+        description: 'Returns results with an ID greater than (that is, more recent than) the specified ID.' 
+        schema:
+          type: number
+      - in: query 
+        name: max_id
+        description: 'Returns results with an ID less than (that is, older than) or equal to the specified ID.'		
+        schema:
+          type: number
+      - in: query 
+        name: include_entities	
+        description: The entities node will not be included when set to false.
+        schema:
+          type: string
+          enum: [true, false]
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: 
+                  statuses: 
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/status'
+                  search_metadata:
+                    $ref: '#/components/schemas/search_metadata'
+  /1.1/statuses/update:
+    post:
+      tags:
+      - Tweets
+      summary: Create
+      operationId: CreateTweet
+      parameters: 
+      - in: query 
+        required: true
+        name: status
+        description: The text of the status update. 
+        schema:
+          type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/status'
+components:
+  schemas:
+    event:
+      type: object
+      required:
+      - type
+      - message_create
+      properties:
+        type: 
+          type: string
+          enum: [message_create]
+        message_create:
+          type: object
+          $ref: '#/components/schemas/message_create'
+    message_create:
+      type: object
+      required:
+      - target
+      - message_data
+      properties:
+        target:
+          type: object
+          properties:
+            recipient_id: 
+               type: string
+        message_data:
+          type: object
+          properties:
+            text: 
+              type: string
+    user:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The integer representation of the unique identifier for this User.
+        id_str:
+          type: string	
+          description: The string representation of the unique identifier for this User. 
+        name:
+          type: string	
+          description: The name of the user as they have defined it. 
+        screen_name:
+          type: string	
+          description: The screen name handle or alias that this user identifies themselves with. 
+    search_metadata:
+      type: object
+      properties:
+        completed_in: 
+          type: number
+        max_id: 
+          type: number
+        max_id_str: 
+          type: string
+        next_results: 
+          type: string
+        query: 
+          type: string
+        refresh_url:  
+          type: string
+        count:  
+          type: number
+        since_id:  
+          type: number
+        since_id_str:  
+          type: string
+    status:
+      type: object
+      properties:
+        created_at: 
+          type: string
+        id: 
+          type: number
+        id_str: 
+          type: string
+        text:
+          type: string
+        truncated: 
+          type: string
+        entities: 
+          type: object
+        metadata:
+          type: object
+          properties: 
+            iso_language_code: 
+              type: string
+            result_type: 
+              type: string
+        source: 
+          type: string
+        in_reply_to_status_id:
+          type: number 
+        in_reply_to_status_id_str: 
+          type: string
+        in_reply_to_user_id: 
+          type: number
+        in_reply_to_user_id_str: 
+          type: string
+        in_reply_to_screen_name: 
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+        geo: 
+           type: string        
+        coordinates: 
+          type: string
+        place: 
+          type: string
+        contributors: 
+          type: string
+        is_quote_status: 
+          type: string
+        quoted_status_id: 
+          type: number
+        quoted_status_id_str: 
+          type: string
+        quoted_status:
+          $ref: '#/components/schemas/status'
+        retweet_count: 
+          type: number
+        favorite_count: 
+          type: number
+        favorited: 
+          type: string
+        retweeted: 
+          type: string
+        possibly_sensitive: 
+          type: string
+        lang: 
+          type: string
