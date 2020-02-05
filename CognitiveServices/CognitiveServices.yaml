@@ -1,0 +1,144 @@
+openapi: 3.0.1
+info:
+  title: Cognitive Services - Content Moderator
+  description: 'Cognitive Services - Content Moderator'
+  version: '1.0'
+# https://westus.dev.cognitive.microsoft.com/docs/services/57cf753a3f9b070c105bd2c1/operations/57cf753a3f9b070868a1f66f
+paths:
+  /contentmoderator/moderate/v1.0/ProcessText/DetectLanguage:
+    post:
+      tags:
+      - Text
+      summary: DetectLanguage
+      operationId: DetectLanguage
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  DetectedLanguage:
+                    type: string
+                    x-attributes:
+                    - textarea
+  /contentmoderator/moderate/v1.0/ProcessText/Screen:
+    post:
+      tags:
+      - Text
+      summary: Screen
+      operationId: Screen
+      parameters:
+      - in: query
+        name: autocorrect
+        required: false
+        description: 'Runs auto correction on the input, before running other operations.'
+        schema:
+          type: boolean
+      - in: query
+        name: PII
+        required: false
+        description: 'Detects Personal Identifiable Information (PII) in the input.'
+        schema:
+          type: boolean
+      - in: query
+        name: listId
+        required: false
+        description: 'The Term list to be used for matching.'
+        schema:
+          type: string
+      - in: query
+        name: classify
+        required: false
+        description: 'Enables Text Classification.'
+        schema:
+          type: boolean
+      - in: query
+        name: language
+        required: false
+        description: 'Optional parameter. If no language is specified, it would default to English.'
+        schema:
+          type: string
+      requestBody: 
+        content: 
+          text/plain:
+            schema: 
+              type: string
+              x-attributes:
+              - textarea
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreenResponse'
+         
+components:
+  schemas:
+    ScreenResponse:
+      type: object
+      properties:
+        OriginalText: 
+          type: string
+        NormalizedText: 
+          type: string
+        AutoCorrectedText: 
+          type: string
+        Misrepresentation: 
+          type: string
+        PII:
+          type: object
+        Classification:
+          type: object
+          properties:
+            Category1:
+              type: object
+              properties: 
+                Score: 
+                  type: number
+            Category2:
+              type: object
+              properties: 
+                Score: 
+                  type: number
+            Category3:
+              type: object
+              properties: 
+                Score: 
+                  type: number
+            ReviewRecommended: 
+              type: boolean
+
+        Language: 
+          type: string
+        Terms:
+          type: array
+          items:
+            type: object
+            properties: 
+              Index: 
+                type: number
+              OriginalIndex: 
+                type: number               
+              ListId: 
+                type: number
+              Term: 
+                type: string
+        Status:
+          type: object
+          properties:
+            Code: 
+              type: number
+            Description: 
+              type: string
+            Exception: 
+              type: string
+        TrackingId:
+          type: string
