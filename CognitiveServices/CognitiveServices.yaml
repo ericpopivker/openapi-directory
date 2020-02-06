@@ -80,8 +80,467 @@ paths:
               schema:
                 $ref: '#/components/schemas/ScreenResponse'
          
+  /text/analytics/v2.1/sentiment:
+    post:
+      tags: 
+      - TextAnalytics
+      summary: Sentiment Analysis
+      operationId: SentimentAnalysis
+      requestBody:        
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                documents:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      language:
+                        type: string
+                      id: 
+                        type: string
+                      text: 
+                        type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  documents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: string
+                        score: 
+                          type: number
+                  errors:
+                    $ref: '#/components/schemas/errors'
+
+  /text/analytics/v2.1/keyPhrases:
+    post:
+      tags: 
+      - TextAnalytics
+      summary: Key phrase extraction
+      operationId: KePhraseExtraction
+      requestBody:        
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                documents:
+                  $ref: '#/components/schemas/documents'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  documents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        keyPhrases:
+                          type: array
+                          items:
+                            type: string
+                  errors:
+                    $ref: '#/components/schemas/errors'
+
+  /text/analytics/v2.1/languages:
+    post:
+      tags: 
+      - TextAnalytics
+      summary: LanguageDetection
+      operationId: LanguageDetection
+      requestBody:        
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                documents:
+                  type: object
+                  properties: 
+                    id: 
+                      type: string
+                    text: 
+                      type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  documents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        detectedLanguages:
+                          type: array
+                          items:
+                            type: object
+                            properties: 
+                              name:
+                                type: string
+                              score:
+                                type: number
+                              iso6391Name:
+                                type: string
+                           
+                  errors:
+                    $ref: '#/components/schemas/errors'
+
+  /text/analytics/v2.1/entities:
+    post:
+      tags: 
+      - TextAnalytics
+      summary: Named Entity Recognition
+      operationId: NamedEntityRecognition
+      requestBody:        
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                documents:
+                  $ref: '#/components/schemas/documents'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties: 
+                  documents:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        entities:
+                          type: array
+                          items:
+                            type: object
+                            properties: 
+                              name:
+                                type: string
+                              matches: 
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    wikipediaScore:
+                                      type: number
+                                    entityTypeScore:
+                                      type: number
+                                    text:
+                                      type: string
+                                    offset:
+                                      type: number
+                                    length:
+                                      type: number
+                              wikipediaLanguage: 
+                                type: string
+                              wikipediaId:
+                                type: string
+                              wikipediaUrl:
+                                type: string
+                              bingId:
+                                type: string
+                              type:
+                                type: string
+                              subType:
+                                type: string
+                           
+                  errors:
+                    $ref: '#/components/schemas/errors'
+  /formrecognizer/v2.0-preview/custom/models:
+    post: 
+      tags:
+      - Form Recognizer
+      summary: Train model
+      operationId: TrainModel
+      requestBody:
+        content:
+            application/json:
+              schema: 
+                type: object
+                required:
+                - source
+                properties: 
+                  source:
+                    type: string
+                  sourceFilter:
+                    type: object
+                    properties:
+                      prefix: 
+                        type: string
+                      includeSubFolders:
+                        type: boolean
+                  useLabelFile: 
+                    type: boolean
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  modelId:
+                    type: string
+                  trainingDocuments:
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        documentName: 
+                          type: string
+                        pages: 
+                          type: number
+                        errors: 
+                          $ref: '#/components/schemas/errors'
+                        status: 
+                          type: string
+                  errors:
+                    $ref: '#/components/schemas/errors'
+
+  /vision/v2.0/analyze:
+    post:
+      tags:
+      - Computer Vision
+      summary: Analyze Image
+      operationId: AnalyzeImage
+      parameters:
+      - in: query
+        name: visualFeatures
+        required: false
+        schema: 
+          type: string
+          enum: [Adult, Brands, Categories, Color, Description, Faces, ImageType, Objects, Tags]
+      - in: query
+        name: details
+        required: false
+        schema: 
+          type: string
+          enum: [Celebrities, Landmarks ]
+      - in: query
+        name: language
+        required: false
+        schema:
+          type: string
+          enum: [en, es, ja, pt, zh]
+          description: 'A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is "en".'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                url:
+                  type: string
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      type: object
+                      properties: 
+                        name: 
+                          type: string
+                        score: 
+                          type: number
+                        detail:
+                          type: object
+                          properties:
+                            celebrities:
+                              type: array
+                              items: 
+                                type: object
+                                properties:
+                                  name: 
+                                    type: string
+                                  faceRectangle:
+                                    type: object
+                                    properties: 
+                                      left: 
+                                        type: number
+                                      top: 
+                                        type: number
+                                      width: 
+                                        type: number
+                                      height: 
+                                        type: number
+                                  confidence:
+                                    type: number
+                            landmarks:
+                              type: array
+                              items: 
+                                type: object
+                                properties:
+                                  name: 
+                                    type: string
+                                  confidence: 
+                                    type: number
+                        adult:
+                          type: object
+                          properties:
+                            isAdultContent: 
+                              type: boolean
+                            isRacyContent: 
+                              type: boolean
+                            adultScore: 
+                              type: number
+                            racyScore: 
+                              type: number
+                        tags:
+                          type: array
+                          items:
+                            type: object
+                            properties: 
+                              name: 
+                                type: string
+                              confidence: 
+                                type: number
+                        description:
+                          type: object
+                          properties:
+                              tags: 
+                                type: array
+                                items:
+                                  type: string
+                              captions:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    text:
+                                      type: string
+                                    confidence:
+                                      type: number
+                        requestId: 
+                          type: string
+                        metadata:
+                          type: object
+                          properties:
+                            width: 
+                              type: number
+                            height: 
+                              type: number
+                            format: 
+                              type: number
+                        faces:
+                          type: array
+                          items: 
+                            type: object
+                            properties:
+                              age: 
+                                type: number
+                              gender: 
+                                type: string
+                              faceRectangle:
+                                type: object
+                                properties:
+                                  left: 
+                                    type: number
+                                  top: 
+                                    type: number
+                                  width: 
+                                    type: number
+                                  height: 
+                                    type: number
+                        color:
+                          type: object
+                          properties:
+                              dominantColorForeground: 
+                                type: string
+                              dominantColorBackground: 
+                                type: string
+                              dominantColors:
+                                type: array
+                                items: 
+                                  type: string
+                              accentColor: 
+                                type: number
+                              isBWImg: 
+                                type: boolean
+                        imageType:
+                          type: object
+                          properties: 
+                            clipArtType: 
+                              type: number
+                            lineDrawingType:
+                              type: number
+                        objects:
+                          type: array
+                          items: 
+                            type: object
+                            properties:
+                              rectangle:
+                                type: object
+                                properties:
+                                  x: 
+                                    type: number
+                                  y: 
+                                    type: number
+                                  w: 
+                                    type: number
+                                  h: 
+                                    type: number
+                              object: 
+                                type: string
+                              confidence: 
+                                type: number
+
+
 components:
   schemas:
+    documents: 
+      type: array
+      items:
+        type: object
+        properties:
+          language:
+             type: string
+          id: 
+            type: string
+          text: 
+            type: string
+    errors:
+      type: array
+      items: 
+        type: object
+        properties:
+          id:
+            type: string
+          message:
+            type: string
     ScreenResponse:
       type: object
       properties:
@@ -94,7 +553,53 @@ components:
         Misrepresentation: 
           type: string
         PII:
-          type: object
+          type: array
+          items:
+            type: object
+            properties:
+              Email:
+                type: object
+                properties:
+                  Detected: 
+                    type: string
+                  SubType:  
+                    type: string
+                  Text:  
+                    type: string
+                  Index:  
+                    type: number
+              IPA:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    SubType:  
+                      type: string              
+                    Text: 
+                      type: string
+                    Index: 
+                      type: number
+              Phone:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    CountryCode:  
+                      type: string 
+                    Text:  
+                      type: string 
+                    Index:  
+                      type: number 
+              Address:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Text: 
+                      type: string 
+                    Index: 
+                      type: number 
+
         Classification:
           type: object
           properties:
